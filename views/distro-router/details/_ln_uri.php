@@ -1,0 +1,2 @@
+This will redirect to <pre>lightning:lnurl...</pre>
+<?=\yii\helpers\Html::a($model->baseLink->getUrl([],\app\models\DistroMethod::NAME_LN_URI),$model->baseLink->getUrl([],\app\models\DistroMethod::NAME_LN_URI));?>

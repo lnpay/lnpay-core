@@ -1,0 +1,12 @@
+class_name: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+              url: http://192.168.69.11
+              host: '192.168.69.33' #chrome driver container
+              port: 4444
+              browser: chrome
+        - Yii2:
+            part: orm
+            entryScript: index-test.php
+            cleanup: false

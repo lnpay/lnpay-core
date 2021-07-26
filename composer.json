@@ -1,0 +1,97 @@
+{
+    "name": "yiisoft/yii2-app-basic",
+    "description": "Yii 2 Basic Project Template",
+    "keywords": ["yii2", "framework", "basic", "project template"],
+    "homepage": "http://www.yiiframework.com/",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "support": {
+        "issues": "https://github.com/yiisoft/yii2/issues?state=open",
+        "forum": "http://www.yiiframework.com/forum/",
+        "wiki": "http://www.yiiframework.com/wiki/",
+        "irc": "irc://irc.freenode.net/yii",
+        "source": "https://github.com/yiisoft/yii2"
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=7.1.0",
+        "yiisoft/yii2": "^2.0.0",
+        "symfony/process": "^3.3||^4.0",
+        "yiisoft/yii2-redis": "~2.0.0",
+        "yiisoft/yii2-bootstrap": "~2.0.0",
+        "yiisoft/yii2-queue": "^2.0@dev",
+        "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
+        "zumba/amplitude-php": "^1.0.0",
+        "vlucas/phpdotenv": "^3.4@dev",
+        "guzzlehttp/guzzle": "^7.1@dev",
+        "bitwasp/bech32": "dev-master",
+        "tkijewski/php-lnurl": "dev-master",
+        "chillerlan/php-qrcode": "3.2.0",
+        "lnpay/php-lnd-grpc": "v0.13.0-beta",
+        "zhuravljov/yii2-queue-monitor": "^1.0@dev",
+        "supervisorphp/supervisor": "~3.0",
+        "supervisorphp/configuration": "^0.3.0@dev",
+        "creocoder/yii2-flysystem": "dev-master",
+        "ihor/supervisor-xml-rpc": "~0.2",
+        "rekurzia/yii2-papertrail-log-target": "dev-master",
+        "vxm/yii2-mfa": "^1.0@dev",
+        "lnpay/php-lndconnect": "dev-master"
+    },
+    "require-dev": {
+        "yiisoft/yii2-debug": "~2.1.0",
+        "yiisoft/yii2-gii": "~2.1.0",
+        "yiisoft/yii2-faker": "~2.0.0",
+        "codeception/base": "~2.3.0",
+        "codeception/verify": "~0.4.0",
+        "codeception/specify": "~0.4.6",
+        "symfony/browser-kit": ">=2.7 <=4.2.4",
+        "facebook/webdriver": "^1.0.1"
+    },
+    "config": {
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": true
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "yii\\composer\\Installer::postInstall",
+            "git submodule update --init"
+        ],
+        "post-create-project-cmd": [
+            "yii\\composer\\Installer::postCreateProject",
+            "yii\\composer\\Installer::postInstall"
+        ]
+    },
+    "extra": {
+        "yii\\composer\\Installer::postCreateProject": {
+            "setPermission": [
+                {
+                    "runtime": "0777",
+                    "web/assets": "0777",
+                    "yii": "0755"
+                }
+            ]
+        },
+        "yii\\composer\\Installer::postInstall": {
+            "generateCookieValidationKey": [
+                "config/web.php"
+            ]
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/tkijewski/configuration"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "\\LndConnect\\LndConnect\\": "../php-lndconnect/src/"
+        }
+    }
+}

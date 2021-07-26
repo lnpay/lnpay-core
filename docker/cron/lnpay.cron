@@ -1,0 +1,4 @@
+* * * * * /usr/local/bin/php /app/yii cron/minute >> /app/runtime/cron/cron.log 2>&1
+0 * * * * /usr/local/bin/php /app/yii cron/hourly >> /app/runtime/cron/cron.log 2>&1
+0 0 * * * /usr/local/bin/php /app/yii cron/daily >> /app/runtime/cron/cron.log 2>&1
+# This extra line makes it a valid cron
