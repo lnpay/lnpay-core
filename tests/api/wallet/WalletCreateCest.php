@@ -1,0 +1,54 @@
+<?php
+
+
+use app\tests\fixtures\UserFixture;
+
+class WalletCreateCest
+{
+    public function _fixtures()
+    {
+        return [
+            'users' => [
+                'class' => UserFixture::class,
+            ],
+            'wallets' => [
+                'class' => \app\tests\fixtures\WalletFixture::class,
+            ],
+            'user_access_key' => [
+                'class' => \app\tests\fixtures\UserAccessKeyFixture::class,
+            ]
+        ];
+    }
+
+    public function _before(ApiTester $I)
+    {
+    }
+
+    public function _after(ApiTester $I)
+    {
+    }
+
+    public function walletCreateSuccess(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'sak_KkKkKkKkKkneieivTI05Fm3YzTza4N');
+        $I->sendPOST('/v1/wallet',[
+            'user_label'=>'My Test Wallet'
+        ]);
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::CREATED);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"access_keys"');
+        $I->seeResponseContains('"user_label":"My Test Wallet"');
+    }
+
+    public function walletCreateValidationFail(\ApiTester $I)
+    {
+
+    }
+
+    public function walletCreatePermissionFail(\ApiTester $I)
+    {
+
+    }
+
+}

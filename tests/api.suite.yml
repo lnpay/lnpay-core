@@ -1,0 +1,13 @@
+class_name: ApiTester
+modules:
+    enabled:
+        - Filesystem
+        - Asserts
+        - REST:
+              url: 'http://localhost/index-test.php'
+              depends: PhpBrowser
+        - Yii2:
+              transaction: false
+              part: [ orm, email, fixtures ]
+    config:
+        - Yii2

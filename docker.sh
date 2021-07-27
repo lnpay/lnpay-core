@@ -4,12 +4,6 @@ if [ $1 == "build" ]
 then
     docker-compose up -d
 
-    # Update
-    docker exec lnpay-php apt-get update
-    docker exec lnpay-php apt-get install -y libgmp-dev re2c libmhash-dev libmcrypt-dev file
-    docker exec lnpay-php docker-php-ext-configure gmp
-    docker exec lnpay-php docker-php-ext-install gmp
-
     docker exec lnpay-php composer install
 
     docker exec lnpay-php init --env=Development --overwrite=y
@@ -20,6 +14,8 @@ then
 
     # Restart after enable for apache
     docker restart lnpay-php
+
+    sleep 3
 
     docker exec lnpay-php php yii migrate --interactive=0 --migrationPath=@yii/rbac/migrations
     docker exec lnpay-php php yii migrate --interactive=0
@@ -42,7 +38,29 @@ fi
 
 if [ $1 == "destroy" ]
 then
+    cd tests/polar;
+    docker-compose down --volumes
+
+    cd ../../;
     set -e
     docker-compose down --volumes
     rm -rf docker/supervisor/conf.d/lnod_*
+
+
+fi
+
+if [ $1 == "polarup" ]
+then
+    cd tests/polar;
+    set -e
+    docker-compose up -d
+    echo "Waiting 120s for bitcoind and LND to boot..."
+    sleep 120
+fi
+
+if [ $1 == "polardown" ]
+then
+    cd tests/polar;
+    set -e
+    docker-compose down --volumes
 fi

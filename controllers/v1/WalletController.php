@@ -83,7 +83,7 @@ class WalletController extends BaseApiController
         if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_PUBLIC_API_KEY,Yii::$app->user->identity->sessionApiKey)) {
             throw new UnauthorizedHttpException('Invalid Wallet Access Key. Keys prefixed with waka_, waki_, wakr, waklw are valid when using pak_');
         }
-        throw new UnauthorizedHttpException('Wallet not found');
+        throw new UnauthorizedHttpException('Wallet not found: '.$access_key);
     }
 
     public function actionCreate()

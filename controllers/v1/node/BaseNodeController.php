@@ -7,6 +7,7 @@ use app\modules\node\models\LnNode;
 use Yii;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\UnauthorizedHttpException;
 
 class BaseNodeController extends BaseApiController
 {
@@ -34,20 +35,22 @@ class BaseNodeController extends BaseApiController
 
     public function beforeAction($event)
     {
-        if ($node_id = Yii::$app->request->getQueryParam('node_id')) {
-            if ($node_id == 'default')
-                return parent::beforeAction($event);
+        if (parent::beforeAction($event)) {
+            if ($node_id = Yii::$app->request->getQueryParam('node_id')) {
+                if ($node_id == 'default')
+                    $this->nodeObject = LnNode::getLnpayNodeQuery()->one();
+                else
+                    $this->nodeObject = LnNode::find()->where(['id'=>$node_id,'user_id'=>Yii::$app->user->id])->one();
 
-            $this->nodeObject = LnNode::find()->where(['id'=>$node_id,'user_id'=>Yii::$app->user->id])->one();
+                if (!$this->nodeObject) {
+                    throw new UnauthorizedHttpException('Invalid node id: '.$node_id);
+                }
 
-            if (!$this->nodeObject) {
-                throw new BadRequestHttpException('Invalid node id: '.$node_id);
+            } else {
+                throw new UnauthorizedHttpException('Request must contain node_id');
             }
-
-        } else {
-            throw new BadRequestHttpException('Request must contain node_id');
         }
 
-        return parent::beforeAction($event);
+        return true;
     }
 }

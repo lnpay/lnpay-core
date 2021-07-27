@@ -5,7 +5,7 @@ services:
 #      dockerfile: Dockerfile
 #      context: 'docker/php'
     container_name: lnpay-php
-    image: bootstrapbandit/lnpay:7.3-apache-grpc
+    image: bootstrapbandit/lnpay:7.3-apache-grpc-0.1
     volumes:
       - ./docker/supervisor/:/etc/supervisor/
       - ~/.composer-docker/cache:/root/.composer/cache:delegated

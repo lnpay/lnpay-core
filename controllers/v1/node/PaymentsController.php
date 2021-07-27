@@ -15,7 +15,7 @@ class PaymentsController extends BaseNodeController
     public function actionDecodeinvoice($payment_request)
     {
         try {
-            $node = LnNode::getLnpayNodeQuery()->one();
+            $node = $this->nodeObject;
             return $node->getLndConnector()->decodeInvoice($payment_request);
         } catch (\Throwable $t) {
             throw new BadRequestHttpException($t->getMessage());
@@ -26,7 +26,7 @@ class PaymentsController extends BaseNodeController
     {
         //$this->checkKeyAccess(UserAccessKeyBehavior::PERM_DEFAULT_NODE_WRAPPER_ACCESS);
         try {
-            $node = LnNode::getLnpayNodeQuery()->one();
+            $node = $this->nodeObject;
             return $node->getLndConnector()->queryRoutes(compact('pub_key','amt'));
         } catch (\Throwable $t) {
             throw new BadRequestHttpException($t->getMessage());

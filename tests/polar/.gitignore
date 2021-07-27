@@ -1,0 +1,2 @@
+./volumes/bitcoind/*
+./volumes/lnd/*

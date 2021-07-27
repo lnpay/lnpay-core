@@ -15,10 +15,4 @@ class HomeCest
         $I->amOnPage(Url::toRoute('/home/signup'));
         $I->see('Create your ⚡LNPay Account');
     }
-
-    public function ensureThatAboutPage(AcceptanceTester $I)
-    {
-        $I->amOnPage(Url::toRoute('/home/about'));
-        $I->see('About');
-    }
 }

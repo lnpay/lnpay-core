@@ -628,9 +628,11 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
     public function fields()
     {
         $fields = parent::fields();
+        $fields['id'] = $fields['external_hash'];
 
         // remove fields that contain sensitive information
-        unset($fields['password_hash'], $fields['password_reset_token'],$fields['updated_at'], $fields['api_parent_id'], $fields['json_data']);
+        unset($fields['external_hash'],$fields['balance'], $fields['username'], $fields['mfa_secret_key'], $fields['auth_key'], $fields['password_hash'], $fields['password_reset_token'],$fields['updated_at'], $fields['api_parent_id'], $fields['json_data']);
+
 
         return $fields;
     }
