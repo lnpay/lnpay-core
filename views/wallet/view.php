@@ -105,7 +105,7 @@ $this->params['breadcrumbs'][] = 'View';
         </div>
         <div class="col-md-6">
 
-            <?php $lnurl = $wallet->getLnurl(null,['ott'=>'ui-w']) ?>
+            <?php $lnurl = $wallet->getLnurlWithdrawLinkEncoded(null,['ott'=>'ui-w']) ?>
             <a href="lightning:<?=$lnurl;?>">
                 <?='<img src="https://chart.googleapis.com/chart?chs=200x200&cht=qr&chl=' .$lnurl. '" />';?>
             </a>

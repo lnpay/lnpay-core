@@ -31,7 +31,7 @@ class BaseApiController extends ActiveController
                 QueryParamAuth::class,
                 HttpBasicAuth::class
             ],
-            'except'=>['lnurl-process','lnurl-process-public','options']
+            'except'=>['lnurl-process','options']
         ];
         $behaviors['contentNegotiator'] = [
             'class' => 'yii\filters\ContentNegotiator',

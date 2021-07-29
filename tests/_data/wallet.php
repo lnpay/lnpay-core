@@ -62,5 +62,17 @@ return
         'external_hash'=>'wal_carolTransfer1',
         'json_data'=>"",
         'status_type_id'=>200,
+    ],
+    [
+        'id'=>10,
+        'created_at'=>1576066208,
+        'updated_at'=>1576150264,
+        'user_id'=>147,
+        'user_label'=>'alice lnurl withdraw',
+        'balance'=>0,
+        'ln_node_id'=>'lnod_alice',
+        'external_hash'=>'wal_aliceLnurlWithdraw',
+        'json_data'=>"",
+        'status_type_id'=>200,
     ]
 ];

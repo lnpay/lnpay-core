@@ -67,7 +67,7 @@ class WalletController extends BaseApiController
 
         }
         //public access key
-        else if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_PUBLIC_API_KEY,Yii::$app->user->identity->sessionApiKey)) {
+        else if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_PUBLIC_API_KEY,@Yii::$app->user->identity->sessionApiKey)) {
             $wallet = $modelClass::findByKey($access_key);
             if ($wallet) {
                 if (Yii::$app->user->id == $wallet->user_id) {
@@ -75,7 +75,7 @@ class WalletController extends BaseApiController
                 }
             }
         } else { //publicly available with no key needed
-            if (in_array($this->action->id,['lnurl-process','lnurl-process-public'])) { //if lnurl which grants public access based on key
+            if (in_array($this->action->id,['lnurl-process'])) { //if lnurl which grants public access based on key
                 $wallet = $modelClass::findByKey($access_key);
                 if ($wallet) {
                     return $wallet;
@@ -83,7 +83,7 @@ class WalletController extends BaseApiController
             }
         }
 
-        if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_PUBLIC_API_KEY,Yii::$app->user->identity->sessionApiKey)) {
+        if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_PUBLIC_API_KEY,@Yii::$app->user->identity->sessionApiKey)) {
             throw new UnauthorizedHttpException('Invalid Wallet Access Key. Keys prefixed with waka_, waki_, wakr, waklw are valid when using pak_');
         }
         throw new UnauthorizedHttpException('Wallet not found: '.$access_key);
@@ -94,7 +94,7 @@ class WalletController extends BaseApiController
         if (!$access_key) //assuming it's a wallet access key if it's in the URL
             $access_key = Yii::$app->request->getQueryParam('access_key');
 
-        if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_SECRET_API_KEY,Yii::$app->user->identity->sessionApiKey)) {
+        if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_SECRET_API_KEY,@Yii::$app->user->identity->sessionApiKey)) {
             return true;
         } else if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_KEY_SUSPENDED,$access_key)) {
             throw new UnauthorizedHttpException('Key has been suspended');
@@ -224,8 +224,8 @@ class WalletController extends BaseApiController
             'public'=>Yii::$app->request->getQueryParam('public')
             ];
         $array = [
-            'lnurl'=>$wallet->getLnurl($access_key,$params),
-            'ott'=>$params['ott']
+            'lnurl'=>$wallet->getLnurlWithdrawLinkEncoded($access_key=NULL,$params),
+            'ott'=>$params['ott'],
         ];
         return $array;
     }
@@ -241,7 +241,7 @@ class WalletController extends BaseApiController
             'passThru'=>Yii::$app->request->getQueryParam('passThru')
         ];
         $array = [
-            'lnurl'=>$wallet->getLnurl($access_key=NULL,$params)
+            'lnurl'=>$wallet->getLnurlWithdrawLinkEncoded($access_key=NULL,$params)
         ];
         return $array;
     }
@@ -272,6 +272,7 @@ class WalletController extends BaseApiController
     public function actionLnurlProcess($access_key,$ott=null,$pr=null,$num_satoshis=null,$memo=null,$k1=null,$passThru=null)
     {
         $wallet = $this->findByKey($access_key);
+        $wallet->updateBalance();
         $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_WITHDRAW);
 
         if ($pr) {
@@ -310,10 +311,7 @@ class WalletController extends BaseApiController
             }
 
             $json = [];
-            if (Yii::$app->controller->action->id == 'lnurl-process-public')
-                $baseUrl = ["/v1/wallet/lnurl-process-public"];
-            else
-                $baseUrl = ["/v1/wallet/{$access_key}/lnurl-process"];
+            $baseUrl = ["/v1/wallet/{$access_key}/lnurl-process"];
             $json['callback'] = Yii::$app->urlManager->createAbsoluteUrl($baseUrl+['ott'=>$ott,'passThru'=>$passThru]);
             $json['k1'] = 'k1';
             $json['maxWithdrawable'] = ($wallet->getIsEligibleToWithdraw($num_satoshis)?$num_satoshis:$wallet->balance)*1000;
@@ -322,7 +320,7 @@ class WalletController extends BaseApiController
             $json['tag'] = \tkijewski\lnurl\TAG_WITHDRAW;
 
             if (!$ott) { //only return balanceCheck if this is NOT a disposable LNURL
-                $balanceCheck = $wallet->getLnurl($access_key=NULL);
+                $balanceCheck = $wallet->getLnurlWithdrawLinkEncoded($access_key=NULL);
                 $json['balanceCheck'] = \tkijewski\lnurl\decodeUrl($balanceCheck)['url'];
             }
 

@@ -178,8 +178,13 @@ class Wallet extends \yii\db\ActiveRecord
         //if we are using the user's nodes, make sure they are only adding theirs
         $node = LnNode::findOne($this->ln_node_id);
 
-        if ($node->user_id != Yii::$app->user->id)
-            $this->addError('ln_node_id','Node does not belong to this user!');
+        if (Yii::$app->user->isGuest) { //e.g. LNURL-withdraw where there is no authenticated user
+            //this seems weird, but it is correct
+        } else {
+            if ($node->user_id != Yii::$app->user->id)
+                $this->addError('ln_node_id','Node does not belong to this user!');
+        }
+
     }
 
     public function getPublicId()
@@ -248,19 +253,15 @@ class Wallet extends \yii\db\ActiveRecord
         return $this->lnNode->getLndConnector()->payInvoice($request,$options);
     }
 
-    public function getLnurl($access_key=null,$params=[])
+    public function getLnurlWithdrawLinkEncoded($access_key=null,$params=[])
     {
         if (!$access_key)
             $access_key = $this->getFirstAccessKeyByRole(UserAccessKeyBehavior::ROLE_WALLET_LNURL_WITHDRAW);
 
-        if (@$params['public']) {
-            $this->appendJsonData(['ott'=>[$params['ott']=>@$params['num_satoshis']]]);
-            return \tkijewski\lnurl\encodeUrl(Yii::$app->urlManager->createAbsoluteUrl(["/v1/wallet/lnurl-process-public",'ott'=>@$params['ott'],'num_satoshis'=>@$params['num_satoshis'],'memo'=>@$params['memo'],'passThru'=>@$params['passThru']]));
-        } else {
-            if (isset($params['ott']))
-                $this->appendJsonData(['ott'=>[$params['ott']=>$params['ott']]]);
-            return \tkijewski\lnurl\encodeUrl(Yii::$app->urlManager->createAbsoluteUrl(["/v1/wallet/{$access_key}/lnurl-process",'ott'=>@$params['ott'],'num_satoshis'=>@$params['num_satoshis'],'memo'=>@$params['memo'],'passThru'=>@$params['passThru']]));
-        }
+        if (isset($params['ott']))
+            $this->appendJsonData(['ott'=>[$params['ott']=>$params['ott']]]);
+
+        return \tkijewski\lnurl\encodeUrl(Yii::$app->urlManager->createAbsoluteUrl(["/v1/wallet/{$access_key}/lnurl-process",'tag'=>'withdraw','ott'=>@$params['ott'],'num_satoshis'=>@$params['num_satoshis'],'memo'=>@$params['memo'],'passThru'=>@$params['passThru']]));
     }
 
     public function getIsFeeWallet()

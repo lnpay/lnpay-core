@@ -122,5 +122,25 @@ return [
         'item_name'=>'Wallet Invoice',
         'user_id' =>'waki_carolTransfer1',
         'created_at' => time()
+    ],
+    [
+        'item_name'=>'Wallet Admin',
+        'user_id' =>'waka_aliceLnurlWithdraw',
+        'created_at' => time()
+    ],
+    [
+        'item_name'=>'Wallet Read',
+        'user_id' =>'wakr_aliceLnurlWithdraw',
+        'created_at' => time()
+    ],
+    [
+        'item_name'=>'Wallet LNURL Withdraw',
+        'user_id' =>'waklw_aliceLnurlWithdraw',
+        'created_at' => time()
+    ],
+    [
+        'item_name'=>'Wallet Invoice',
+        'user_id' =>'waki_aliceLnurlWithdraw',
+        'created_at' => time()
     ]
 ];

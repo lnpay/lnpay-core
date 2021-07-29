@@ -55,4 +55,17 @@ return
         'external_hash'=>'wtx_TransferIntoBob',
         'json_data'=>null,
     ],
+    [ //transfer in to bob
+        'id'=>8,
+        'created_at'=>1627498299,
+        'updated_at'=>1627498299,
+        'user_id'=>147,
+        'wallet_id'=>10,
+        'wtx_type_id'=>30,
+        'num_satoshis'=>10000,
+        'ln_tx_id'=>null,
+        'user_label'=>'Transfer in to Alice lnurl',
+        'external_hash'=>'wtx_TransferIntoAliceLnurlWithdraw',
+        'json_data'=>null,
+    ],
 ];

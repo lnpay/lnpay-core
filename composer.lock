@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a00b2242a826f3946ff36dae8918b7bb",
+    "content-hash": "f1dce4998b89b4e80d523fc537f549cc",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -675,6 +675,53 @@
                 "source": "https://github.com/ezyang/htmlpurifier/tree/master"
             },
             "time": "2020-06-29T00:56:53+00:00"
+        },
+        {
+            "name": "flow/jsonpath",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FlowCommunications/JSONPath.git",
+                "reference": "998cb296e7cf571dac397e8d1325e4b24bccfdd3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FlowCommunications/JSONPath/zipball/998cb296e7cf571dac397e8d1325e4b24bccfdd3",
+                "reference": "998cb296e7cf571dac397e8d1325e4b24bccfdd3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "peekmo/jsonpath": "dev-master",
+                "phpunit/phpunit": "^7.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Flow\\JSONPath": "src/",
+                    "Flow\\JSONPath\\Test": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stephen Frank",
+                    "email": "stephen@flowsa.com"
+                }
+            ],
+            "description": "JSONPath implementation for parsing, searching and flattening arrays",
+            "support": {
+                "issues": "https://github.com/FlowCommunications/JSONPath/issues",
+                "source": "https://github.com/FlowCommunications/JSONPath/tree/master"
+            },
+            "abandoned": "softcreatr/jsonpath",
+            "time": "2020-10-14T12:22:28+00:00"
         },
         {
             "name": "google/common-protos",
@@ -6988,7 +7035,8 @@
         "creocoder/yii2-flysystem": 20,
         "rekurzia/yii2-papertrail-log-target": 20,
         "vxm/yii2-mfa": 20,
-        "lnpay/php-lndconnect": 20
+        "lnpay/php-lndconnect": 20,
+        "flow/jsonpath": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

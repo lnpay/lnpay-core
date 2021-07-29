@@ -35,7 +35,8 @@
         "ihor/supervisor-xml-rpc": "~0.2",
         "rekurzia/yii2-papertrail-log-target": "dev-master",
         "vxm/yii2-mfa": "^1.0@dev",
-        "lnpay/php-lndconnect": "dev-master"
+        "lnpay/php-lndconnect": "dev-master",
+        "flow/jsonpath": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
