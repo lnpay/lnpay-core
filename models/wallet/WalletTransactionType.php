@@ -21,9 +21,6 @@ class WalletTransactionType extends \yii\db\ActiveRecord
     const LN_TRANSFER_IN = 30;
     const LN_TRANSFER_OUT = 40;
 
-    const LN_PAYWALL_PAYMENT = 50;
-    const LN_FAUCET_REFILL = 60;
-
     const LN_NETWORK_FEE = 70;
     const LN_SERVICE_FEE = 75;
 

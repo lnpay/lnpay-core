@@ -15,7 +15,7 @@ use Yii;
  */
 class LnNodeImplementation extends \yii\db\ActiveRecord
 {
-    const LND_DEFAULT_REST_PORT = 10013;
+    const LND_DEFAULT_REST_PORT = 8080;
     const LND_DEFAULT_GRPC_PORT = 10009;
     const LND_DEFAULT_LN_PORT = 9735;
 

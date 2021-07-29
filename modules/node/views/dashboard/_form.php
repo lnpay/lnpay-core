@@ -20,7 +20,7 @@ $bakeMac->permissions = $model->defaultMacaroonPerms;
         <h2>Network</h2>
         <?= $form->field($model, 'node_host')->textInput(['maxlength' => true,'placeholder'=>'e.g. 125.125.125.125'])->label('Node IP / HOST'); ?>
         <?= $form->field($model, 'node_grpc_port')->textInput(['maxlength' => true,'placeholder'=>'e.g. 10009'])->label('GRPC Port'); ?>
-        <?= $form->field($model, 'node_rest_port')->textInput(['maxlength' => true,'placeholder'=>'e.g. 10013'])->label('REST Port'); ?>
+        <?= $form->field($model, 'node_rest_port')->textInput(['maxlength' => true,'placeholder'=>'e.g. 8080'])->label('REST Port'); ?>
 
         <?= $form->field($model, 'node_macaroon')->textarea(['maxlength' => true,'placeholder'=>'e.g. 0201036c6e6402a80....'])->label('Baked Macaroon HEX'); ?>
 

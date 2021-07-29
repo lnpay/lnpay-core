@@ -12,6 +12,7 @@ use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\ServerErrorHttpException;
+use yii\web\UnauthorizedHttpException;
 
 class WalletTransactionController extends BaseApiController
 {
@@ -37,13 +38,17 @@ class WalletTransactionController extends BaseApiController
     }
 
 
-    public function actionViewAll($wallet=NULL)
+    public function actionViewAll($wallet_id=NULL)
     {
         $searchModel = new WalletTransactionSearch();
         $searchModel->user_id = Yii::$app->user->id;
 
-        if ($wallet) {
-            $searchModel->wallet_id = @Wallet::findById($wallet)->id;
+        if ($wallet_id) {
+            $wal = Wallet::findById($wallet_id);
+            if (!$wal || ($wal->user_id != Yii::$app->user->id)) {
+                throw new UnauthorizedHttpException('Wallet not found');
+            }
+            $searchModel->wallet_id = $wal->id;
         }
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->pagination->defaultPageSize = 20;

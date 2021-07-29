@@ -72,7 +72,7 @@ class WebhookReceiverController extends Controller
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\web\ServerErrorHttpException
      */
-    public function actionLndCatcher()
+    public function actionLnNodeIngestion()
     {
         $postBody = Yii::$app->request->getBodyParams();
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

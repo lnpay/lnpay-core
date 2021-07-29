@@ -58,10 +58,13 @@ class WalletController extends BaseApiController
 
         //If SAK is used, all wallet keys are valid
         if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_SECRET_API_KEY,$apiKey)) {
-            $wallet = $modelClass::findById($access_key) ?? $modelClass::findByKey($access_key);
-            if ($wallet->user_id == Yii::$app->user->id) { //make sure this is the right user
-                return $wallet;
+            $wallet = $modelClass::findById($access_key) ?? $modelClass::findByKey($access_key) ?? NULL;
+            if ($wallet) {
+                if ($wallet->user_id == Yii::$app->user->id) { //make sure this is the right user
+                    return $wallet;
+                }
             }
+
         }
         //public access key
         else if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_PUBLIC_API_KEY,Yii::$app->user->identity->sessionApiKey)) {
@@ -84,6 +87,22 @@ class WalletController extends BaseApiController
             throw new UnauthorizedHttpException('Invalid Wallet Access Key. Keys prefixed with waka_, waki_, wakr, waklw are valid when using pak_');
         }
         throw new UnauthorizedHttpException('Wallet not found: '.$access_key);
+    }
+
+    public function checkAccessKey($item,$access_key=NULL)
+    {
+        if (!$access_key) //assuming it's a wallet access key if it's in the URL
+            $access_key = Yii::$app->request->getQueryParam('access_key');
+
+        if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_SECRET_API_KEY,Yii::$app->user->identity->sessionApiKey)) {
+            return true;
+        } else if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_KEY_SUSPENDED,$access_key)) {
+            throw new UnauthorizedHttpException('Key has been suspended');
+        } else if (UserAccessKeyBehavior::checkKeyAccess($item,$access_key))
+            return true;
+        else
+            throw new UnauthorizedHttpException(UserAccessKeyBehavior::getAccessKeyPrefix($access_key).' access key provided does not permission to do this: '.$item);
+
     }
 
     public function actionCreate()
@@ -115,6 +134,7 @@ class WalletController extends BaseApiController
      */
     public function actionView($access_key)
     {
+        $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_READ);
         return $this->findByKey($access_key);
     }
 
@@ -158,7 +178,7 @@ class WalletController extends BaseApiController
 
         $model->passThru = $array;
 
-        $this->checkKeyAccess(UserAccessKeyBehavior::PERM_WALLET_WITHDRAW);
+        $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_WITHDRAW);
 
         $wtx = $model->processWithdrawal(['method'=>'api']);
         Yii::$app->response->statusCode = 201;
@@ -169,7 +189,7 @@ class WalletController extends BaseApiController
     {
         $wallet = $this->findByKey($access_key);
         $bodyParams = Yii::$app->getRequest()->getBodyParams();
-        $this->checkKeyAccess(UserAccessKeyBehavior::PERM_WALLET_WITHDRAW);
+        $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_WITHDRAW);
 
         if ($this->isAsync) {
             $id = Yii::$app->queue->push(new LnWalletKeysendFormJob([
@@ -194,7 +214,7 @@ class WalletController extends BaseApiController
     public function actionLnurlWithdraw($access_key)
     {
         $wallet = $this->findByKey($access_key);
-        $this->checkKeyAccess(UserAccessKeyBehavior::PERM_WALLET_WITHDRAW);
+        $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_WITHDRAW);
 
         $params = [
             'num_satoshis'=>Yii::$app->request->getQueryParam('num_satoshis'),
@@ -213,7 +233,7 @@ class WalletController extends BaseApiController
     public function actionLnurlWithdrawStatic($access_key)
     {
         $wallet = $this->findByKey($access_key);
-        $this->checkKeyAccess(UserAccessKeyBehavior::ROLE_WALLET_ADMIN);
+        $this->checkAccessKey(UserAccessKeyBehavior::ROLE_WALLET_ADMIN);
 
         $params = [
             'num_satoshis'=>Yii::$app->request->getQueryParam('num_satoshis'),
@@ -252,7 +272,7 @@ class WalletController extends BaseApiController
     public function actionLnurlProcess($access_key,$ott=null,$pr=null,$num_satoshis=null,$memo=null,$k1=null,$passThru=null)
     {
         $wallet = $this->findByKey($access_key);
-        $this->checkKeyAccess(UserAccessKeyBehavior::PERM_WALLET_WITHDRAW,$access_key);
+        $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_WITHDRAW);
 
         if ($pr) {
 
@@ -264,7 +284,7 @@ class WalletController extends BaseApiController
                     if (!array_key_exists($ott,$dbOtt))
                         throw new UnauthorizedHttpException('LNURL is no longer valid: '.Yii::$app->request->absoluteUrl);
                 } else {
-                    $this->checkKeyAccess(UserAccessKeyBehavior::PERM_WALLET_PUBLIC_WITHDRAW,$access_key);
+                    $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_PUBLIC_WITHDRAW);
                 }
 
                 $model = new LnWalletWithdrawForm();
@@ -314,7 +334,7 @@ class WalletController extends BaseApiController
     public function actionInvoice($access_key)
     {
         $wallet = $this->findByKey($access_key);
-        $this->checkKeyAccess(UserAccessKeyBehavior::PERM_WALLET_DEPOSIT);
+        $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_DEPOSIT);
 
         $lnTx = new LnTx();
         $allowedParams = [
@@ -356,7 +376,7 @@ class WalletController extends BaseApiController
 
     public function actionTransfer($access_key)
     {
-        $this->checkKeyAccess(UserAccessKeyBehavior::PERM_WALLET_TRANSFER);
+        $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_TRANSFER);
 
         $wtf = new WalletTransferForm();
         $wtf->load(Yii::$app->request->getBodyParams(),'');
@@ -377,6 +397,8 @@ class WalletController extends BaseApiController
     public function actionTransactions($access_key)
     {
         $wallet = $this->findByKey($access_key);
+        $this->checkAccessKey(UserAccessKeyBehavior::ROLE_WALLET_ADMIN);
+
         return new \yii\data\ActiveDataProvider([
             'query' => WalletTransaction::find()->where(['wallet_id'=>$wallet->id]),
             'pagination' => [

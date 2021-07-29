@@ -26,8 +26,8 @@ class UserAccessKeyBehavior extends Behavior
 
     const ROLE_KEY_SUSPENDED = 'Key Suspended';
 
-    const PERM_WALLET_READ = 'wallet_read';
-    const PERM_WALLET_TX_READ = 'wallet_tx_read';
+    const PERM_WALLET_READ = 'wallet_read'; //read / wallet info
+    const PERM_WALLET_TX_READ = 'wallet_tx_read'; //read single transaction
     const PERM_WALLET_DEPOSIT = 'wallet_deposit';
     const PERM_WALLET_TRANSFER = 'wallet_transfer';
     const PERM_WALLET_WITHDRAW = 'wallet_withdraw';
@@ -173,6 +173,11 @@ class UserAccessKeyBehavior extends Behavior
     public static function checkKeyAccess($item,$access_key)
     {
         return Yii::$app->authManager->checkAccess($access_key,$item);
+    }
+
+    public static function getAccessKeyPrefix($access_key)
+    {
+        return @explode('_',$access_key)[0].'_';
     }
 
     public function afterSaveInsert($event)

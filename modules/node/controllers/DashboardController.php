@@ -2,7 +2,6 @@
 
 namespace app\modules\node\controllers;
 
-use app\modules\node\models\LnCluster;
 use app\modules\node\models\NodeAddForm;
 use app\modules\node\models\NodeCreateForm;
 use app\modules\node\models\NodeListener;

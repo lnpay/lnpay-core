@@ -84,13 +84,15 @@ class BaseApiController extends ActiveController
 
             $apiKey = @Yii::$app->user->identity->sessionApiKey;
 
+            $function = Yii::$app->controller->id.'/'.Yii::$app->controller->action->id;
+
             $sakOnlyArray = [
-                'v1/wallet-transactions',
-                'v1/wallets',
+                'v1/wallet-transaction/view-all',
+                'v1/wallet/view-all',
             ];
 
             if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_PUBLIC_API_KEY,$apiKey)) {
-                if (in_array(Yii::$app->controller->id,$sakOnlyArray)) {
+                if (in_array($function,$sakOnlyArray)) {
                     throw new UnauthorizedHttpException('This resource can only be access with secret access key.');
                 }
             }
@@ -100,22 +102,6 @@ class BaseApiController extends ActiveController
             }
             return true;
         }
-
-    }
-
-    public function checkKeyAccess($item,$access_key=NULL)
-    {
-        if (!$access_key)
-            $access_key = Yii::$app->request->getQueryParam('access_key');
-
-        if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_SECRET_API_KEY,Yii::$app->user->identity->sessionApiKey)) {
-            return true;
-        } else if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_KEY_SUSPENDED,$access_key)) {
-            throw new UnauthorizedHttpException('Key has been suspended');
-        } else if (UserAccessKeyBehavior::checkKeyAccess($item,$access_key))
-            return true;
-        else
-            throw new UnauthorizedHttpException('You do not have permission to do this!');
 
     }
 

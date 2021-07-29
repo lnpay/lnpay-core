@@ -22,6 +22,7 @@ class WalletTransferForm extends Model
     public $dest_wallet_id = NULL;
     public $memo = NULL;
     public $lnPayParams = NULL;
+    public $passThru = NULL;
 
     protected $sourceWalletObject;
     protected $destWalletObject;
@@ -36,6 +37,7 @@ class WalletTransferForm extends Model
             [['num_satoshis'], 'compare', 'compareValue' => 0, 'operator' => '>='],
             [['memo'],'string'],
             [['lnPayParams'],'checkLnPayParams'],
+            [['passThru'],'checkPassThruParams'],
             [['source_wallet_id'],'checkWalletObjects'],
             [['source_wallet_id'],'checkDifferentWallets'],
             ['source_wallet_id','checkSourceBalance']
@@ -65,6 +67,24 @@ class WalletTransferForm extends Model
         $this->addError($attribute,"Invalid lnPayParams json specified");
     }
 
+    public function checkPassThruParams($attribute,$params,$validator)
+    {
+        if ($this->passThru === NULL)
+            return;
+
+        if (is_string($this->passThru)) {
+            $json = @json_decode($this->passThru,TRUE);
+            if (is_array($json)) {
+                $this->passThru = $json;
+                return;
+            }
+        } else if (is_array($this->passThru)) {
+            return;
+        }
+        $this->passThru = [];
+        $this->addError($attribute,"Invalid passThru json specified");
+    }
+
 
     public function checkWalletObjects($attribute,$params,$validator)
     {
@@ -75,7 +95,7 @@ class WalletTransferForm extends Model
             return false;
         }
 
-        if ($this->destWalletObject = Wallet::findById($this->dest_wallet_id)) {
+        if ( ($this->destWalletObject = Wallet::findById($this->dest_wallet_id)) || ($this->destWalletObject = Wallet::findByKey($this->dest_wallet_id)))  {
             //Will probably need this logic eventually
             if ($this->sourceWalletObject->ln_node_id != $this->destWalletObject->ln_node_id) {
                 $this->addError($attribute,"Cannot transfer funds between wallets tied to different nodes");
@@ -109,7 +129,7 @@ class WalletTransferForm extends Model
                 'dest_wallet_id' => $this->destWalletObject->external_hash,
             ];
 
-            $json_data = ArrayHelper::merge(['lnPayParams' => $this->lnPayParams], $json_data);
+            $json_data = ArrayHelper::merge($this->passThru,['lnPayParams' => $this->lnPayParams], $json_data);
 
             //create debit transaction
             $wtxDebit = new WalletTransaction();

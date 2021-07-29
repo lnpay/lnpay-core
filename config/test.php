@@ -68,43 +68,17 @@ $config = [
             'enableStrictParsing' => false,
             'showScriptName' => true,
             'rules' => [
-                'to'=>'paywall/index',
-                'to/<id:[A-Za-z0-9]+>' => 'paywall/index',
-                [
-                    'pattern' => '/to/<short_url:[A-Za-z0-9]+>/<distro_name:image|email>',
-                    'route' => '/distro-router/splice',
-                    'suffix' => '.png',
-                ],
-                '/to/<short_url:[A-Za-z0-9]+>/<distro_name:\w+>' => '/distro-router/splice',
-                '/faucet/<faucet_hash:\w+>/<distro_name:\w+>' => '/distro-router/faucet',
-                [
-                    'pattern' => '/t/<short_url:[A-Za-z0-9]+>/<distro_name:image|email>',
-                    'route' => '/distro-router/splice',
-                    'suffix' => '.png',
-                ],
-                '/t/<short_url:[A-Za-z0-9]+>' => '/distro-router/splice',
-                '/t/<short_url:[A-Za-z0-9]+>/<distro_name:\w+>' => '/distro-router/splice',
-
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/user'],
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/action-name'],
                 ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/status-type'],
 
-                'GET,HEAD v1/user/paywall/<id:[0-9]+>' => 'v1/paywall/view',
-                'GET,HEAD v1/user/paywalls' => 'v1/paywall/view-all',
-                'POST v1/user/paywall' => 'v1/paywall/create',
-                'POST v1/user/paywall/<id:\w+>/invoice' => 'v1/paywall/create-invoice',
-
                 'POST v1/webhook/subscription/<serviceId:\w+>' => 'v1/webhook/subscribe',
                 'DELETE v1/webhook/subscription/<serviceId:\w+>' => 'v1/webhook/unsubscribe',
 
-
-                //FAUCETS
-                //'GET,HEAD v1/user/faucet/<id:[0-9]+>' => 'v1/faucet/view',
-                'GET,HEAD v1/user/faucets' => 'v1/faucet/view-all',
-
-                //WALLETS
+                //WALLETS NEW NEW
                 'GET,HEAD,OPTIONS v1/wallets' => 'v1/wallet/view-all',
                 'GET,HEAD,OPTIONS v1/wallet/<access_key:\w+>' => 'v1/wallet/view',
+                'GET,OPTIONS v1/wallet/<access_key:\w+>/lnurl/withdraw-static' => 'v1/wallet/lnurl-withdraw-static',
                 'GET,OPTIONS v1/wallet/<access_key:\w+>/lnurl/withdraw' => 'v1/wallet/lnurl-withdraw',
                 'GET,OPTIONS v1/wallet/<access_key:\w+>/lnurl-process' => 'v1/wallet/lnurl-process',
                 'POST,OPTIONS v1/wallet' => 'v1/wallet/create',
@@ -115,37 +89,27 @@ $config = [
                 'GET,OPTIONS v1/wallet/<access_key:\w+>/transactions' => 'v1/wallet/transactions',
                 'GET,OPTIONS v1/lntx/<id:\w+>' => 'v1/lntx/view',
 
+                //WALLET-TRANSACTIONS
+                'GET,OPTIONS v1/wallet-transactions' => 'v1/wallet-transaction/view-all',
+
                 //NODE
                 'GET,HEAD,OPTIONS v1/node/<node_id:\w+>/<controller:\w+>/<action:\w+>' => 'v1/node/<controller>/<action>',
-                'POST v1/paywall' => 'v1/paywall/create',
 
-
-
-
+                //JOBS
+                'GET v1/job/<id:\w+>' => 'v1/job/view',
 
                 '/qr' => 'distro-router/qr',
                 'distro-router/lnurl-withdraw' => 'distro-router/lnurl-withdraw',
 
-
-
-                //'/<controller:\w+>/<action:[A-Za-z0-9 -_.]+>' => '/<controller>/<action>',
-                //'/dashboard/<action:[A-Za-z0-9 -_.]+>' => '/dashboard/index/<action>',
 
                 'developers/dashboard' => 'dashboard/developers',
                 'developers/webhook' => 'webhook',
                 'developers/api-log' => 'api-log',
                 'developers/events' => 'dashboard/events',
 
-                'wallet/dashboard' => 'dashboard/wallet',
-                'faucets/dashboard' => 'dashboard/faucets',
-                'paywalls/dashboard' => 'dashboard/paywalls',
-
-                'paywall' => 'home/paywalls',
-
-
                 //MODULES!
-                '<module:\w+>/<controller:\w+>/<action:\w+>/<id:[A-Za-z0-9_]+>' => '<module>/<controller>/<action>',
-                '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+                '<module:\w+>/<controller:[A-Za-z0-9 -_.]+>/<action:\w+>/<id:[A-Za-z0-9_]+>' => '<module>/<controller>/<action>',
+                '<module:\w+>/<controller:[A-Za-z0-9 -_.]+>/<action:\w+>' => '<module>/<controller>/<action>',
 
 
             ],

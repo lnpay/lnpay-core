@@ -28,23 +28,72 @@ class WalletGetCest
     {
     }
 
-    public function walletGetSuccess(\ApiTester $I)
+    public function walletGetSuccessById(\ApiTester $I)
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->haveHttpHeader('X-Api-Key', 'sak_KkKkKkKkKkneieivTI05Fm3YzTza4N');
         $I->sendGET('/v1/wallet/wal_KkMmfMmsksss');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsJson();
-        $I->seeResponseContains('"user_label":"wallet 7"');
+        $I->seeResponseContains('"id":"wal_KkMmfMmsksss"');
     }
 
-    public function walletGetUnknownId(\ApiTester $I)
+    public function walletGetFailByPakId(\ApiTester $I)
     {
-
+        //pak_ cannot access the wallet by it's ID only by wakX key
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendGET('/v1/wallet/wal_KkMmfMmsksss');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::UNAUTHORIZED);
+        $I->seeResponseIsJson();
     }
 
-    public function walletGetPermissionFail(\ApiTester $I)
+    public function walletGetSuccessByAccessKeyWakr(\ApiTester $I)
     {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendGET('/v1/wallet/wakr_alice');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"id":"wal_KkMmfMmsksss"');
+    }
 
+    public function walletGetSuccessByAccessKeyWaka(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendGET('/v1/wallet/waka_alice');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"id":"wal_KkMmfMmsksss"');
+    }
+
+    public function walletGetSuccessByAccessKeyWaklw(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendGET('/v1/wallet/waklw_alice');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"id":"wal_KkMmfMmsksss"');
+    }
+
+
+    public function walletGetFailByUnknownId(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'sak_KkKkKkKkKkneieivTI05Fm3YzTza4N');
+        $I->sendGET('/v1/wallet/unknown_id');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::UNAUTHORIZED);
+        $I->seeResponseIsJson();
+    }
+
+    public function walletGetFailByAccessKeyWaki(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendGET('/v1/wallet/waki_alice');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::UNAUTHORIZED);
+        $I->seeResponseIsJson();
     }
 }

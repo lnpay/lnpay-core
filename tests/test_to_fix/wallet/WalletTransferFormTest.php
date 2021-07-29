@@ -45,7 +45,7 @@ class WalletTransferFormTest extends \Codeception\Test\Unit
     {
         expect_that($model = new WalletTransferForm());
         expect_that($model->num_satoshis = 200);
-        expect_that($model->source_wallet_id = 'LWAcZwCeDsezWesyM8iYrJiOt6i93WFh');
+        expect_that($model->source_wallet_id = 'wal_LWAcZwCeDsezSfFe');
         expect_that($model->dest_wallet_id = 'LWAcasdfOt6i93WFh');
         expect($model->validate())->false();
         expect(HelperComponent::getErrorStringFromInvalidModel($model))->equals("Insufficient balance in source wallet");
@@ -55,7 +55,7 @@ class WalletTransferFormTest extends \Codeception\Test\Unit
     {
         expect_that($model = new WalletTransferForm());
         expect_that($model->num_satoshis = 1);
-        expect_that($model->source_wallet_id = 'LWAcZwCeDsezWesyM8iYrJiOt6i93WFh');
+        expect_that($model->source_wallet_id = 'wal_LWAcZwCeDsezSfFe');
         expect_that($model->dest_wallet_id = 'LWAcasdfOt6i93WFh');
         expect_that($model->lnPayParams = 'asd');
         expect($model->validate())->false();
@@ -66,7 +66,7 @@ class WalletTransferFormTest extends \Codeception\Test\Unit
     {
         expect_that($model = new WalletTransferForm());
         expect_that($model->num_satoshis = 22);
-        expect_that($model->source_wallet_id = 'LWAcZwCeDsezWesyM8iYrJiOt6i93WFh');
+        expect_that($model->source_wallet_id = 'wal_LWAcZwCeDsezSfFe');
         expect_that($model->dest_wallet_id = 'LWAcasdfOt6i93WFh');
         expect($model->validate())->true();
         expect_that($result = $model->executeTransfer());

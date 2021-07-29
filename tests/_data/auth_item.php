@@ -40,7 +40,7 @@ return [
     [
         'name'=>'Wallet LNURL Withdraw',
         'type' =>'1',
-        'description' => 'read,withdraw',
+        'description' => 'withdraw,txread',
         'rule_name'=>null,
         'data'=>null,
         'created_at'=>time(),

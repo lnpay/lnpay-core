@@ -17,7 +17,7 @@ class ProcessLndResponseJob extends \yii\base\BaseObject implements \yii\queue\J
             'headers' => ['Content-Type'=>'application/json']
         ]);
 
-        $url = YII_ENV_PROD ? 'https://lnpay.co/webhook-receiver/lnd-catcher' : 'http://192.168.69.11/webhook-receiver/lnd-catcher';
+        $url = getenv('LN_NODE_INGESTION_ENDPOINT').'/webhook-receiver/ln-node-ingestion';
         $response = $client->request('POST', $url, [
             'body' => json_encode([
                 'responseObject'=>$this->responseObject,

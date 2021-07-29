@@ -24,7 +24,7 @@ class PaymentsController extends BaseNodeController
 
     public function actionQueryroutes($pub_key,$amt)
     {
-        //$this->checkKeyAccess(UserAccessKeyBehavior::PERM_DEFAULT_NODE_WRAPPER_ACCESS);
+        //$this->checkAccessKey(UserAccessKeyBehavior::PERM_DEFAULT_NODE_WRAPPER_ACCESS);
         try {
             $node = $this->nodeObject;
             return $node->getLndConnector()->queryRoutes(compact('pub_key','amt'));

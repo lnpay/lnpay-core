@@ -12,6 +12,7 @@ use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\ServerErrorHttpException;
+use yii\web\UnauthorizedHttpException;
 
 class LntxController extends BaseApiController
 {
@@ -49,7 +50,7 @@ class LntxController extends BaseApiController
         if ($lntx = $modelClass::find()->where(['external_hash'=>$id,'user_id'=>Yii::$app->user->id])->one()) {
             return $lntx;
         } else {
-            throw new NotFoundHttpException('LnTx not found, or does not belong to this user');
+            throw new UnauthorizedHttpException('LnTx not found');
         }
     }
 
