@@ -1,29 +1,32 @@
 <a href="https://docs.lnpay.co/" rel="noopener" target="_blank"><img width="247" height="60" src="https://lnpay.co/frontend-resources/assets/logo_full.svg" alt="LNPAY"></a>
 
 [![License](https://img.shields.io/badge/license-SSPL-green)](https://www.mongodb.com/licensing/server-side-public-license)
+![Build Status](https://github.com/lnpay/lnpay-lms/actions/workflows/main.yml/badge.svg)
+![Latest Stable Version](https://img.shields.io/github/tag/lnpay/lnpay-lms.svg?label=stable)
 
-#### LNPAY is an enterprise toolkit / API for building Lightning Network applications on the web. Built with Yii2/PHP.
+
+#### LNPAY LMS is an enterprise toolkit / API for building Lightning Network applications on the web. Built with Yii2/PHP.
 
 
 REQUIREMENTS
 ------------
 
-Docker Engine is suggested for development environment or production. 
+Docker Engine is suggested for development environment. 
 Since this is PHP, it's pretty easy to run on a base Ubuntu image with apache/nginx.
 
 
-INSTALLATION
+DEV ENVIRONMENT
 ------------
 
 ### Install with Docker
 
 Clone repo
 
-    $ git clone https://github.com/lnpay/lnpay
+    $ git clone https://github.com/lnpay/lnpay-lms
 
 Run the build script
 
-    $ cd lnpay-core
+    $ cd lnpay-lms
     $ bash docker.sh build
     
     # Wait for build process, then start the queue workers
@@ -51,11 +54,11 @@ This file contains the environment specific config vars. Here is an example
 
 INSTANCE_ID=lnpay-1
 
-BASE_URL=https://lnpay.co
+BASE_URL=https://lnpay.local:8111
 
 # Yii Settings (IF DEVELOPMENT)
-# YII_DEBUG=true
-# YII_ENV=dev
+YII_DEBUG=true
+YII_ENV=dev
 
 # Database
 DB_HOST=192.168.69.22
@@ -137,42 +140,15 @@ Supervisor is used to make sure workers stay up and keep RPC subscribes going
 
 Configuration files supervisor are mapped to the service inside the container for easy editing: `docker/dev/supervisor/`
 
-DIRECTORY STRUCTURE
--------------------
 
-      assets/             contains asset bundles (css/js)
-      behaviors/          contains yii behaviors, similar to traits
-      commands/           contains console commands (controllers)
-      components/         contains wrappers for 3rd party plugins, plus some helpers
-      config/             contains application configurations
-      controllers/        contains Web controller classes
-      docker/             contains docker environment configs
-      environments/       contains dev/prod yii environment configs
-      events/             contains events, but never really figured out how to use properly
-      exceptions/         contains exception classes
-      formatters/         typically used in gridviews and other yii generated widgets
-      helpers/            contains helper classes
-      jobs/               contains worker job classes
-      mail/               contains view files for e-mails
-      migrations/         contains database migration files
-      models/             contains model classes
-      modules/            attempted to make modules (only node has been refactored)
-      runtime/            contains files generated during runtime
-      tests/              contains various tests for the basic application
-      vendor/             contains dependent 3rd-party packages
-      views/              contains view files for the Web application
-      web/                contains the entry script and Web resources
-      widgets/            contains one widget Alert.php not sure why Yii has it like this
-
-
-
-TESTING (work in progress)
+TESTING
 -------
 
 Tests are located in `tests` directory. They are developed with [Codeception PHP Testing Framework](http://codeception.com/).
-By default there are 3 test suites:
+By default there are 4 test suites:
 
 - `unit`
+- `api`
 - `functional`
 - `acceptance`
 
