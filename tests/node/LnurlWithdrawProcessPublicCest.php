@@ -1,7 +1,7 @@
 <?php
 
 
-use app\tests\fixtures\UserFixture;
+use lnpay\fixtures\UserFixture;
 
 class LnurlWithdrawProcessPublicCest
 {
@@ -12,16 +12,16 @@ class LnurlWithdrawProcessPublicCest
                 'class' => UserFixture::class,
             ],
             'wallets' => [
-                'class' => \app\tests\fixtures\WalletFixture::class,
+                'class' => \lnpay\fixtures\WalletFixture::class,
             ],
             'wallet_transactions' => [
-                'class' => \app\tests\fixtures\WalletTransactionFixture::class,
+                'class' => \lnpay\fixtures\WalletTransactionFixture::class,
             ],
             'lntx' => [
-                'class' => \app\tests\fixtures\LnTxFixture::class,
+                'class' => \lnpay\fixtures\LnTxFixture::class,
             ],
             'user_access_key' => [
-                'class' => \app\tests\fixtures\UserAccessKeyFixture::class,
+                'class' => \lnpay\fixtures\UserAccessKeyFixture::class,
             ]
         ];
     }
@@ -50,11 +50,11 @@ class LnurlWithdrawProcessPublicCest
     /**
      * @param int[] $params
      * @return object $object->paymentRequest to get payment request
-     * @throws \app\modules\node\exceptions\UnableToCreateInvoiceException
+     * @throws \lnpay\node\exceptions\UnableToCreateInvoiceException
      */
     public function generateTestInvoice($params=['value'=>2])
     {
-        expect_that($node = \app\modules\node\models\LnNode::findOne('lnod_bob'));
+        expect_that($node = \lnpay\node\models\LnNode::findOne('lnod_bob'));
         expect_that($generated_invoice = (object) $node->getLndConnector('RPC')->createInvoice($params));
         expect_that($generated_invoice = $generated_invoice->paymentRequest);
 

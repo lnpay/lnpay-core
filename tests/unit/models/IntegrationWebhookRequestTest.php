@@ -2,16 +2,16 @@
 
 namespace tests\unit\models;
 
-use app\models\action\ActionFeed;
-use app\models\action\ActionName;
-use app\models\integration\IntegrationWebhook;
-use app\models\integration\IntegrationWebhookRequest;
-use app\models\LnTx;
-use app\models\StatusType;
-use app\models\User;
-use app\models\wallet\Wallet;
-use app\tests\fixtures\UserFixture;
-use app\tests\fixtures\WalletFixture;
+use lnpay\models\action\ActionFeed;
+use lnpay\models\action\ActionName;
+use lnpay\models\integration\IntegrationWebhook;
+use lnpay\models\integration\IntegrationWebhookRequest;
+use lnpay\models\LnTx;
+use lnpay\models\StatusType;
+use lnpay\models\User;
+use lnpay\models\wallet\Wallet;
+use lnpay\fixtures\UserFixture;
+use lnpay\fixtures\WalletFixture;
 use Yii;
 
 class IntegrationWebhookRequestTest extends \Codeception\Test\Unit

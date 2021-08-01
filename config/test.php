@@ -1,15 +1,35 @@
 <?php
 
 $config = [
-    'name'=>'Paywall.Link',
     'id' => 'basic',
-    'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log','queue'],
-    'aliases' => [
+    'basePath' => dirname(__DIR__).'/src/',
+    'bootstrap' => [
+        'log',
+        'monitor',
+        'node'
+    ],
+    'aliases'=> [
+        '@root'=> dirname(__DIR__),
+        '@app'=> dirname(__DIR__).'/src/',
+        '@app/node'=> dirname(__DIR__).'/src/node/',
+        '@vendor'=> dirname(__DIR__).'/vendor',
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'controllerNamespace' => 'lnpay\\controllers',
+    'runtimePath' => dirname(__FILE__) . '/../runtime',
     'defaultRoute'=>'home',
+    'modules'=>[
+        'monitor' => [
+            'class' => \zhuravljov\yii\queue\monitor\Module::class,
+            'canPushAgain'=>true,
+            'canWorkerStop'=>true,
+            'canExecStop'=>true
+        ],
+        'node' => [
+            'class' => lnpay\node\Module::class
+        ],
+    ],
     'controllerMap'=>[
         'migrate' => [
             'class' => \yii\console\controllers\MigrateController::class,
@@ -18,22 +38,7 @@ $config = [
             ],
         ],
     ],
-    'modules'=>[
-        'monitor' => [
-            'class' => \zhuravljov\yii\queue\monitor\Module::class,
-            'canPushAgain'=>true,
-            'canWorkerStop'=>true,
-            'canExecStop'=>true
-        ],
-    ],
     'components' => [
-        'queue' => [
-            'class' => \yii\queue\sync\Queue::class,
-            'handle'=>true,
-            //'as log' => \yii\queue\LogBehavior::class,
-            'as jobMonitor' => \zhuravljov\yii\queue\monitor\JobMonitor::class,
-            'as workerMonitor' => \zhuravljov\yii\queue\monitor\WorkerMonitor::class
-        ],
         'assetManager' => [
             'bundles' => [
                 'yii\web\JqueryAsset' => [
@@ -41,6 +46,13 @@ $config = [
                 ],
             ],
             'appendTimestamp' => true
+        ],
+        'queue' => [
+            'class' => \yii\queue\sync\Queue::class,
+            'handle'=>true,
+            //'as log' => \yii\queue\LogBehavior::class,
+            'as jobMonitor' => \zhuravljov\yii\queue\monitor\JobMonitor::class,
+            'as workerMonitor' => \zhuravljov\yii\queue\monitor\WorkerMonitor::class
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
@@ -55,7 +67,7 @@ $config = [
             'class' => 'yii\mutex\FileMutex'
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'lnpay\models\User',
             'enableAutoLogin' => true,
             'loginUrl'=>['/home/login'],
         ],
@@ -63,7 +75,7 @@ $config = [
             'errorAction' => 'home/error',
         ],
         'urlManager' => [
-            'class'=>'app\components\LNPayUrlManager',
+            'class'=>'lnpay\components\LNPayUrlManager',
             'enablePrettyUrl' => true,
             'enableStrictParsing' => false,
             'showScriptName' => true,
@@ -92,9 +104,6 @@ $config = [
                 //WALLET-TRANSACTIONS
                 'GET,OPTIONS v1/wallet-transactions' => 'v1/wallet-transaction/view-all',
 
-                //NODE
-                'GET,HEAD,OPTIONS v1/node/<node_id:\w+>/<controller:\w+>/<action:\w+>' => 'v1/node/<controller>/<action>',
-
                 //JOBS
                 'GET v1/job/<id:\w+>' => 'v1/job/view',
 
@@ -106,12 +115,6 @@ $config = [
                 'developers/webhook' => 'webhook',
                 'developers/api-log' => 'api-log',
                 'developers/events' => 'dashboard/events',
-
-                //MODULES!
-                '<module:\w+>/<controller:[A-Za-z0-9 -_.]+>/<action:\w+>/<id:[A-Za-z0-9_]+>' => '<module>/<controller>/<action>',
-                '<module:\w+>/<controller:[A-Za-z0-9 -_.]+>/<action:\w+>' => '<module>/<controller>/<action>',
-
-
             ],
         ],
         'request' => [
@@ -137,7 +140,7 @@ $config = [
                     ]
                 ],
                 [
-                    'class' => 'app\components\ApiLogTarget',
+                    'class' => 'lnpay\components\ApiLogTarget',
                 ],
             ],
         ],

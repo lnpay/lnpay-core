@@ -2,13 +2,13 @@
 
 namespace tests\unit\models;
 
-use app\models\BaseLink;
-use app\models\integration\IntegrationWebhook;
-use app\models\LnTx;
-use app\models\StatusType;
-use app\models\User;
-use app\tests\fixtures\UserAccessKeyFixture;
-use app\tests\fixtures\UserFixture;
+use lnpay\models\BaseLink;
+use lnpay\models\integration\IntegrationWebhook;
+use lnpay\models\LnTx;
+use lnpay\models\StatusType;
+use lnpay\models\User;
+use lnpay\fixtures\UserAccessKeyFixture;
+use lnpay\fixtures\UserFixture;
 use Yii;
 
 class IntegrationWebhookTest extends \Codeception\Test\Unit

@@ -1,7 +1,7 @@
 <?php
 
 
-use app\tests\fixtures\UserFixture;
+use lnpay\fixtures\UserFixture;
 
 class WalletKeysendCest
 {
@@ -12,16 +12,16 @@ class WalletKeysendCest
                 'class' => UserFixture::class,
             ],
             'wallets' => [
-                'class' => \app\tests\fixtures\WalletFixture::class,
+                'class' => \lnpay\fixtures\WalletFixture::class,
             ],
             'wallet_transactions' => [
-                'class' => \app\tests\fixtures\WalletTransactionFixture::class,
+                'class' => \lnpay\fixtures\WalletTransactionFixture::class,
             ],
             'user_access_key' => [
-                'class' => \app\tests\fixtures\UserAccessKeyFixture::class,
+                'class' => \lnpay\fixtures\UserAccessKeyFixture::class,
             ],
             'ln_node' => [
-                'class'=>\app\modules\node\fixtures\LnNodeFixture::class
+                'class'=>\lnpay\node\fixtures\LnNodeFixture::class
             ]
         ];
     }

@@ -5,8 +5,17 @@ $params = require(__DIR__ . '/params.php');
 return [
     'name'=>'LNPAY',
     'bootstrap' => [
-        'queue', // The component registers its own console commands
+        'queue', // The component registers its own console
     ],
+    'aliases'=> [
+        '@root'=> dirname(__DIR__),
+        '@app'=> dirname(__DIR__).'/src',
+        '@app/node'=> dirname(__DIR__).'/src/node/',
+        '@vendor'=> dirname(__DIR__).'/vendor',
+    ],
+    'basePath' => dirname(__DIR__).'/src/',
+    'controllerNamespace' => 'lnpay\\controllers',
+    'runtimePath' => dirname(__FILE__) . '/../runtime',
     'components' => [
         'cache' => [
             'class' => \yii\redis\Cache::class,

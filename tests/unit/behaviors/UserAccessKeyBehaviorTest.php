@@ -2,8 +2,8 @@
 
 namespace tests\unit\models;
 
-use app\models\User;
-use app\models\UserAccessKey;
+use lnpay\models\User;
+use lnpay\models\UserAccessKey;
 
 class UserAccessKeyBehaviorTest extends \Codeception\Test\Unit
 {

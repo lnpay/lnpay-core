@@ -2,10 +2,10 @@
 
 namespace tests\unit\models;
 
-use app\components\HelperComponent;
-use app\models\wallet\LnWalletWithdrawForm;
-use app\models\User;
-use app\models\wallet\WalletTransferForm;
+use lnpay\components\HelperComponent;
+use lnpay\models\wallet\LnWalletWithdrawForm;
+use lnpay\models\User;
+use lnpay\models\wallet\WalletTransferForm;
 use Yii;
 
 class WalletTransferFormTest extends \Codeception\Test\Unit

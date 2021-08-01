@@ -1,7 +1,7 @@
 <?php
 
 
-use app\tests\fixtures\UserFixture;
+use lnpay\fixtures\UserFixture;
 
 class AuthCest
 {
@@ -12,7 +12,7 @@ class AuthCest
                 'class' => UserFixture::class,
             ],
             'user_access_keys' => [
-                'class' => \app\tests\fixtures\UserAccessKeyFixture::class,
+                'class' => \lnpay\fixtures\UserAccessKeyFixture::class,
             ]
         ];
     }

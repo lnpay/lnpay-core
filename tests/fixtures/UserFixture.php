@@ -1,12 +1,12 @@
 <?php
 
-namespace app\tests\fixtures;
+namespace lnpay\fixtures;
 
 use yii\test\ActiveFixture;
 
 class UserFixture extends ActiveFixture
 {
-    public $modelClass = 'app\models\User';
+    public $modelClass = 'lnpay\models\User';
     public $depends = [];
-    public $dataFile = '@app/tests/_data/user.php';
+    public $dataFile = '@root/tests/_data/user.php';
 }

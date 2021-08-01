@@ -2,10 +2,10 @@
 
 namespace tests\unit\models;
 
-use app\behaviors\UserAccessKeyBehavior;
-use app\models\wallet\Wallet;
-use app\models\StatusType;
-use app\models\User;
+use lnpay\behaviors\UserAccessKeyBehavior;
+use lnpay\models\wallet\Wallet;
+use lnpay\models\StatusType;
+use lnpay\models\User;
 use Yii;
 
 class WalletTest extends \Codeception\Test\Unit
@@ -49,7 +49,7 @@ class WalletTest extends \Codeception\Test\Unit
 
         expect_that($key = $w->getFirstAccessKeyByRole(UserAccessKeyBehavior::ROLE_WALLET_ADMIN));
 
-        expect(Wallet::findByKey($key))->isInstanceOf('\app\models\wallet\Wallet');
+        expect(Wallet::findByKey($key))->isInstanceOf('\lnpay\models\wallet\Wallet');
     }
 
     public function testCalculateBalance()

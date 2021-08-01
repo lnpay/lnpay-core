@@ -2,10 +2,10 @@
 
 $config = [
     'id' => 'basic',
-    'basePath' => dirname(__DIR__),
     'bootstrap' => [
         'log',
-        'monitor'
+        'monitor',
+        'node'
     ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -20,7 +20,7 @@ $config = [
             'canExecStop'=>true
         ],
         'node' => [
-            'class' => app\modules\node\Module::class
+            'class' => lnpay\node\Module::class
         ],
     ],
     'components' => [
@@ -39,7 +39,7 @@ $config = [
             'class' => 'yii\web\DbSession',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'lnpay\models\User',
             'enableAutoLogin' => true,
             'loginUrl'=>['/home/login'],
             'as mfa' => [
@@ -54,12 +54,12 @@ $config = [
         'log' => [
             'targets' => [
                 [
-                    'class' => 'app\components\ApiLogTarget',
+                    'class' => 'lnpay\components\ApiLogTarget',
                 ],
             ],
         ],
         'urlManager' => [
-            'class'=>'app\components\LNPayUrlManager',
+            'class'=>'lnpay\components\LNPayUrlManager',
             'enablePrettyUrl' => true,
             'enableStrictParsing' => false,
             'showScriptName' => false,
@@ -88,9 +88,6 @@ $config = [
                 //WALLET-TRANSACTIONS
                 'GET,OPTIONS v1/wallet-transactions' => 'v1/wallet-transaction/view-all',
 
-                //NODE
-                'GET,HEAD,OPTIONS v1/node/<node_id:\w+>/<controller:\w+>/<action:\w+>' => 'v1/node/<controller>/<action>',
-
                 //JOBS
                 'GET v1/job/<id:\w+>' => 'v1/job/view',
 
@@ -102,15 +99,10 @@ $config = [
                 'developers/webhook' => 'webhook',
                 'developers/api-log' => 'api-log',
                 'developers/events' => 'dashboard/events',
-
-                //MODULES!
-                '<module:\w+>/<controller:[A-Za-z0-9 -_.]+>/<action:\w+>/<id:[A-Za-z0-9_]+>' => '<module>/<controller>/<action>',
-                '<module:\w+>/<controller:[A-Za-z0-9 -_.]+>/<action:\w+>' => '<module>/<controller>/<action>',
-
             ],
         ],
         'request' => [
-            'class'=>'app\components\LNPayRequestComponent',
+            'class'=>'lnpay\components\LNPayRequestComponent',
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => getenv('YII_COOKIE_VALIDATION_KEY'),
             'parsers' => [

@@ -1,12 +1,12 @@
 <?php
 
-namespace app\tests\fixtures;
+namespace lnpay\fixtures;
 
 use yii\test\ActiveFixture;
 
 class WalletTransactionTypeFixture extends ActiveFixture
 {
-    public $modelClass = 'app\models\wallet\WalletTransactionType';
+    public $modelClass = 'lnpay\models\wallet\WalletTransactionType';
     public $depends = [];
-    public $dataFile = '@app/tests/_data/wallet_transaction_type.php';
+    public $dataFile = '@root/tests/_data/wallet_transaction_type.php';
 }

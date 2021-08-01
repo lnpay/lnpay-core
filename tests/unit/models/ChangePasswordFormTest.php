@@ -2,11 +2,11 @@
 
 namespace tests\unit\models;
 
-use app\components\HelperComponent;
-use app\models\ChangePasswordForm;
-use app\models\User;
-use app\tests\fixtures\UserAccessKeyFixture;
-use app\tests\fixtures\UserFixture;
+use lnpay\components\HelperComponent;
+use lnpay\models\ChangePasswordForm;
+use lnpay\models\User;
+use lnpay\fixtures\UserAccessKeyFixture;
+use lnpay\fixtures\UserFixture;
 use \Codeception\Test\Unit;
 
 /**
