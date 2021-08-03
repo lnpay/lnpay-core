@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.5'
 services:
   php:
 #    build:
@@ -14,7 +14,7 @@ services:
       - 8111:80
       - 9001:9001
     networks:
-      public_net:
+        lnpay-lms_public_net:
           ipv4_address: 192.168.69.11
   db:
     container_name: lnpay-db
@@ -29,8 +29,8 @@ services:
  #   volumes:
  #     - ./data/db:/var/lib/mysql
     networks:
-          public_net:
-              ipv4_address: 192.168.69.22
+        lnpay-lms_public_net:
+          ipv4_address: 192.168.69.22
   chrome:
     container_name: lnpay-chrome
     image: selenium/standalone-chrome
@@ -40,17 +40,18 @@ services:
     depends_on:
       - php
     networks:
-        public_net:
+      lnpay-lms_public_net:
           ipv4_address: 192.168.69.33
   redis:
     image: redis:latest
     container_name: lnpay-redis
     networks:
-      public_net:
+      lnpay-lms_public_net:
         ipv4_address: 192.168.69.44
 
 networks:
-    public_net:
+    lnpay-lms_public_net:
+        name: lnpay-lms_public_net
         driver: bridge
         ipam:
             driver: default
