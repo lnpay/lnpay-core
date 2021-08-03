@@ -13,6 +13,14 @@ class m190709_173552_init extends Migration
     public function safeUp()
     {
         $this->execute("
+            -- Create syntax for TABLE 'cache'            
+            CREATE TABLE cache (
+                id char(128) NOT NULL PRIMARY KEY,
+                expire int(11),
+                data BLOB
+            );");
+
+        $this->execute("
                     -- Create syntax for TABLE 'user'
                             CREATE TABLE `user` (
                               `id` int(11) NOT NULL AUTO_INCREMENT,

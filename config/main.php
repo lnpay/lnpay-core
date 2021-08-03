@@ -19,21 +19,18 @@ return [
     'controllerNamespace' => 'lnpay\\controllers',
     'runtimePath' => dirname(__FILE__) . '/../runtime',
     'components' => [
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host='.getenv('DB_HOST').';dbname='.getenv('DB_DB'),
+            'username' => getenv('DB_USER'),
+            'password' => getenv('DB_PASS'),
+            'charset' => 'utf8',
+        ],
         'cache' => [
-            'class' => \yii\redis\Cache::class,
-            'redis' => [
-                'hostname' => getenv('REDIS_HOST'),
-                'port' => 6379,
-                'database' => getenv('REDIS_CACHE_DB'),
-            ]
+            'class' => \yii\caching\DbCache::class,
         ],
         'mutex' => [
-            'class' => 'yii\redis\Mutex',
-            'redis' => [
-                'hostname' => getenv('REDIS_HOST'),
-                'port' => 6379,
-                'database' => getenv('REDIS_MUTEX_DB'),
-            ]
+            'class' => 'yii\mutex\MysqlMutex',
         ],
         'queue' => [
             'class' => \yii\queue\db\Queue::class,
@@ -49,45 +46,11 @@ return [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => Rekurzia\Log\PapertrailTarget::class,
-                    'enabled'=>(bool) (getenv('PAPERTRAIL_HOST') && getenv('PAPERTRAIL_HOST')),
-                    'host' => getenv('PAPERTRAIL_HOST'),
-                    'port' => getenv('PAPERTRAIL_PORT'),
-                    'additionalPrefix' => function() {
-                        return getenv('INSTANCE_ID');
-                    },
-                    'levels' => ['error','warning','info'],
-                    'except' => [
-                        'yii\web\HttpException:404',
-                        'yii\rbac\DbManager:*',
-                        'yii\db\*',
-                        'yii\web\Session::*',
-                        'yii\filters\RateLimiter::*',
-                        'yii\web\User::login',
-                        'yii\web\User::loginByCookie'
-                    ],
-                    'maskVars'=>[
-                        '_SERVER.DEFAULT_EMAIL_USERNAME',
-                        '_SERVER.DEFAULT_EMAIL_PASSWORD',
-                        '_SERVER.AMPLITUDE_API_KEY',
-                        '_SERVER.DB_USER',
-                        '_SERVER.DB_PASS',
-                        '_SERVER.DB_HOST',
-                        '_SERVER.DB_DB',
-                    ]
-                ],
-                [
                     'class' => 'yii\log\DbTarget',
-                    'levels' => ['error','warning'],
+                    'levels' => ['error','warning','info'],
                     'logTable'=>'log',
                     'except' => [
-                        'yii\web\HttpException:404',
-                        'yii\rbac\DbManager:*',
-                        'yii\db\*',
-                        'yii\web\Session::*',
-                        'yii\filters\RateLimiter::*',
-                        'yii\web\User::login',
-                        'yii\web\User::loginByCookie'
+
                     ],
                     'maskVars'=>[
                         '_SERVER.DEFAULT_EMAIL_USERNAME',
@@ -100,13 +63,6 @@ return [
                     ]
                 ]
             ],
-        ],
-        'db' => [
-            'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host='.getenv('DB_HOST').';dbname='.getenv('DB_DB'),
-            'username' => getenv('DB_USER'),
-            'password' => getenv('DB_PASS'),
-            'charset' => 'utf8',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

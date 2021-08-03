@@ -1,9 +1,6 @@
 version: '3.3'
 services:
   php:
-#    build:
-#      dockerfile: Dockerfile
-#      context: 'docker/php'
     container_name: lnpay-php
     image: bootstrapbandit/lnpay:7.3-apache-grpc-0.1
     volumes:
@@ -26,8 +23,6 @@ services:
       MYSQL_DATABASE: lnpay_db
     ports:
       - 8222:3306
- #   volumes:
- #     - ./data/db:/var/lib/mysql
     networks:
           public_net:
               ipv4_address: 192.168.69.22
@@ -42,12 +37,6 @@ services:
     networks:
         public_net:
           ipv4_address: 192.168.69.33
-  redis:
-    image: redis:latest
-    container_name: lnpay-redis
-    networks:
-      public_net:
-        ipv4_address: 192.168.69.44
 
 networks:
     public_net:

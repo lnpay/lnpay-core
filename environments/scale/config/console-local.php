@@ -1,0 +1,6 @@
+<?php
+
+$config = [
+];
+
+return $config;
