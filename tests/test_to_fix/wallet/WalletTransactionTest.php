@@ -3,11 +3,11 @@
 namespace tests\unit\models;
 
 use lnpay\behaviors\UserAccessKeyBehavior;
-use lnpay\models\wallet\LnWalletWithdrawForm;
-use lnpay\models\wallet\Wallet;
+use lnpay\wallet\models\LnWalletWithdrawForm;
+use lnpay\wallet\models\Wallet;
 use lnpay\models\StatusType;
 use lnpay\models\User;
-use lnpay\models\wallet\WalletTransaction;
+use lnpay\wallet\models\WalletTransaction;
 use lnpay\node\models\LnNode;
 use Yii;
 

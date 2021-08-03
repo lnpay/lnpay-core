@@ -6,7 +6,7 @@ use yii\test\ActiveFixture;
 
 class WalletFixture extends ActiveFixture
 {
-    public $modelClass = 'lnpay\models\wallet\Wallet';
+    public $modelClass = 'lnpay\wallet\models\Wallet';
     public $depends = [];
     public $dataFile = '@root/tests/_data/wallet.php';
 }

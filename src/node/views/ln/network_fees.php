@@ -24,9 +24,9 @@ $feeWallet = $node->feeWallet;
         </p>
         <p>
             <?php /* ?>
-            Current INBOUND (deposits) fee rate: <strong><?=\LNPay::$app->user->identity->getServiceFeeRate(\lnpay\models\wallet\WalletTransactionType::LN_DEPOSIT)*100;?>%</strong>
+            Current INBOUND (deposits) fee rate: <strong><?=\LNPay::$app->user->identity->getServiceFeeRate(\lnpay\wallet\models\WalletTransactionType::LN_DEPOSIT)*100;?>%</strong>
             <br/>
-            Current OUTBOUND (withdrawals) fee rate: <strong><?=\LNPay::$app->user->identity->getServiceFeeRate(\lnpay\models\wallet\WalletTransactionType::LN_WITHDRAWAL)*100;?>%</strong>
+            Current OUTBOUND (withdrawals) fee rate: <strong><?=\LNPay::$app->user->identity->getServiceFeeRate(\lnpay\wallet\models\WalletTransactionType::LN_WITHDRAWAL)*100;?>%</strong>
             <br/>
             Current TRANSFER (transfers) fee rate: <strong>0%</strong>
             <br/>

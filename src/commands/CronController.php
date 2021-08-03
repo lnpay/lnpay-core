@@ -28,6 +28,11 @@ class CronController extends Controller
 
     public function actionDaily()
     {
+        /***
+         * Health checks for nodes. a little finicky
+         */
+
+        /*
         try {
             foreach (LnNode::find()->where(['!=','status_type_id',StatusType::LN_NODE_INACTIVE])->all() as $lnNode) {
                 $lnNode->healthCheck('REST');
@@ -36,8 +41,14 @@ class CronController extends Controller
         } catch (\Throwable $t) {
             Yii::error($t->getMessage(),__METHOD__);
         }
+        */
 
 
+        /**
+         * limit the growth of some tables
+         */
+
+        /*
         try {
             $this->cleanupIwhr();
         } catch (\Throwable $t) {
@@ -54,7 +65,7 @@ class CronController extends Controller
             $this->cleanupQueueLogs();
         } catch (\Throwable $t) {
             Yii::error($t->getMessage(),__METHOD__);
-        }
+        }*/
 
     }
 

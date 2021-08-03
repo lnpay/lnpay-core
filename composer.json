@@ -94,6 +94,7 @@
         "psr-4": {
             "lnpay\\": "src",
             "lnpay\\node\\": "src/node",
+            "lnpay\\wallet\\": "src/wallet",
             "lnpay\\fixtures\\": "tests/fixtures"
         }
     }

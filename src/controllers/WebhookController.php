@@ -2,22 +2,19 @@
 
 namespace lnpay\controllers;
 
+use lnpay\base\DashController;
 use lnpay\components\ActionComponent;
 use lnpay\models\action\ActionName;
 use lnpay\models\integration\IntegrationWebhookRequest;
 use lnpay\models\integration\WebhookTestForm;
-use Yii;
 use lnpay\models\integration\IntegrationWebhook;
 use lnpay\models\integration\IntegrationWebhookSearch;
-use yii\helpers\ArrayHelper;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * WebhookController implements the CRUD actions for IntegrationWebhook model.
  */
-class WebhookController extends BaseDashController
+class WebhookController extends DashController
 {
 
     /**

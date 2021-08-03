@@ -469,7 +469,7 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
 
     public function getTlsCertFilename()
     {
-        return Yii::getAlias('@app').'/runtime/node_tls/'.substr(md5($this->tlsCert),0,12).'.cert';
+        return Yii::getAlias('@root').'/runtime/node_tls/'.substr(md5($this->tlsCert),0,12).'.cert';
     }
 
 

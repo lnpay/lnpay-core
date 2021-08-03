@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'attribute'=>'walletType.display_name',
             'header'=>'Wallet Type',
-            'filter' => Html::activeDropDownList($searchModel, 'wallet_type_id', \yii\helpers\ArrayHelper::map([null=>'All']+\lnpay\models\wallet\WalletType::getAvailableWalletTypes(),'id','display_name'))
+            'filter' => Html::activeDropDownList($searchModel, 'wallet_type_id', \yii\helpers\ArrayHelper::map([null=>'All']+\lnpay\wallet\models\WalletType::getAvailableWalletTypes(),'id','display_name'))
         ],
 
         //'lnNode.alias',

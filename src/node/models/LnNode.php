@@ -13,7 +13,7 @@ use lnpay\models\action\ActionData;
 use lnpay\models\action\ActionName;
 use lnpay\models\StatusType;
 use lnpay\models\User;
-use lnpay\models\wallet\Wallet;
+use lnpay\wallet\models\Wallet;
 use Yii;
 use yii\helpers\VarDumper;
 

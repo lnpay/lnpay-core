@@ -9,7 +9,7 @@ use lnpay\models\integration\IntegrationWebhookRequest;
 use lnpay\models\LnTx;
 use lnpay\models\StatusType;
 use lnpay\models\User;
-use lnpay\models\wallet\Wallet;
+use lnpay\wallet\models\Wallet;
 use lnpay\fixtures\UserFixture;
 use lnpay\fixtures\WalletFixture;
 use Yii;

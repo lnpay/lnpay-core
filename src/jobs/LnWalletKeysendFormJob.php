@@ -3,8 +3,8 @@ namespace lnpay\jobs;
 
 use lnpay\behaviors\UserAccessKeyBehavior;
 use lnpay\components\AnalyticsComponent;
-use lnpay\models\wallet\LnWalletKeysendForm;
-use lnpay\models\wallet\Wallet;
+use lnpay\wallet\models\LnWalletKeysendForm;
+use lnpay\wallet\models\Wallet;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
 use Yii;

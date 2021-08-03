@@ -6,7 +6,8 @@ $config = [
     'bootstrap' => [
         'log',
         'monitor',
-        'node'
+        'node',
+        'wallet'
     ],
     'aliases'=> [
         '@root'=> dirname(__DIR__),
@@ -28,6 +29,9 @@ $config = [
         ],
         'node' => [
             'class' => lnpay\node\Module::class
+        ],
+        'wallet' => [
+            'class' => lnpay\wallet\Module::class
         ],
     ],
     'controllerMap'=>[

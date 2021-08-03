@@ -2,16 +2,9 @@
 
 namespace lnpay\controllers\v1;
 
-use lnpay\components\HelperComponent;
-use yii\filters\auth\QueryParamAuth;
+use lnpay\base\ApiController;
 
-use Yii;
-use yii\helpers\Url;
-use yii\web\BadRequestHttpException;
-use yii\web\NotFoundHttpException;
-use yii\web\ServerErrorHttpException;
-
-class StatusTypeController extends BaseApiController
+class StatusTypeController extends ApiController
 {
     public $modelClass = 'lnpay\models\StatusType';
 

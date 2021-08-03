@@ -2,6 +2,7 @@
 
 namespace lnpay\controllers\v1;
 
+use lnpay\base\ApiController;
 use lnpay\components\HelperComponent;
 use yii\filters\auth\QueryParamAuth;
 
@@ -11,7 +12,7 @@ use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\ServerErrorHttpException;
 
-class ActionNameController extends BaseApiController
+class ActionNameController extends ApiController
 {
     public $modelClass = 'lnpay\models\action\ActionName';
 

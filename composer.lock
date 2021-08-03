@@ -145,7 +145,7 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "git@github.com:RobinHerbots/Inputmask.git",
+                "url": "https://github.com/RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -3239,12 +3239,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "51aa761035485e67727b1e323412aef50e06d3c8"
+                "reference": "c5f7df3ade32e1f2e0b96f8e01caeb9fd87a2c5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/51aa761035485e67727b1e323412aef50e06d3c8",
-                "reference": "51aa761035485e67727b1e323412aef50e06d3c8",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/c5f7df3ade32e1f2e0b96f8e01caeb9fd87a2c5a",
+                "reference": "c5f7df3ade32e1f2e0b96f8e01caeb9fd87a2c5a",
                 "shasum": ""
             },
             "require": {
@@ -3283,13 +3283,13 @@
                 {
                     "name": "Qiang Xue",
                     "email": "qiang.xue@gmail.com",
-                    "homepage": "http://www.yiiframework.com/",
+                    "homepage": "https://www.yiiframework.com/",
                     "role": "Founder and project lead"
                 },
                 {
                     "name": "Alexander Makarov",
                     "email": "sam@rmcreative.ru",
-                    "homepage": "http://rmcreative.ru/",
+                    "homepage": "https://rmcreative.ru/",
                     "role": "Core framework development"
                 },
                 {
@@ -3300,7 +3300,7 @@
                 {
                     "name": "Carsten Brandt",
                     "email": "mail@cebe.cc",
-                    "homepage": "http://cebe.cc/",
+                    "homepage": "https://cebe.cc/",
                     "role": "Core framework development"
                 },
                 {
@@ -3327,14 +3327,14 @@
                 }
             ],
             "description": "Yii PHP Framework Version 2",
-            "homepage": "http://www.yiiframework.com/",
+            "homepage": "https://www.yiiframework.com/",
             "keywords": [
                 "framework",
                 "yii2"
             ],
             "support": {
                 "forum": "http://www.yiiframework.com/forum/",
-                "irc": "irc://irc.freenode.net/yii",
+                "irc": "irc://irc.libera.chat:6697/yii",
                 "issues": "https://github.com/yiisoft/yii2/issues?state=open",
                 "source": "https://github.com/yiisoft/yii2",
                 "wiki": "http://www.yiiframework.com/wiki/"
@@ -3353,7 +3353,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-30T20:55:19+00:00"
+            "time": "2021-08-02T16:56:07+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -4345,12 +4345,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/FakerPHP/Faker.git",
-                "reference": "6298b7f99182636725b1d2f478e72860377b3e6b"
+                "reference": "6521488881b7922febafe031769a60bb0213e483"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/6298b7f99182636725b1d2f478e72860377b3e6b",
-                "reference": "6298b7f99182636725b1d2f478e72860377b3e6b",
+                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/6521488881b7922febafe031769a60bb0213e483",
+                "reference": "6521488881b7922febafe031769a60bb0213e483",
                 "shasum": ""
             },
             "require": {
@@ -4403,7 +4403,7 @@
                 "issues": "https://github.com/FakerPHP/Faker/issues",
                 "source": "https://github.com/FakerPHP/Faker/tree/main"
             },
-            "time": "2021-07-30T06:59:50+00:00"
+            "time": "2021-08-01T20:52:09+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -4699,12 +4699,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "8719cc12e2a57ec3432a76989bb4ef773ac75b63"
+                "reference": "78dca372660e5919c3e39e79399d1c76180ab90e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/8719cc12e2a57ec3432a76989bb4ef773ac75b63",
-                "reference": "8719cc12e2a57ec3432a76989bb4ef773ac75b63",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/78dca372660e5919c3e39e79399d1c76180ab90e",
+                "reference": "78dca372660e5919c3e39e79399d1c76180ab90e",
                 "shasum": ""
             },
             "require": {
@@ -4748,7 +4748,7 @@
                 "issues": "https://github.com/phpDocumentor/ReflectionDocBlock/issues",
                 "source": "https://github.com/phpDocumentor/ReflectionDocBlock/tree/master"
             },
-            "time": "2021-04-23T09:50:58+00:00"
+            "time": "2021-08-01T20:21:35+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",

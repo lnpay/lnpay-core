@@ -5,7 +5,8 @@ $config = [
     'bootstrap' => [
         'log',
         'monitor',
-        'node'
+        'node',
+        'wallet'
     ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -21,6 +22,9 @@ $config = [
         ],
         'node' => [
             'class' => lnpay\node\Module::class
+        ],
+        'wallet' => [
+            'class' => lnpay\wallet\Module::class
         ],
     ],
     'components' => [
@@ -71,22 +75,7 @@ $config = [
                 'POST v1/webhook/subscription/<serviceId:\w+>' => 'v1/webhook/subscribe',
                 'DELETE v1/webhook/subscription/<serviceId:\w+>' => 'v1/webhook/unsubscribe',
 
-                //WALLETS NEW NEW
-                'GET,HEAD,OPTIONS v1/wallets' => 'v1/wallet/view-all',
-                'GET,HEAD,OPTIONS v1/wallet/<access_key:\w+>' => 'v1/wallet/view',
-                'GET,OPTIONS v1/wallet/<access_key:\w+>/lnurl/withdraw-static' => 'v1/wallet/lnurl-withdraw-static',
-                'GET,OPTIONS v1/wallet/<access_key:\w+>/lnurl/withdraw' => 'v1/wallet/lnurl-withdraw',
-                'GET,OPTIONS v1/wallet/<access_key:\w+>/lnurl-process' => 'v1/wallet/lnurl-process',
-                'POST,OPTIONS v1/wallet' => 'v1/wallet/create',
-                'POST,OPTIONS v1/wallet/<access_key:\w+>/withdraw' => 'v1/wallet/withdraw',
-                'POST,OPTIONS v1/wallet/<access_key:\w+>/keysend' => 'v1/wallet/keysend',
-                'POST,OPTIONS v1/wallet/<access_key:\w+>/invoice' => 'v1/wallet/invoice',
-                'POST,OPTIONS v1/wallet/<access_key:\w+>/transfer' => 'v1/wallet/transfer',
-                'GET,OPTIONS v1/wallet/<access_key:\w+>/transactions' => 'v1/wallet/transactions',
                 'GET,OPTIONS v1/lntx/<id:\w+>' => 'v1/lntx/view',
-
-                //WALLET-TRANSACTIONS
-                'GET,OPTIONS v1/wallet-transactions' => 'v1/wallet-transaction/view-all',
 
                 //JOBS
                 'GET v1/job/<id:\w+>' => 'v1/job/view',

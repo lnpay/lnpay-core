@@ -32,14 +32,13 @@ $nodeReady = $activeChannels && $onchain_active && $gi;
     <p>
     <ul class="list-group">
         <li class="list-group-item">1. Node is connected! <i class="glyphicon glyphicon-<?=$gi?'ok':'remove';?>"></i></li>
-        <li class="list-group-item">2. <a href="/node/ln/onchain">Deposit 0.01 BTC on-chain</a> <i class="glyphicon glyphicon-<?=$onchain_active?'ok':'remove';?>"></i></li>
+        <li class="list-group-item">2. <a href="/node/ln/onchain">Deposit BTC on-chain</a> <i class="glyphicon glyphicon-<?=$onchain_active?'ok':'remove';?>"></i></li>
         <li class="list-group-item">3. Can send/receive on the Lightning Network <i class="glyphicon glyphicon-<?=$activeChannels?'ok':'remove';?>"></i></li>
         <li class="list-group-item"></li>
     </ul>
     </p>
 </div>
 <?php
-if (\LNPay::$app->request->getQueryParam('showinfo')) {
     echo \yii\bootstrap\Tabs::widget([
         'items' => [
             [
@@ -61,7 +60,7 @@ if (\LNPay::$app->request->getQueryParam('showinfo')) {
     ]);
 
     echo Html::a('Refresh Getinfo (REST)', ['/node/ln/test-call'], ['class' => 'btn btn-primary']);
-}
+
 ?>
 
 

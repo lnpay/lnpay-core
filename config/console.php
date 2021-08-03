@@ -2,13 +2,14 @@
 
 $config = [
     'id' => 'basic-console',
-    'basePath' => dirname(__DIR__),
+    'basePath' => dirname(__DIR__).'/src/',
     'bootstrap' => ['log'],
-    'controllerNamespace' => 'lnpay\commands',
+    'controllerNamespace' => 'lnpay\\commands',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
         '@tests' => '@app/tests',
+        '@lnpay/commands' => '@app/commands',
     ],
     'controllerMap'=>[
         'migrate' => [

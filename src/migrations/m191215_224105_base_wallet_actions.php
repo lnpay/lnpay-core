@@ -1,6 +1,6 @@
 <?php
 
-use lnpay\models\wallet\WalletTransaction;
+use lnpay\wallet\models\WalletTransaction;
 use yii\db\Migration;
 
 /**

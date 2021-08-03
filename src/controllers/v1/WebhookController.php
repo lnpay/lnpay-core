@@ -2,22 +2,19 @@
 
 namespace lnpay\controllers\v1;
 
+use lnpay\base\ApiController;
 use lnpay\components\HelperComponent;
 use lnpay\models\action\ActionFeed;
 use lnpay\models\action\ActionName;
 use lnpay\models\integration\IntegrationService;
-use lnpay\models\User;
 use lnpay\models\integration\IntegrationWebhook;
-use lnpay\models\wallet\Wallet;
-use yii\filters\auth\QueryParamAuth;
+use lnpay\wallet\models\Wallet;
 
 use Yii;
-use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
-use yii\web\NotFoundHttpException;
 use yii\web\ServerErrorHttpException;
 
-class WebhookController extends BaseApiController
+class WebhookController extends ApiController
 {
     public $modelClass = 'lnpay\models\integration\IntegrationWebhook';
 

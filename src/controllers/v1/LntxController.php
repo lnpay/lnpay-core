@@ -2,19 +2,11 @@
 
 namespace lnpay\controllers\v1;
 
-use lnpay\components\HelperComponent;
-use lnpay\models\v1\V1Layout;
-use yii\filters\auth\QueryParamAuth;
-
-use Yii;
-use yii\helpers\HtmlPurifier;
-use yii\helpers\Url;
-use yii\web\BadRequestHttpException;
+use lnpay\base\ApiController;
 use yii\web\NotFoundHttpException;
-use yii\web\ServerErrorHttpException;
 use yii\web\UnauthorizedHttpException;
 
-class LntxController extends BaseApiController
+class LntxController extends ApiController
 {
     public $modelClass = 'lnpay\models\LnTx';
 

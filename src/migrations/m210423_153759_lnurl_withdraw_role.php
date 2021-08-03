@@ -27,7 +27,7 @@ class m210423_153759_lnurl_withdraw_role extends Migration
         $auth->addChild($lnurl_withdraw, $auth->getPermission('wallet_read'));
         $auth->addChild($lnurl_withdraw, $public_withdraw);
 
-        foreach (\lnpay\models\wallet\Wallet::find()->each() as $w) {
+        foreach (\lnpay\wallet\models\Wallet::find()->each() as $w) {
             UserAccessKey::createKey($w->user_id,'Wallet LNURL Withdraw',['wallet_id'=>$w->id]);
         }
     }

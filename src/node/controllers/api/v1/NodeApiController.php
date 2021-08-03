@@ -2,14 +2,14 @@
 
 namespace lnpay\node\controllers\api\v1;
 
-use lnpay\controllers\v1\BaseApiController;
+use lnpay\base\ApiController;
 use lnpay\node\models\LnNode;
 use Yii;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\UnauthorizedHttpException;
 
-class NodeApiController extends BaseApiController
+class NodeApiController extends ApiController
 {
     public $nodeObject;
 

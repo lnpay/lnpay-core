@@ -5,7 +5,7 @@ namespace lnpay\models;
 use lnpay\behaviors\JsonDataBehavior;
 use lnpay\components\HelperComponent;
 use lnpay\models\User;
-use lnpay\models\wallet\Wallet;
+use lnpay\wallet\models\Wallet;
 use Yii;
 use yii\web\ServerErrorHttpException;
 

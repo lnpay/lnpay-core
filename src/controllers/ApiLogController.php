@@ -2,17 +2,16 @@
 
 namespace lnpay\controllers;
 
-use Yii;
+use lnpay\base\DashController;
 use lnpay\models\log\UserApiLog;
 use lnpay\models\log\UserApiLogSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * ApiLogController implements the CRUD actions for UserApiLog model.
  */
-class ApiLogController extends BaseDashController
+class ApiLogController extends DashController
 {
     /**
      * {@inheritdoc}

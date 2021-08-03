@@ -15,7 +15,7 @@ use yii\helpers\Html;
         <a class="sidebar-item" href="/node/ln/networkfees/<?=$node->id;?>"><img src="/img/icons/fees.svg" style="height: 25px" />Lightning Network Fees</a>
         <?php /* ?><a class="sidebar-item" href="/node/ln/connect/<?=$node->id;?>"><img src="/img/icons/node-connect.svg" style="height: 25px" />Connect</a><?php */ ?>
         <hr>
-        <a class="sidebar-item" href="/node/auth-profile/index/<?=$node->id;?>"><img src="/img/icons/keys-auth.svg" style="height: 25px" />Macaroon Bakery</a>
+        <a class="sidebar-item" href="/node/authprofile/index/<?=$node->id;?>"><img src="/img/icons/keys-auth.svg" style="height: 25px" />Macaroon Bakery</a>
         <a class="sidebar-item" href="/node/rpc/listeners/<?=$node->id;?>"><img src="/img/icons/rpc-listen.svg" style="height: 25px" />RPC Listeners</a>
         <a class="sidebar-item" href="/node/rpc/forwarder/<?=$node->id;?>"><img src="/img/icons/rpc-forwarder.svg" style="height: 25px" />RPC Event HTTP Forwarder</a>
         <hr>

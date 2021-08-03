@@ -2,26 +2,17 @@
 namespace lnpay\controllers;
 
 
-
+use lnpay\base\DashController;
 use lnpay\models\action\ActionFeed;
-use lnpay\models\wallet\WalletSearch;
-use Yii;
 use yii\helpers\ArrayHelper;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
 use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 use lnpay\models\User;
-use lnpay\models\SignupForm;
-
-
-use lnpay\components\AnalyticsComponent;
 
 /**
  * Home controller
  */
-class DashboardController extends BaseDashController
+class DashboardController extends DashController
 {
     const TIM_USER_ID = 147;
 

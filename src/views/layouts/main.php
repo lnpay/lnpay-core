@@ -50,7 +50,7 @@ PaywallAsset::register($this);
     $menuItemsLeft = [
         [
             'label' => '<img src="/img/icons/wallet.svg" style="width:15px" /> Wallets',
-            'url' => (\LNPay::$app->user->isGuest?'#':['/wallet/dashboard']),
+            'url' => (\LNPay::$app->user->isGuest?'#':['/wallet/wallet/dashboard']),
             'active'=>stripos(\LNPay::$app->request->pathInfo,'wallet')!==FALSE,
             'encode'=>false,
         ],
@@ -122,10 +122,11 @@ PaywallAsset::register($this);
         ]) ?>
 
             <?php
-                if (stripos(\LNPay::$app->controller->module->id,"basic") === false)
-                    $this->beginContent(\LNPay::$app->controller->module->sidebarView);?>
+                if (stripos(\LNPay::$app->controller->module->id,"basic") === false && \LNPay::$app->controller->module->sidebarView)
+                    $this->beginContent(\LNPay::$app->controller->module->sidebarView);
+                ?>
                 <?= $content ?>
-            <?php if (stripos(\LNPay::$app->controller->module->id,"basic") === false)
+            <?php if (stripos(\LNPay::$app->controller->module->id,"basic") === false && \LNPay::$app->controller->module->sidebarView)
                     $this->endContent(); ?>
         </div>
     </div>

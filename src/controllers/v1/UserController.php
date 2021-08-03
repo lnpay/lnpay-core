@@ -2,21 +2,14 @@
 
 namespace lnpay\controllers\v1;
 
+use lnpay\base\ApiController;
 use lnpay\components\HelperComponent;
 use lnpay\models\SignupForm;
-use Codeception\Lib\Generator\Helper;
-use yii\filters\auth\QueryParamAuth;
-
-use Yii;
-use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
-use yii\web\NotFoundHttpException;
 use yii\web\ServerErrorHttpException;
 use \lnpay\models\User;
 
-use \tkijewski\lnurl;
-
-class UserController extends BaseApiController
+class UserController extends ApiController
 {
     public $modelClass = 'lnpay\models\User';
 

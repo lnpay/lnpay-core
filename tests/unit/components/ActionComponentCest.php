@@ -8,7 +8,7 @@ use lnpay\models\action\ActionName;
 use lnpay\models\User;
 
 use lnpay\events\ActionEvent;
-use lnpay\models\wallet\WalletTransaction;
+use lnpay\wallet\models\WalletTransaction;
 
 
 class ActionComponentCest

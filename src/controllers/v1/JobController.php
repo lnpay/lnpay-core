@@ -2,18 +2,13 @@
 
 namespace lnpay\controllers\v1;
 
-use lnpay\components\HelperComponent;
+use lnpay\base\ApiController;
 use lnpay\models\UserAccessKey;
-use yii\filters\auth\QueryParamAuth;
 
 use Yii;
-use yii\helpers\Url;
-use yii\web\BadRequestHttpException;
-use yii\web\NotFoundHttpException;
-use yii\web\ServerErrorHttpException;
 use yii\web\UnauthorizedHttpException;
 
-class JobController extends BaseApiController
+class JobController extends ApiController
 {
     public $modelClass = 'zhuravljov\yii\queue\monitor\records\ExecRecord';
 

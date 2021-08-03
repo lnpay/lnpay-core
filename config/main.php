@@ -9,8 +9,10 @@ return [
     ],
     'aliases'=> [
         '@root'=> dirname(__DIR__),
-        '@app'=> dirname(__DIR__).'/src',
+        '@app'=> dirname(__DIR__).'/src/',
+        '@lnpay'=> dirname(__DIR__).'/src/',
         '@app/node'=> dirname(__DIR__).'/src/node/',
+        '@app/wallet'=> dirname(__DIR__).'/src/wallet/',
         '@vendor'=> dirname(__DIR__).'/vendor',
     ],
     'basePath' => dirname(__DIR__).'/src/',

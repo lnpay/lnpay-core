@@ -5,11 +5,11 @@ namespace tests\unit\models;
 use lnpay\behaviors\UserAccessKeyBehavior;
 use lnpay\components\HelperComponent;
 use lnpay\models\LnTx;
-use lnpay\models\wallet\LnWalletKeysendForm;
-use lnpay\models\wallet\LnWalletWithdrawForm;
+use lnpay\wallet\models\LnWalletKeysendForm;
+use lnpay\wallet\models\LnWalletWithdrawForm;
 use lnpay\node\models\LnNode;
 use lnpay\node\models\NodeListener;
-use lnpay\models\wallet\Wallet;
+use lnpay\wallet\models\Wallet;
 use lnpay\models\StatusType;
 use lnpay\models\User;
 use Yii;
@@ -61,7 +61,7 @@ class LnNodeWalletTest extends \Codeception\Test\Unit
         expect_that($model = new LnWalletWithdrawForm());
         expect_that($model->wallet_id = 1111);
         expect_that($model->payment_request = $result->payment_request);
-        expect($model->processWithdrawal())->isInstanceOf('lnpay\models\wallet\WalletTransaction');
+        expect($model->processWithdrawal())->isInstanceOf('lnpay\wallet\models\WalletTransaction');
         $model->walletObject->releaseMutex();
         expect($model->walletObject->balance)->equals($bobBalance-69);
 
