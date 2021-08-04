@@ -49,15 +49,17 @@ then
 
 fi
 
+# THIS IS EXPERIMENTAL
 if [ $1 == "polarup" ]
 then
     cd tests/polar;
     set -e
     docker-compose up -d
-    echo "Waiting 120s for bitcoind and LND to boot..."
-    sleep 120
+    echo "Waiting 30s for bitcoind and LND to boot..."
+    sleep 30
 fi
 
+# THIS IS EXPERIMENTAL
 if [ $1 == "polardown" ]
 then
     cd tests/polar;
