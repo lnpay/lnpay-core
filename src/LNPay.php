@@ -3,7 +3,7 @@
 /**
  * Class LNPay
  */
-class LNPay extends Yii
+class LNPay extends \Yii
 {
 
 }

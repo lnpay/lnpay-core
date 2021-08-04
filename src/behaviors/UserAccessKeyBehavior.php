@@ -185,7 +185,7 @@ class UserAccessKeyBehavior extends Behavior
         try {
             $this->populateApiKeys();
         } catch (\Throwable $t) {
-            Yii::error($t,__METHOD__);
+            \LNPay::error($t,__METHOD__);
         }
     }
 }

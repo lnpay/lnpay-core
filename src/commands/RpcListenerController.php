@@ -110,7 +110,7 @@ class RpcListenerController extends Controller
 
         } catch (\Throwable $t) {
             echo $t->getMessage();
-            Yii::error($method.':'.$t, __METHOD__);
+            \LNPay::error($method.':'.$t, __METHOD__);
         }
     }
 

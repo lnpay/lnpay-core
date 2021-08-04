@@ -27,7 +27,7 @@ services:
       - '28334:28334'
       - '29335:28335'
     networks:
-      lnpay-core_public_net:
+      lnpay-lms_public_net:
         ipv4_address: 192.168.69.59
   alice:
     image: 'polarlightning/lnd:0.13.0-beta'
@@ -58,7 +58,7 @@ services:
       - '10009'
       - '9735'
     networks:
-      lnpay-core_public_net:
+      lnpay-lms_public_net:
         ipv4_address: 192.168.69.60
   bob:
     image: 'polarlightning/lnd:0.13.0-beta'
@@ -89,7 +89,7 @@ services:
       - '10009'
       - '9735'
     networks:
-      lnpay-core_public_net:
+      lnpay-lms_public_net:
         ipv4_address: 192.168.69.61
   carol:
     image: 'polarlightning/lnd:0.13.0-beta'
@@ -120,9 +120,9 @@ services:
       - '10009'
       - '9735'
     networks:
-      lnpay-core_public_net:
+      lnpay-lms_public_net:
         ipv4_address: 192.168.69.62
 
 networks:
-  lnpay-core_public_net:
+  lnpay-lms_public_net:
     external: true

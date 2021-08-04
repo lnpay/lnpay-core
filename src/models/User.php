@@ -409,7 +409,7 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
      */
     public function getEligibleToWithdraw($sats=0)
     {
-        Yii::debug("User: {$this->id} Available to withdraw:{$this->satsAvailableForWithdrawal} Amount withdrawing: $sats if 0, checking if balance > 0",__METHOD__);
+        \LNPay::debug("User: {$this->id} Available to withdraw:{$this->satsAvailableForWithdrawal} Amount withdrawing: $sats if 0, checking if balance > 0",__METHOD__);
         if ($this->satsAvailableForWithdrawal <= 0)
             return false;
         else if ($this->satsAvailableForWithdrawal < $sats)
@@ -425,7 +425,7 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
      * @throws \yii\web\ServerErrorHttpException
      */
     public function addToBalance($sats=0) {
-        Yii::info("Adding balance: $sats to user:".$this->id,__METHOD__);
+        \LNPay::info("Adding balance: $sats to user:".$this->id,__METHOD__);
         $this->balance += $sats;
         if ($this->save()) {
             return $this->balance;

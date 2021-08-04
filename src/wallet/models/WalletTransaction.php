@@ -154,7 +154,7 @@ class WalletTransaction extends \yii\db\ActiveRecord
         //Network fee
         if ($this->lnTx->fee_msat > 0) {
             $networkFee = (int) ceil($this->lnTx->fee_msat/1000)*-1;
-            Yii::info('tx: '.$this->id.' - Network fee:'.$networkFee,__METHOD__);
+            \LNPay::info('tx: '.$this->id.' - Network fee:'.$networkFee,__METHOD__);
             $wtx = new WalletTransaction();
             $wtx->user_id = $this->user_id;
 
@@ -187,7 +187,7 @@ class WalletTransaction extends \yii\db\ActiveRecord
         $rateAsDecimal = $this->user->getServiceFeeRate($this->wtx_type_id);
         if ($rateAsDecimal) {
             $serviceFee = (int) ceil(abs($this->num_satoshis)*$rateAsDecimal)*-1;
-            Yii::info('tx: '.$this->id.' - Service fee:'.$serviceFee,__METHOD__);
+            \LNPay::info('tx: '.$this->id.' - Service fee:'.$serviceFee,__METHOD__);
             $wtx = new WalletTransaction();
             $wtx->user_id = $this->user_id;
             $wtx->wallet_id = ($this->user->feeTargetWallet==User::DATA_FEE_TARGET_WALLET_CONTAINED?$this->wallet_id:$this->wallet->lnNode->fee_wallet_id);

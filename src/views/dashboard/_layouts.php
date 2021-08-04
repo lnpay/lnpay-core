@@ -30,14 +30,14 @@ echo \yii\grid\GridView::widget([
             'buttons' => [
                 'update' => function ($url, $model) {
                     return Html::a('<span class="glyphicon glyphicon-pencil"></span> ', ['/user-layout/update','id'=>$model->id], [
-                        'title' => Yii::t('app', 'lead-update'),
+                        'title' => \LNPay::t('app', 'lead-update'),
                     ]);
                 },
                 'delete' => function ($url, $model) {
                     return Html::a('<span class="glyphicon glyphicon-trash"></span> ', ['/user-layout/delete','id'=>$model->id], [
-                        'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this layout?'),
+                        'data-confirm' => \LNPay::t('yii', 'Are you sure you want to delete this layout?'),
                         'data-method' => 'post',
-                        'title'=>Yii::t('app', 'lead-delete'),
+                        'title'=>\LNPay::t('app', 'lead-delete'),
                     ]);
                 }
 

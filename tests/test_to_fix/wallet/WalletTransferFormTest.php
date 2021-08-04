@@ -14,7 +14,7 @@ class WalletTransferFormTest extends \Codeception\Test\Unit
 
     protected function _before()
     {
-        \Yii::$app->user->login(User::findIdentity(147));
+        \LNPay::$app->user->login(User::findIdentity(147));
     }
 
     public function testInvalidWalletIds()

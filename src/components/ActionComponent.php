@@ -37,7 +37,7 @@ class ActionComponent extends Component
             $action->action_name_id = $event->action_id;
             $action->actionData = $event->customData;
             if (!$action->save()) {
-                Yii::error(HelperComponent::getErrorStringFromInvalidModel($action),__METHOD__);
+                \LNPay::error(HelperComponent::getErrorStringFromInvalidModel($action),__METHOD__);
                 throw new \Exception('Could not save action');
             }
 
@@ -48,7 +48,7 @@ class ActionComponent extends Component
                 }
 
             } catch (\Throwable $e) {
-                Yii::error('Error process integrations: '.$e.print_r($action->attributes,TRUE),__METHOD__);
+                \LNPay::error('Error process integrations: '.$e.print_r($action->attributes,TRUE),__METHOD__);
             }
 
             //massage data or custom stuff before analytics
@@ -72,7 +72,7 @@ class ActionComponent extends Component
 
             return $action;
         } catch (\Throwable $t) {
-            Yii::error($t,__METHOD__);
+            \LNPay::error($t,__METHOD__);
             return false;
         }
 
@@ -87,19 +87,19 @@ class ActionComponent extends Component
 
             $event->action_id = $actionNameId;
 
-            Yii::info($userObject->id.':'.$event->actionNameObject->name.': Registering action',__METHOD__);
+            \LNPay::info($userObject->id.':'.$event->actionNameObject->name.': Registering action',__METHOD__);
             $actionFeedObject = self::baseRegisterAction($event);
 
             $callable = ['\lnpay\components\ActionComponent',$event->actionNameObject->name];
             if (is_callable($callable)) {
-                Yii::info($userObject->id.':'.$event->actionNameObject->name.': Calling post-action function.',__METHOD__);
+                \LNPay::info($userObject->id.':'.$event->actionNameObject->name.': Calling post-action function.',__METHOD__);
                 call_user_func($callable,$event);
             }
 
 
             return $actionFeedObject;
         } catch (\Throwable $t) {
-            Yii::error($t,__METHOD__);
+            \LNPay::error($t,__METHOD__);
             return false;
         }
     }
@@ -224,7 +224,7 @@ class ActionComponent extends Component
 
         //NEW METHOD BASED ON ARRAY OF ACTION_NAME_IDs
         $hooks = ArrayHelper::merge($specificActionHook,$legacyActionHook,$catchAllHooks,$adminHooks);
-        Yii::info($actionFeedObject->id.':'.$actionFeedObject->actionName->name.': Sending webhooks count ->'.count($hooks),__METHOD__);
+        \LNPay::info($actionFeedObject->id.':'.$actionFeedObject->actionName->name.': Sending webhooks count ->'.count($hooks),__METHOD__);
 
         foreach ($hooks as $IW) {
             //Construct payload
@@ -273,7 +273,7 @@ class ActionComponent extends Component
             return $iwhr->processResponse($response);
 
         } catch (\Throwable $e) {
-            Yii::error($e->getMessage(),__METHOD__);
+            \LNPay::error($e->getMessage(),__METHOD__);
             $iwhr->response_status_code = -1;
             $iwhr->response_body = $e->getMessage();
             $iwhr->save();
