@@ -79,7 +79,7 @@ class WebhookReceiverController extends Controller
         try {
             $this->processLndRpcEvent($postBody);
         } catch (\Throwable $t) {
-            Yii::error($t->getMessage(),__METHOD__);
+            \LNPay::error($t->getMessage(),__METHOD__);
         }
 
 
@@ -105,14 +105,14 @@ class WebhookReceiverController extends Controller
                         }
                     }
                 } catch (\Throwable $t) {
-                    Yii::error($t->getMessage(),__METHOD__);
+                    \LNPay::error($t->getMessage(),__METHOD__);
                 }
 
                 //check for normal invoice payment
                 try {
                     $lnTx = LnTx::processInvoiceAction($invoice);
                 } catch (\Throwable $t) {
-                    Yii::error($t->getMessage(),__METHOD__);
+                    \LNPay::error($t->getMessage(),__METHOD__);
                 }
 
                 if ($lnTx instanceof LnTx) {

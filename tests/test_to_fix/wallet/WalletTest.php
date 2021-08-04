@@ -14,13 +14,13 @@ class WalletTest extends \Codeception\Test\Unit
 
     protected function _before()
     {
-        \Yii::$app->user->login(User::findIdentity(147));
+        \LNPay::$app->user->login(User::findIdentity(147));
     }
 
     public function testCreateWallet()
     {
         expect_that($w = new Wallet());
-        expect_that($w->user_id = Yii::$app->user->id);
+        expect_that($w->user_id = \LNPay::$app->user->id);
         expect_that($w->user_label = 'Wallet 1');
         expect($w->save())->true();
     }
@@ -28,11 +28,11 @@ class WalletTest extends \Codeception\Test\Unit
     public function testWalletPermissions()
     {
         expect_that($w = new Wallet());
-        expect_that($w->user_id = Yii::$app->user->id);
+        expect_that($w->user_id = \LNPay::$app->user->id);
         expect_that($w->user_label = 'Wallet 2');
         expect($w->save())->true();
 
-        $auth = Yii::$app->authManager;
+        $auth = \LNPay::$app->authManager;
 
         expect($auth->checkAccess($w->getUserAccessKeys(UserAccessKeyBehavior::ROLE_WALLET_ADMIN)[UserAccessKeyBehavior::ROLE_WALLET_ADMIN][0],UserAccessKeyBehavior::ROLE_WALLET_ADMIN))->true();
         expect($auth->checkAccess($w->getUserAccessKeys(UserAccessKeyBehavior::ROLE_WALLET_INVOICE)[UserAccessKeyBehavior::ROLE_WALLET_INVOICE][0],UserAccessKeyBehavior::ROLE_WALLET_INVOICE))->true();
@@ -43,7 +43,7 @@ class WalletTest extends \Codeception\Test\Unit
     public function testFindByKey()
     {
         expect_that($w = new Wallet());
-        expect_that($w->user_id = Yii::$app->user->id);
+        expect_that($w->user_id = \LNPay::$app->user->id);
         expect_that($w->user_label = 'Wallet 3');
         expect($w->save())->true();
 

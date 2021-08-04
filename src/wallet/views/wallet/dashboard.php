@@ -51,7 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'buttons' => [
                 'view' => function ($url, $model) {
                     return Html::a('<span class="btn btn-info">Details <i class="fa fa-arrow-alt-circle-right"></i></span> ', ['view','id'=>$model->publicId], [
-                        'title' => Yii::t('app', 'lead-update'),
+                        'title' => \LNPay::t('app', 'lead-update'),
                         'data-pjax'=>0
                     ]);
                 }

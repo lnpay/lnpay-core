@@ -43,8 +43,8 @@ class WebhookController extends ApiController
     {
         $body = \LNPay::$app->getRequest()->getBodyParams();
         $params = \LNPay::$app->getRequest()->getQueryParams();
-        Yii::info("Body: ".print_r($body,TRUE),__METHOD__);
-        Yii::info("Request URL: ".print_r($params,TRUE),__METHOD__);
+        \LNPay::info("Body: ".print_r($body,TRUE),__METHOD__);
+        \LNPay::info("Request URL: ".print_r($params,TRUE),__METHOD__);
 
         if (!@$body['hookUrl'] || !@$body['action_name_id'])
             throw new BadRequestHttpException('Webhook URL not present / action not present');
@@ -93,7 +93,7 @@ class WebhookController extends ApiController
     public function actionUnsubscribe($serviceId)
     {
         $params = \LNPay::$app->getRequest()->getQueryParams();
-        Yii::info("Request URL: ".print_r($params,TRUE),__METHOD__);
+        \LNPay::info("Request URL: ".print_r($params,TRUE),__METHOD__);
 
         $serviceObject = IntegrationService::find()->where(['name'=>$serviceId])->one();
         if (!$serviceObject)
@@ -114,7 +114,7 @@ class WebhookController extends ApiController
 
             return true;
         } else {
-            Yii::error($model->id,__METHOD__);
+            \LNPay::error($model->id,__METHOD__);
             throw new BadRequestHttpException('Failed to delete object for unknown reason');
         }
     }

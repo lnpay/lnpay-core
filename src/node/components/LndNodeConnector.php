@@ -312,14 +312,14 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
                     break;
             }
         } catch (\Throwable $t) {
-            Yii::error($t->getMessage(),__METHOD__);
+            \LNPay::error($t->getMessage(),__METHOD__);
         }
     }
 
     protected function lnd_rpc_request($method, $bodyArray=[])
     {
-        Yii::info('Attempting RPC:'.$method.' ('.$this->_nodeObject->id.') : '.VarDumper::dumpAsString($bodyArray),__METHOD__);
-        //Yii::info($this->_nodeObject->host.':'.$this->_nodeObject->rpc_port);
+        \LNPay::info('Attempting RPC:'.$method.' ('.$this->_nodeObject->id.') : '.VarDumper::dumpAsString($bodyArray),__METHOD__);
+        //\LNPay::info($this->_nodeObject->host.':'.$this->_nodeObject->rpc_port);
         try {
             switch ($method) {
                 case 'GetInfo':
@@ -353,7 +353,7 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
                     $resp = $rpcConnector->SendPaymentV2($r);
                     foreach ($resp->responses() as $rp) {
                         $json = $rp->serializeToJsonString();
-                        Yii::info('('.$method.') Response:'.VarDumper::export($json),__METHOD__);
+                        \LNPay::info('('.$method.') Response:'.VarDumper::export($json),__METHOD__);
                         return json_decode($json,TRUE);
                     }
                     //if error
@@ -395,12 +395,12 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
 
             if ($resp[0]) {
                 $json = @$resp[0]->serializeToJsonString();
-                Yii::info('('.$method.') Response:'.VarDumper::export($json),__METHOD__);
+                \LNPay::info('('.$method.') Response:'.VarDumper::export($json),__METHOD__);
                 return $json;
             }
             else {
                 $error = $resp[1]->details;
-                Yii::info('('.$method.') Response:'.VarDumper::export($error),__METHOD__);
+                \LNPay::info('('.$method.') Response:'.VarDumper::export($error),__METHOD__);
                 return $error;
             }
 
@@ -420,7 +420,7 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
      */
     public function lnd_rest_request($path,$bodyArray = [])
     {
-        Yii::info('Attempting REST:'.$path.' ('.$this->_nodeObject->id.'): '.VarDumper::dumpAsString($bodyArray),__METHOD__);
+        \LNPay::info('Attempting REST:'.$path.' ('.$this->_nodeObject->id.'): '.VarDumper::dumpAsString($bodyArray),__METHOD__);
         //Saving TLS cert to disk so we can use it. not sure how else to do this
         $this->saveTlsCertToDisk();
 
@@ -449,7 +449,7 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
             $r = $response->getBody()->getContents();
         }
 
-        Yii::info('REST ('.$path.') Response:'.VarDumper::export($r),__METHOD__);
+        \LNPay::info('REST ('.$path.') Response:'.VarDumper::export($r),__METHOD__);
 
         //Delete the TLS cert we saved earlier
         $this->deleteTlsCertFromDisk();
@@ -469,7 +469,7 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
 
     public function getTlsCertFilename()
     {
-        return Yii::getAlias('@root').'/runtime/node_tls/'.substr(md5($this->tlsCert),0,12).'.cert';
+        return \LNPay::getAlias('@root').'/runtime/node_tls/'.substr(md5($this->tlsCert),0,12).'.cert';
     }
 
 

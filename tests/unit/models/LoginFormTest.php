@@ -10,7 +10,7 @@ class LoginFormTest extends \Codeception\Test\Unit
 
     protected function _after()
     {
-        \Yii::$app->user->logout();
+        \LNPay::$app->user->logout();
     }
 
     public function testLoginNoUser()
@@ -21,7 +21,7 @@ class LoginFormTest extends \Codeception\Test\Unit
         ]);
 
         expect_not($this->model->login());
-        expect_that(\Yii::$app->user->isGuest);
+        expect_that(\LNPay::$app->user->isGuest);
     }
 
     public function testLoginWrongPassword()
@@ -32,7 +32,7 @@ class LoginFormTest extends \Codeception\Test\Unit
         ]);
 
         expect_not($this->model->login());
-        expect_that(\Yii::$app->user->isGuest);
+        expect_that(\LNPay::$app->user->isGuest);
         expect($this->model->errors)->hasKey('password');
     }
 

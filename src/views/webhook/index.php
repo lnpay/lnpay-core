@@ -51,7 +51,7 @@ echo \yii\bootstrap\Alert::widget([
                     'delete' => function ($url, $model, $key) {
                         return Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', ['delete','id'=>$model->external_hash], [
                             'title' => 'Delete',
-                            'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                            'data-confirm' => \LNPay::t('yii', 'Are you sure you want to delete this item?'),
                             'data-method' => 'post'
                         ]);
                     },

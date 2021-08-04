@@ -282,7 +282,7 @@ class NodeAddForm extends Model
         $field1 = $this->getAttributeLabel($attribute_name);
         $field2 = $this->getAttributeLabel($params['other']);
         if (empty($this->$attribute_name) && empty($this->{$params['other']})) {
-            $this->addError($attribute_name, Yii::t('user', "either {$field1} or {$field2} is required."));
+            $this->addError($attribute_name, \LNPay::t('user', "either {$field1} or {$field2} is required."));
         }
     }
 

@@ -57,7 +57,7 @@ class LNPayComponent extends Component
                 $ipInfo = json_decode($ipInfo, true);
                 $tz = (@$ipInfo['timezone']?:'UTC');
 
-                Yii::debug('ipinfo:'.print_r($ipInfo,TRUE),__METHOD__);
+                \LNPay::debug('ipinfo:'.print_r($ipInfo,TRUE),__METHOD__);
                 $user->setTimeZone($tz);
                 date_default_timezone_set($tz);
                 return $tz;

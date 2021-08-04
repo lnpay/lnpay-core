@@ -77,7 +77,7 @@ echo \yii\grid\GridView::widget([
             'buttons' => [
                 'view' => function ($url, $model) {
                     return Html::a('<span class="btn btn-info">Details <i class="fa fa-arrow-alt-circle-right"></i></span> ', ['/faucet-gen/view','id'=>$model->id], [
-                        'title' => Yii::t('app', 'lead-update'),
+                        'title' => \LNPay::t('app', 'lead-update'),
                     ]);
                 }
             ]

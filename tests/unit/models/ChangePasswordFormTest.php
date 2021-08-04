@@ -33,7 +33,7 @@ class ChangePasswordFormTest extends Unit
      */
     protected function _before()
     {
-        \Yii::$app->user->login(User::findIdentity(147));
+        \LNPay::$app->user->login(User::findIdentity(147));
     }
 
 

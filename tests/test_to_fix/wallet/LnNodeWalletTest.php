@@ -24,7 +24,7 @@ class LnNodeWalletTest extends \Codeception\Test\Unit
 
     protected function _before()
     {
-        \Yii::$app->user->login(User::findIdentity(147));
+        \LNPay::$app->user->login(User::findIdentity(147));
         $this->bobWallet = Wallet::findOne($this->bobWallet);
         $this->aliceWallet = Wallet::findOne($this->aliceWallet);
     }

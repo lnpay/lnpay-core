@@ -26,7 +26,7 @@ class SupervisorComponent extends \yii\base\Component
         try {
             $api->getPid();
         } catch (\Throwable $t) {
-            Yii::error($t->getMessage(),__METHOD__);
+            \LNPay::error($t->getMessage(),__METHOD__);
             //return false;
         }
 
@@ -113,7 +113,7 @@ class SupervisorComponent extends \yii\base\Component
             $api = static::init_api();
             $api->__call('reloadConfig');
         } catch (\Throwable $f) {
-            Yii::error($f,__METHOD__);
+            \LNPay::error($f,__METHOD__);
         }
 
         return true;
@@ -129,7 +129,7 @@ class SupervisorComponent extends \yii\base\Component
         try {
             return $api->getProcessInfo($program_name);
         } catch (\Exception $e) {
-            //Yii::error($e,__METHOD__);
+            //\LNPay::error($e,__METHOD__);
             return false;
         }
     }
@@ -144,7 +144,7 @@ class SupervisorComponent extends \yii\base\Component
         try {
             return $api->stopProcess($program_name);
         } catch (\Exception $e) {
-            Yii::error($e,__METHOD__);
+            \LNPay::error($e,__METHOD__);
             return false;
         }
 
@@ -166,7 +166,7 @@ class SupervisorComponent extends \yii\base\Component
         try {
             return $api->startProcess($program_name);
         } catch (\Exception $e) {
-            //Yii::error($e,__METHOD__);
+            //\LNPay::error($e,__METHOD__);
             return $e->getMessage();
         }
     }
@@ -210,7 +210,7 @@ class SupervisorComponent extends \yii\base\Component
         $api = static::init_api();
         $info = $api->getAllProcessInfo();
 
-        Yii::info(VarDumper::export($info),__METHOD__);
+        \LNPay::info(VarDumper::export($info),__METHOD__);
 
         return $info;
     }

@@ -104,7 +104,7 @@ class LnWalletKeysendForm extends Model
             return false;
         }
 
-        Yii::info(VarDumper::export($result),__METHOD__);
+        \LNPay::info(VarDumper::export($result),__METHOD__);
         $this->paidInvoiceObject = (object) $result;
     }
 
