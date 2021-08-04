@@ -9,5 +9,7 @@ jobs:
         run: bash docker.sh build
       - name: Build codecept
         run: docker exec lnpay-php vendor/bin/codecept build
-      - name: Run unit tests
-        run: docker exec lnpay-php vendor/bin/codecept run -vvv api,unit
+      - name: Run API Tests
+        run: docker exec lnpay-php vendor/bin/codecept run -g base_api
+      - name: Run unit,functional Tests
+        run: docker exec lnpay-php vendor/bin/codecept run unit,functional

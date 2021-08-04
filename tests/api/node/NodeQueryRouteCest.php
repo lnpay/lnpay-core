@@ -36,7 +36,7 @@ class NodeQueryRouteCest
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->haveHttpHeader('X-Api-Key', 'sak_KkKkKkKkKkneieivTI05Fm3YzTza4N');
         $I->sendGET('/v1/node/lnod_bob/payments/queryroutes',[
-            'pub_key'=>'025eb9588a5db262ebf195edb1a940428bac534e5b012b8b1d3011fdfa9f8f13db',
+            'pub_key'=>'028e74f2598db804d8ae1319a5140679bd1df10811a33cbb82a183035110343760',
             'amt'=>1
         ]);
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);

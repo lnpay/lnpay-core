@@ -3,6 +3,9 @@
 
 use lnpay\fixtures\UserFixture;
 
+/**
+ * @group base_api
+ */
 class PermanentLnurlWithdrawCest
 {
     public function _fixtures()

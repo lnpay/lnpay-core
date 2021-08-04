@@ -3,6 +3,9 @@
 
 use lnpay\fixtures\UserFixture;
 
+/**
+ * @group base_api
+ */
 class WalletCreateCest
 {
     public function _fixtures()

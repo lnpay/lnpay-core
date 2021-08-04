@@ -2,7 +2,9 @@
 
 
 use lnpay\fixtures\UserFixture;
-
+/**
+ * @group base_api
+ */
 class LnTxGetCest
 {
     public function _fixtures()
