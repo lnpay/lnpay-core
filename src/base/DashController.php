@@ -23,10 +23,6 @@ class DashController extends Controller
         if (!\LNPay::$app->user->isGuest)
             LNPayComponent::processTz(\LNPay::$app->user->identity);
 
-        if (!@\LNPay::$app->user->identity->lnNode) {
-            return $this->redirect('/node/dashboard/add');
-        }
-
         return true;
     }
 
