@@ -16,7 +16,7 @@ use yii\bootstrap\ActiveForm;
 
         $actions = \lnpay\models\action\ActionName::getActiveWebhookArrayByType();
 
-        $hideTypes = ['ln_node','ln_subnode','user'];
+        $hideTypes = ['ln_node','ln_subnode','user','paywall','faucet'];
 
 
         $this->registerJs('

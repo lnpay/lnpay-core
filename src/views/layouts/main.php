@@ -49,6 +49,11 @@ PaywallAsset::register($this);
         ]);
     $menuItemsLeft = [
         [
+            'label' => '<img src="/img/icons/home.svg" style="width:15px" /> Legacy LAPPs',
+            'url' => 'https://legacy.lnpay.co/',
+            'encode'=>false,
+        ],
+        [
             'label' => '<img src="/img/icons/wallet.svg" style="width:15px" /> Wallets',
             'url' => (\LNPay::$app->user->isGuest?'#':['/wallet/wallet/dashboard']),
             'active'=>stripos(\LNPay::$app->request->pathInfo,'wallet')!==FALSE,
