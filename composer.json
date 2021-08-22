@@ -36,7 +36,8 @@
         "rekurzia/yii2-papertrail-log-target": "dev-master",
         "vxm/yii2-mfa": "^1.0@dev",
         "lnpay/php-lndconnect": "dev-master",
-        "flow/jsonpath": "dev-master"
+        "flow/jsonpath": "dev-master",
+        "yiisoft/yii2-mongodb": "2.1.x-dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

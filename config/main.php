@@ -26,6 +26,14 @@ return [
             'password' => getenv('DB_PASS'),
             'charset' => 'utf8',
         ],
+        'mongodb' => [
+            'class' => '\yii\mongodb\Connection',
+            'dsn' => 'mongodb://'.getenv('MONGO_USER').':'.getenv('MONGO_PASS').'@'.getenv('MONGO_HOST').'/'.getenv('MONGO_DB'),
+            'options'=>[
+                'ssl'=>true,
+                'authSource'=>'admin'
+            ]
+        ],
         'cache' => [
             'class' => \yii\caching\DbCache::class,
         ],
@@ -39,7 +47,7 @@ return [
             'as workerMonitor' => \zhuravljov\yii\queue\monitor\WorkerMonitor::class,
             'db' => 'db', // DB connection component or its config
             'tableName' => '{{%queue}}', // Table name
-            'channel' => 'default', // Queue channel key
+            'channel' => 'lnpay-cloud', // Queue channel key
             'mutex' => \yii\mutex\MysqlMutex::class, // Mutex used to sync queries
         ],
         'log' => [
