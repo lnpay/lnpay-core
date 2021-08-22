@@ -28,18 +28,6 @@ class LncliController extends NodeApiController
         }
     }
 
-    public function actionChaninfo($chan_id)
-    {
-        try {
-            $array = json_decode($this->nodeObject->getLndConnector()->chanInfo(compact('chan_id')),TRUE);
-            print_r($array);exit;
-            $array['nodeInfo'] = json_decode($this->nodeObject->getLndConnector()->nodeInfo(['pub_key'=>$array['remotePubKey']]),TRUE);
-            return $array;
-        } catch (\Throwable $t) {
-            throw new BadRequestHttpException($t->getMessage());
-        }
-    }
-
     public function actionListchannels($chan_id=null)
     {
         try {

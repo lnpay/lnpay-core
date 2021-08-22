@@ -78,6 +78,13 @@ class WebhookReceiverController extends Controller
 
         try {
             $this->processLndRpcEvent($postBody);
+
+            //send to mongo
+            if (getenv('MONGO_DB')) {
+                $collection = Yii::$app->mongodb->getCollection($nodeObject->id.$postBody['actionObject']['id']);
+                $collection->insert($postBody['responseObject']);
+            }
+
         } catch (\Throwable $t) {
             \LNPay::error($t->getMessage(),__METHOD__);
         }
