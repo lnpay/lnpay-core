@@ -29,8 +29,10 @@ class HtlcEventQueryForm extends Model
     public function rules()
     {
         return [
-            [['eventType','node_id'],'required'],
-            [['incomingChannelId','outgoingChannelId','startAt','endAt'],'integer'],
+            [['node_id'],'required'],
+            [['incomingChannelId','outgoingChannelId'],'integer'],
+            [['endAt'],'default','value'=>function ($model,$attribute) { return time(); }],
+            [['eventType'],'string'],
             [['linkFailEvent'],'boolean']
         ];
     }
@@ -50,15 +52,7 @@ class HtlcEventQueryForm extends Model
             ->andFilterWhere(['incomingChannelId'=>$this->incomingChannelId])
             ->andFilterWhere(['outgoingChannelId'=>$this->outgoingChannelId]);
 
-        if ($this->startAt) {
-            $query->andWhere(['>','timestampNs',$this->startAt]);
-        }
-
-        if ($this->endAt) {
-            $query->andWhere(['<','timestampNs',$this->endAt]);
-        }
-
-        $query->from($this->node_id);
+        $query->from($this->node_id.'_SubscribeHtlcEventsRequest_HtlcEvent');
 
         return $query;
     }

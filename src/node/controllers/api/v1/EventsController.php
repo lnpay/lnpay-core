@@ -65,4 +65,78 @@ class EventsController extends ApiController
             throw new BadRequestHttpException(HelperComponent::getErrorStringFromInvalidModel($model));
         }
     }
+
+    public function actionHtlcsummary($period) //minute, hour, day
+    {
+        $model = new HtlcEventQueryForm();
+        $model->load(Yii::$app->request->getQueryParams(),'');
+
+        if (!$model->endAt)
+            $model->endAt = time()*1000000000;
+
+        $arr = [];
+
+
+        if ($model->validate()) {
+            //execute query
+            $query = $model->constructQuery();
+            $results = $query->all();
+
+
+
+            foreach ($results as $r) {
+                $d = new \DateTime();
+                $ts = $r['timestampNs']/1000000000;
+                $d->setTimestamp($ts);
+                $d->setTimezone(new \DateTimeZone('America/New_York'));
+                //echo $d->format('H:i:s').'<br/>';
+                if (!@$r['outgoingChannelId']) {
+                    continue;
+                }
+                switch ($period) {
+                    case 'second':
+                        $t = strtotime($d->format('Y-m-d H:i:s'));
+                        if (empty($arr[$r['outgoingChannelId'][$t]]))
+                            $arr[$r['outgoingChannelId']][$t] = 0;
+                            $arr[$r['outgoingChannelId']][$t]++;
+                        break;
+                    case 'minute':
+                        $t = strtotime($d->format('Y-m-d H:i:00'));
+                        if (empty($arr[$r['outgoingChannelId']][$t]))
+                            $arr[$r['outgoingChannelId']][$t] = 0;
+                            $arr[$r['outgoingChannelId']][$t]++;
+                        break;
+                    case 'hour':
+                        $t = strtotime($d->format('Y-m-d H:00:00'));
+                        if (empty($arr[$r['outgoingChannelId']][$t]))
+                            $arr[$r['outgoingChannelId']][$t] = 0;
+                            $arr[$r['outgoingChannelId']][$t]++;
+                        break;
+                }
+            }
+
+            $jsf=[];
+
+            foreach ($arr as $channelId => $vars) {
+                foreach ($vars as $timestamp => $count) {
+                    if (empty($jsf[(string) $timestamp])) {
+                        $jsf[(string) $timestamp] = [$channelId=>$count];
+                    }
+                    else {
+                       @$jsf[(string) $timestamp][$channelId]+=$count;
+                    }
+                    $jsf[(string) $timestamp]['time'] = $timestamp;
+                }
+            }
+            return array_values($jsf);
+
+
+        } else {
+            throw new BadRequestHttpException(HelperComponent::getErrorStringFromInvalidModel($model));
+        }
+    }
+
+
+
+
 }

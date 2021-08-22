@@ -31,4 +31,10 @@ class PlayController extends Controller
         */
     }
 
+    public function actionPopulate()
+    {
+
+
+    }
+
 }

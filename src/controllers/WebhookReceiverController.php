@@ -73,60 +73,7 @@ class WebhookReceiverController extends Controller
         \LNPay::$app->response->format = \yii\web\Response::FORMAT_JSON;
 
         if (! ($nodeObject = LnNode::findOne(@$postBody['nodeObject']['id']))) {
-            throw new \yii\web\ServerErrorHttpException('Invalid node specified!');
-        }
-
-        try {
-            $this->processLndRpcEvent($postBody);
-
-            //send to mongo
-            if (getenv('MONGO_DB')) {
-                $collection = Yii::$app->mongodb->getCollection($nodeObject->id.$postBody['actionObject']['id']);
-                $collection->insert($postBody['responseObject']);
-            }
-
-        } catch (\Throwable $t) {
-            \LNPay::error($t->getMessage(),__METHOD__);
-        }
-
-
-        //Last we register the action that LND has processed
-        $nodeObject->user->registerAction($postBody['actionObject']['id'],$postBody['responseObject']);
-    }
-
-    public function processLndRpcEvent($postBody)
-    {
-        switch ($postBody['actionObject']['name']) {
-            case 'Invoice':
-                $invoice = $postBody['responseObject'];
-
-                //Check for keysend payment
-                try {
-                    if (@$invoice['isKeysend']) {
-                        $lnTx = LnTx::processKeysendInvoiceAction($invoice);
-                        if ($lnTx)
-                            return $lnTx->toArray();
-                        else {
-                            //keysend most likely sent from this node
-                            return false;
-                        }
-                    }
-                } catch (\Throwable $t) {
-                    \LNPay::error($t->getMessage(),__METHOD__);
-                }
-
-                //check for normal invoice payment
-                try {
-                    $lnTx = LnTx::processInvoiceAction($invoice);
-                } catch (\Throwable $t) {
-                    \LNPay::error($t->getMessage(),__METHOD__);
-                }
-
-                if ($lnTx instanceof LnTx) {
-                    return $lnTx->toArray();
-                }
-
-                break;
+            throw new \yii\web\ServerErrorHttpException(print_r($_REQUEST,TRUE).print_r($postBody,TRUE));
         }
     }
 
