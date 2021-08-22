@@ -12,6 +12,7 @@ use lnpay\node\exceptions\UnableToQueryRoutesException;
 use lnpay\node\exceptions\UnableToSendKeysendException;
 use lnpay\node\models\LnNode;
 use Lnrpc\BakeMacaroonRequest;
+use Lnrpc\ChanInfoRequest;
 use Lnrpc\DeleteAllPaymentsRequest;
 use Lnrpc\GenSeedRequest;
 use Lnrpc\GetInfoRequest;
@@ -319,6 +320,14 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
         }
     }
 
+    public function chanInfo($data) {
+        try {
+            return $this->lnd_rpc_request('ChanInfo',$data);
+        } catch (\Throwable $t) {
+            \LNPay::error($t->getMessage(),__METHOD__);
+        }
+    }
+
     public function getInfo() {
         try {
             switch ($this->_webService) {
@@ -340,6 +349,11 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
         //\LNPay::info($this->_nodeObject->host.':'.$this->_nodeObject->rpc_port);
         try {
             switch ($method) {
+                case 'ChanInfo':
+                    $rpcConnector = static::initConnectorRpc($this->_nodeObject);
+                    $r = new ChanInfoRequest($bodyArray);
+                    $resp = $rpcConnector->GetChanInfo($r)->wait();
+                    break;
                 case 'NodeInfo':
                     $rpcConnector = static::initConnectorRpc($this->_nodeObject);
                     $r = new NodeInfoRequest($bodyArray);

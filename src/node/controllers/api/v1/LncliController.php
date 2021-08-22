@@ -28,7 +28,19 @@ class LncliController extends NodeApiController
         }
     }
 
-    public function actionListchannels()
+    public function actionChaninfo($chan_id)
+    {
+        try {
+            $array = json_decode($this->nodeObject->getLndConnector()->chanInfo(compact('chan_id')),TRUE);
+            print_r($array);exit;
+            $array['nodeInfo'] = json_decode($this->nodeObject->getLndConnector()->nodeInfo(['pub_key'=>$array['remotePubKey']]),TRUE);
+            return $array;
+        } catch (\Throwable $t) {
+            throw new BadRequestHttpException($t->getMessage());
+        }
+    }
+
+    public function actionListchannels($chan_id=null)
     {
         try {
             $array = json_decode($this->nodeObject->getLndConnector()->listChannels(),TRUE);
@@ -36,7 +48,16 @@ class LncliController extends NodeApiController
             foreach ($array['channels'] as $channel) {
                 $channel['nodeInfo'] = json_decode($this->nodeObject->getLndConnector()->nodeInfo(['pub_key'=>$channel['remotePubkey']]),TRUE);
                 $arr[] = $channel;
+
+                if ($chan_id) {
+                    if ($chan_id == $channel['chanId']) {
+                        return $channel;
+                    }
+                }
             }
+
+
+
             return $arr;
         } catch (\Throwable $t) {
             throw new BadRequestHttpException($t->getMessage());
