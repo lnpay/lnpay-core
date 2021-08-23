@@ -95,10 +95,15 @@ class WalletTransferForm extends Model
             return false;
         }
 
-        if ( ($this->destWalletObject = Wallet::findById($this->dest_wallet_id)) || ($this->destWalletObject = Wallet::findByKey($this->dest_wallet_id)))  {
+        if ( ($this->destWalletObject = Wallet::findById($this->dest_wallet_id)))  {
             //Will probably need this logic eventually
             if ($this->sourceWalletObject->ln_node_id != $this->destWalletObject->ln_node_id) {
                 $this->addError($attribute,"Cannot transfer funds between wallets tied to different nodes");
+                return false;
+            }
+
+            if ($this->sourceWalletObject->user_id != $this->destWalletObject->user_id) {
+                $this->addError($attribute,"Cannot transfer funds");
                 return false;
             }
         } else {
