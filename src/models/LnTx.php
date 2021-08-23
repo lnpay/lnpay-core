@@ -256,9 +256,13 @@ class LnTx extends \yii\db\ActiveRecord
      * @return LnTx|bool
      * @throws ServerErrorHttpException
      */
-    public static function processKeysendInvoiceAction($invoice)
+    public static function processKeysendInvoiceAction($invoice,$nodeObject)
     {
         $custom_records = [];
+        if (@$invoice['amtPaidSat'] == 0) {
+            return false;
+        }
+
         foreach ($invoice['htlcs'] as $htlc) {
             if ($htlc['customRecords']) {
                 foreach ($htlc['customRecords'] as $key => $value) {
@@ -272,9 +276,7 @@ class LnTx extends \yii\db\ActiveRecord
             }
         }
 
-        if ($invoice['amtPaidSat'] == 0) {
-            return false;
-        }
+
 
         $lnTx = new LnTx();
         $lnTx->user_id = NULL;
@@ -305,7 +307,7 @@ class LnTx extends \yii\db\ActiveRecord
 
 
         if (!$w) {
-            $w = $w->lnNode->keysendWallet;
+            $w = $nodeObject->keysendWallet;
         }
         $lnTx->user_id = $w->user_id;
         $lnTx->ln_node_id = $w->ln_node_id;

@@ -8,37 +8,31 @@ use yii\helpers\VarDumper;
 
 class ProcessLndResponseJob extends \yii\base\BaseObject implements \yii\queue\JobInterface
 {
-    public $responseObject;
-    public $nodeObject;
-    public $actionObject;
+    public $responseArray;
+    public $nodeArray;
+    public $actionArray;
 
     public function execute($queue)
     {
-        $client = new \GuzzleHttp\Client([
-            'http_errors'=>false,
-            'headers' => ['Content-Type'=>'application/json']
-        ]);
-
         $postBody = [
-            'responseObject'=>$this->responseObject,
-            'nodeObject' => $this->nodeObject,
-            'actionObject' => $this->actionObject
+            'responseObject'=>$this->responseArray,
+            'nodeObject' => $this->nodeArray,
+            'actionObject' => $this->actionArray
         ];
-        /*
-        $response = $client->request('POST', $url, [
-            'body' => json_encode($postBody)]);*/
+        Yii::error(VarDumper::export($postBody),__METHOD__);
 
         try {
-            $this->processLndRpcEvent($postBody);
+
+            $this->processLndRpcEvent();
 
             //Last we register the action that LND has processed
-            $nodeObject = LnNode::findOne($this->nodeObject['id']);
-            $nodeObject->user->registerAction($this->actionObject['id'],$this->responseObject);
+            $nodeObject = LnNode::findOne($this->nodeArray['id']);
+            $nodeObject->user->registerAction($this->actionArray['id'],$this->responseArray);
 
             //send to mongo
             if (getenv('MONGO_DB')) {
-                $collection = Yii::$app->mongodb->getCollection($this->nodeObject['id'].'_'.$this->actionObject['id']);
-                $collection->insert($this->responseObject);
+                $collection = Yii::$app->mongodb->getCollection($this->nodeArray['id'].'_'.$this->nodeArray['id']);
+                $collection->insert($this->responseArray);
             }
 
         } catch (\Throwable $t) {
@@ -48,27 +42,22 @@ class ProcessLndResponseJob extends \yii\base\BaseObject implements \yii\queue\J
 
     }
 
-    public function processLndRpcEvent($postBody)
+    public function processLndRpcEvent()
     {
-        Yii::error(VarDumper::export($postBody),__METHOD__);
-        switch ($postBody['actionObject']['name']) {
-            case 'Invoice':
-                $invoice = $postBody['responseObject'];
-
+        switch ($this->actionArray['name']) {
+            case 'Invoice': //Process "Invoice" RPC actions from the node
+                $invoice = $this->responseArray;
 
                 //Check for keysend payment
                 try {
-                    if (@$invoice['isKeysend']) {
-                        $lnTx = LnTx::processKeysendInvoiceAction($invoice);
-                        if ($lnTx)
-                            return $lnTx->toArray();
-                        else {
-                            //keysend most likely sent from this node
-                            return false;
-                        }
+                    if (@$invoice['isKeysend'] && @$invoice['htlcs']) { //inbound keysend
+                        $lnTx = LnTx::processKeysendInvoiceAction($invoice,LnNode::findOne($this->nodeArray['id']));
+                        return $lnTx->toArray();
+                    } else { // outbound keysend do nothing for now
+                        return false;
                     }
                 } catch (\Throwable $t) {
-                    \LNPay::error($t->getMessage(),__METHOD__);
+                    \LNPay::error('Processing keysend:'.$t->getMessage(),__METHOD__);
                 }
 
                 //check for normal invoice payment

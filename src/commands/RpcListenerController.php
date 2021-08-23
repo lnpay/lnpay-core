@@ -36,9 +36,9 @@ class RpcListenerController extends Controller
         ];
 
         $job = \LNPay::$app->queue->priority(100)->push(new ProcessLndResponseJob([
-            'responseObject' => $rpcData,
-            'nodeObject' => $nodeObject->toArray(),
-            'actionObject'=>$actionName->toArray()
+            'responseArray' => $rpcData,
+            'nodeArray' => $nodeObject->toArray(),
+            'actionArray'=>$actionName->toArray()
         ]));
 
         //$actionFeedObject = $nodeObject->user->registerAction($actionName->id,$eventData);
