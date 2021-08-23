@@ -4,6 +4,7 @@ namespace lnpay\jobs;
 use lnpay\models\LnTx;
 use lnpay\node\models\LnNode;
 use Yii;
+use yii\helpers\VarDumper;
 
 class ProcessLndResponseJob extends \yii\base\BaseObject implements \yii\queue\JobInterface
 {
@@ -49,9 +50,11 @@ class ProcessLndResponseJob extends \yii\base\BaseObject implements \yii\queue\J
 
     public function processLndRpcEvent($postBody)
     {
+        Yii::error(VarDumper::export($postBody),__METHOD__);
         switch ($postBody['actionObject']['name']) {
             case 'Invoice':
                 $invoice = $postBody['responseObject'];
+
 
                 //Check for keysend payment
                 try {
