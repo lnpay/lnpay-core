@@ -6,6 +6,20 @@ use yii\helpers\Html;
 $this->title = 'Your Account';
 $this->beginContent('@app/views/layouts/sidebar/_nav-account.php');
 ?>
+<?php
+$userId = \LNPay::$app->user->identity->external_hash;
+if (!\LNPay::$app->user->identity->isActivated) { ?>
+    <div class="jumbotron well">
+    <h2>Account Pending Activation</h2>
+        <p>
+            Once your account is activated you may begin using LNPay custodial services
+        </p>
+        <p>
+            <a href="mailto:admin@lnpay.co?subject=account-verify+<?=$userId;?>" class="btn btn-primary">Request Verification <i class="glyphicon glyphicon-email"></i></a>
+        </p>
+    </div>
+
+<?php } ?>
 <h1>Account Details</h1>
 <?php
     echo \yii\widgets\DetailView::widget([
@@ -18,6 +32,10 @@ $this->beginContent('@app/views/layouts/sidebar/_nav-account.php');
                 'created_at:datetime',
                 'tz',
                 'email',
+                [
+                    'label'=>'Activated',
+                    'value'=>function($model) { return $model->isActivated?:'Pending Activation'; }
+                ],
         ]
     ]);
 ?>

@@ -18,7 +18,6 @@ class ProcessLndResponseJob extends \yii\base\BaseObject implements \yii\queue\J
             'headers' => ['Content-Type'=>'application/json']
         ]);
 
-        $url = getenv('LN_NODE_INGESTION_ENDPOINT').'/webhook-receiver/ln-node-ingestion';
         $postBody = [
             'responseObject'=>$this->responseObject,
             'nodeObject' => $this->nodeObject,

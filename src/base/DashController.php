@@ -23,6 +23,10 @@ class DashController extends Controller
         if (!\LNPay::$app->user->isGuest)
             LNPayComponent::processTz(\LNPay::$app->user->identity);
 
+        if (!\LNPay::$app->user->identity->isActivated) {
+            return $this->redirect(['/account/index']);
+        }
+
         return true;
     }
 

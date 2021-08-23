@@ -37,6 +37,8 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
     const STATUS_API_USER_LNTXBOT = 15;
     const STATUS_API_ADMIN = 100;
 
+    const EMAIL_ACTIVATED = 2;
+
     const DATA_INVOICE_PAID_WH_URL = 'invoice_paid_webhook_url';
     const DATA_LNURL_OTT = 'lnurl_ott';
     const DATA_CUSTOM_LAYOUT = 'custom_layout';
@@ -124,6 +126,12 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
         return $this->email_verify;
     }
 
+    public function getIsActivated()
+    {
+        return 1;
+        //return $this->email_verify==self::EMAIL_ACTIVATED;
+    }
+
     /**
      * @return mixed
      */
@@ -131,7 +139,7 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
     {
         $this->email_verify = 1;
         if ($this->save()) {
-            $this->registerAction(ActionName::USER_CONFIRMED);
+
         } else {
             throw new ServerErrorHttpException('Unable to confirm user!');
         }
