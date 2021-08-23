@@ -11,7 +11,7 @@ $this->title = 'Home';
                     <img src="https://lnpay.co/frontend-resources/assets/img/icon_large_wallets.png" style="height: 100px" />
                     <h3>Wallets</h3>
                     <p>Create, manage, send, receive from fully functional wallets to segment your funds across services. </p>
-                    <p><a href="/wallet/dashboard" class="btn btn-primary" role="button">Go to Wallets <i class="fa fa-arrow-circle-right"></i></a></p>
+                    <p><a href="/wallet/wallet/dashboard" class="btn btn-primary" role="button">Go to Wallets <i class="fa fa-arrow-circle-right"></i></a></p>
                 </div>
             </div>
         </div>
