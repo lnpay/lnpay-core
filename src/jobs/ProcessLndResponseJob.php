@@ -15,9 +15,9 @@ class ProcessLndResponseJob extends \yii\base\BaseObject implements \yii\queue\J
     public function execute($queue)
     {
         $postBody = [
-            'responseObject'=>$this->responseArray,
-            'nodeObject' => $this->nodeArray,
-            'actionObject' => $this->actionArray
+            'responseArray'=>$this->responseArray,
+            'nodeArray' => $this->nodeArray,
+            'actionArray' => $this->actionArray
         ];
         Yii::error(VarDumper::export($postBody),__METHOD__);
 
@@ -54,7 +54,7 @@ class ProcessLndResponseJob extends \yii\base\BaseObject implements \yii\queue\J
                         $lnTx = LnTx::processKeysendInvoiceAction($invoice,LnNode::findOne($this->nodeArray['id']));
                         return $lnTx->toArray();
                     } else { // outbound keysend do nothing for now
-                        return false;
+                        //do not return false
                     }
                 } catch (\Throwable $t) {
                     \LNPay::error('Processing keysend:'.$t->getMessage(),__METHOD__);
