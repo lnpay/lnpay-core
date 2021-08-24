@@ -53,18 +53,18 @@ class ProcessLndResponseJob extends \yii\base\BaseObject implements \yii\queue\J
                     if (@$invoice['isKeysend'] && @$invoice['htlcs']) { //inbound keysend
                         $lnTx = LnTx::processKeysendInvoiceAction($invoice,LnNode::findOne($this->nodeArray['id']));
                         return $lnTx->toArray();
-                    } else { // outbound keysend do nothing for now
-                        //do not return false
+                    } else if (@$invoice['isKeysend']) { // outbound keysend do nothing for now
+                        return false;
                     }
                 } catch (\Throwable $t) {
-                    \LNPay::error('Processing keysend:'.$t->getMessage(),__METHOD__);
+                    \LNPay::error('Error processing keysend:'.$t->getMessage(),__METHOD__);
                 }
 
                 //check for normal invoice payment
                 try {
                     $lnTx = LnTx::processInvoiceAction($invoice);
                 } catch (\Throwable $t) {
-                    \LNPay::error($t->getMessage(),__METHOD__);
+                    \LNPay::error('Error processing invoice action:'.$t->getMessage(),__METHOD__);
                 }
 
                 if ($lnTx instanceof LnTx) {

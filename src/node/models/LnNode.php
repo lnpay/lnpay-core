@@ -247,6 +247,14 @@ class LnNode extends \yii\db\ActiveRecord
         return static::find()->orderBy('ln_node.created_at ASC');
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIsCustodialNode()
+    {
+        return $this->getJsonData('is_custodial');
+    }
+
 
     /**
      * @param $key

@@ -32,12 +32,6 @@ class WalletTransactionTest extends \Codeception\Test\Unit
 
     }
 
-    //@TODO: this test
-    public function testRunningBalance()
-    {
-
-    }
-
     public function testCreateNetworkFeeTransactionNoFee()
     {
         $r = $this->carolNode->getLndConnector()->createInvoice(['value'=>10]);

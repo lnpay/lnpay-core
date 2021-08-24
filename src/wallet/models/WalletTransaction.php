@@ -123,15 +123,6 @@ class WalletTransaction extends \yii\db\ActiveRecord
         return $this->hasOne(WalletTransactionType::className(), ['id' => 'wtx_type_id']);
     }
 
-    public function getRunningBalance()
-    {
-        $sum = 0;
-        foreach (WalletTransaction::find()->where(['wallet_id'=>$this->wallet_id])->andWhere(['<=','created_at',$this->created_at])->all() as $wtx) {
-            $sum += $wtx->num_satoshis;
-        }
-        return $sum;
-    }
-
     public function setPassThru($data)
     {
         if (!is_array($data))
@@ -160,7 +151,12 @@ class WalletTransaction extends \yii\db\ActiveRecord
 
             if ($this->user->feeTargetWallet==User::DATA_FEE_TARGET_WALLET_CONTAINED) {
                 if ( ($this->wallet->balance + $networkFee) < 0) { //this will result in negative balance to wallet
-                    $wtx->wallet_id = $this->wallet->lnNode->fee_wallet_id; //send to fee wallet
+                    if ($this->wallet->lnNode->isCustodialNode) {
+                        $wtx->wallet_id = $this->wallet_id; //this deducts from existing wallet and will make it go negative (not ideal)
+                    } else {
+                        $wtx->wallet_id = $this->wallet->lnNode->fee_wallet_id; //send to fee wallet
+                    }
+
                 } else { //send to the wallet as expected
                     $wtx->wallet_id = $this->wallet_id;
                 }
