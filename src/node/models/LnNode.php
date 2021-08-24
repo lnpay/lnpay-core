@@ -4,6 +4,7 @@ namespace lnpay\node\models;
 
 use lnpay\behaviors\JsonDataBehavior;
 use lnpay\components\HelperComponent;
+use lnpay\models\LnTx;
 use lnpay\node\components\LndNodeConnector;
 use lnpay\node\components\LnMacaroonObject;
 use lnpay\components\SupervisorComponent;
@@ -339,7 +340,17 @@ class LnNode extends \yii\db\ActiveRecord
         \LNPay::info($this->id.': Spawning subscribers');
         NodeListener::createLndRpcListenerObjects($this->id);
         sleep(5); //Sometimes it takes a second to write to these configs
-        SupervisorComponent::reloadSupervisor();
+        $this->startLndRpcSubscribers();
+
+    }
+
+    public function startLndRpcSubscribers()
+    {
+        foreach (NodeListener::find()->where(['ln_node_id'=>$this->id])->all() as $nL) {
+            if ($nL->supervisor_parameters['autostart']) {
+                SupervisorComponent::startProcess($nL->id);
+            }
+        }
     }
 
     /**
@@ -539,6 +550,18 @@ class LnNode extends \yii\db\ActiveRecord
         if (!parent::beforeDelete()) {
             return false;
         }
+
+        \LNPay::$app->db->createCommand()->update('ln_node', ['fee_wallet_id' => NULL], ['id'=>$this->id])->execute();
+        \LNPay::$app->db->createCommand()->update('ln_node', ['keysend_wallet_id' => NULL], ['id'=>$this->id])->execute();
+
+        foreach (LnTx::find()->where(['ln_node_id'=>$this->id])->all() as $lntx) {
+            $lntx->delete();
+        }
+
+        foreach (Wallet::find()->where(['ln_node_id'=>$this->id])->all() as $w) {
+            $w->delete();
+        }
+
 
         //This is here instead of ActionComponent::ActionName::LN_NODE_USER_REMOVE
         //because we don't want to delete unless success on remove from supervisor

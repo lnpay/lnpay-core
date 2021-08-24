@@ -19,7 +19,7 @@ class ProcessLndResponseJob extends \yii\base\BaseObject implements \yii\queue\J
             'nodeArray' => $this->nodeArray,
             'actionArray' => $this->actionArray
         ];
-        Yii::error(VarDumper::export($postBody),__METHOD__);
+        \LNPay::info(VarDumper::export($postBody),__METHOD__);
 
         try {
 

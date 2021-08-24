@@ -144,14 +144,10 @@ class NodeListener extends \yii\db\ActiveRecord
     public static function createLndRpcSupervisorConfig($nodeObject,$method)
     {
         switch ($method) {
-            case static::LND_RPC_SUBSCRIBE_INVOICES:
+            case static::LND_RPC_SUBSCRIBE_CHANNEL_BACKUPS:
+            case static::LND_RPC_SUBSCRIBE_CHANNEL_GRAPH:
                 $overrides = [
-                    'autostart'=>true
-                ];
-                break;
-            case static::LND_RPC_SUBSCRIBE_TRANSACTIONS:
-                $overrides = [
-                    'autostart'=>true
+                    'autostart'=>false
                 ];
                 break;
             default:
@@ -160,7 +156,7 @@ class NodeListener extends \yii\db\ActiveRecord
 
         return ArrayHelper::merge([
             'command' => getenv('PHP_BIN_PATH').' '.getenv('SUPERVISOR_SERVER_APP_PATH').'yii rpc-listener/lnd-subscribe '.$nodeObject->id.' '.$method,
-            'autostart'=>false,
+            'autostart'=>true,
             'autorestart'=>true,
             //'numprocs'=>1,
             //'process_name'='%(program_name)s_%(process_num)02d',
@@ -252,7 +248,6 @@ class NodeListener extends \yii\db\ActiveRecord
         $this->updateSupervisorParameters(['autostart'=>1]);
         SupervisorComponent::startProcess($this->id);
     }
-
 
 
 

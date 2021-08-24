@@ -24,7 +24,7 @@ use yii\helpers\Html;
             'class' => 'btn-danger pull-right sidebar-item',
             'style'=>'height:25px',
             'data' => [
-                'confirm' => 'Are you sure you want to remove this node? ',
+                'confirm' => 'Are you sure you want to remove this node? This will remove all wallets and transactions associated with this node!! CANNOT BE UNDONE',
                 'method' => 'post',
             ],
         ]); ?>

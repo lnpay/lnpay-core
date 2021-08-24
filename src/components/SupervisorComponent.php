@@ -205,15 +205,6 @@ class SupervisorComponent extends \yii\base\Component
     /**
      * @return array
      */
-    public static function reloadSupervisor()
-    {
-        $api = static::init_api();
-        try { return $api->__call('reloadConfig'); } catch (\Exception $e) { }
-    }
-
-    /**
-     * @return array
-     */
     public static function getAllProcessInfo()
     {
         $api = static::init_api();
