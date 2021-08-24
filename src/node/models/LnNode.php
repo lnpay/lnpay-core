@@ -339,7 +339,7 @@ class LnNode extends \yii\db\ActiveRecord
         \LNPay::info($this->id.': Spawning subscribers');
         NodeListener::createLndRpcListenerObjects($this->id);
         sleep(5); //Sometimes it takes a second to write to these configs
-        SupervisorComponent::restartSupervisor();
+        SupervisorComponent::reloadSupervisor();
     }
 
     /**
