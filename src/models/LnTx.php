@@ -236,6 +236,7 @@ class LnTx extends \yii\db\ActiveRecord
                     $lnTx->settled = 1;
                     $lnTx->num_satoshis = $invoice['amtPaidSat'];
                     $lnTx->payment_preimage = bin2hex(base64_decode($invoice['rPreimage']));
+                    $lnTx->passThru = ArrayHelper::merge($lnTx->passThru,['htlc'=>@$invoice['htlcs'][0]]);
                     $lnTx->settled_at = time();
                     if ($lnTx->save()) {
                         //we are good
