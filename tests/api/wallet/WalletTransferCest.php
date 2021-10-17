@@ -88,7 +88,8 @@ class WalletTransferCest
         $I->seeResponseContains('"myData":"isHere"');
         $I->seeResponseContains('"myOtherData":"isHere"');
     }
-
+    /*
+     * THIS TEST IS COMMENTED OUT BECAUSE REFERENCING DEST_WALLET_ID WITH A KEY IS NOT SUPPORTED
     public function walletTransferSuccessWakaWaka(\ApiTester $I)
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
@@ -107,7 +108,7 @@ class WalletTransferCest
         $I->seeResponseContains('"num_satoshis":-3');
         $I->seeResponseContains('"myData":"isHere"');
         $I->seeResponseContains('"myOtherData":"isHere"');
-    }
+    }*/
 
     public function walletTransferFailWakr(\ApiTester $I)
     {
