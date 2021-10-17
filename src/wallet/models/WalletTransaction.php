@@ -143,7 +143,7 @@ class WalletTransaction extends \yii\db\ActiveRecord
     public function createNetworkFeeTransaction()
     {
         //Network fee
-        if ($this->lnTx->fee_msat > 0) {
+        if ($this->lnTx && $this->lnTx->fee_msat > 0) {
             $networkFee = (int) ceil($this->lnTx->fee_msat/1000)*-1;
             \LNPay::info('tx: '.$this->id.' - Network fee:'.$networkFee,__METHOD__);
             $wtx = new WalletTransaction();
@@ -189,7 +189,7 @@ class WalletTransaction extends \yii\db\ActiveRecord
             $wtx->wallet_id = ($this->user->feeTargetWallet==User::DATA_FEE_TARGET_WALLET_CONTAINED?$this->wallet_id:$this->wallet->lnNode->fee_wallet_id);
             $wtx->num_satoshis = $serviceFee;
             $wtx->ln_tx_id = NULL;
-            $wtx->user_label = 'LNPAY service fee';
+            $wtx->user_label = 'LNPAY service fee ('.$this->walletTransactionType->display_name.')';
             $wtx->passThru = ['source_transaction'=>$this->external_hash,'fee_target_wallet'=>$this->user->feeTargetWallet];
             $wtx->wtx_type_id = WalletTransactionType::LN_SERVICE_FEE;
             if ($wtx->save()) {
@@ -235,6 +235,12 @@ class WalletTransaction extends \yii\db\ActiveRecord
                     break;
                 case WalletTransactionType::LN_TRANSFER_OUT:
                     $action_id = ActionName::WALLET_TRANSFER_OUT;
+                    break;
+                case WalletTransactionType::LN_LOOP_OUT:
+                    $action_id = ActionName::WALLET_LOOP_OUT;
+                    break;
+                case WalletTransactionType::LN_LOOP_IN:
+                    $action_id = ActionName::WALLET_LOOP_IN;
                     break;
                 case WalletTransactionType::LN_NETWORK_FEE:
                 case WalletTransactionType::LN_SERVICE_FEE:
@@ -282,7 +288,7 @@ class WalletTransaction extends \yii\db\ActiveRecord
                 $this->user->registerAction($action,['wtx'=>$this->toArray()]);
             }
 
-            if (in_array($this->wtx_type_id,[WalletTransactionType::LN_WITHDRAWAL,WalletTransactionType::LN_DEPOSIT])) {
+            if (in_array($this->wtx_type_id,[WalletTransactionType::LN_WITHDRAWAL,WalletTransactionType::LN_DEPOSIT,WalletTransactionType::LN_LOOP_OUT])) {
                 $this->createNetworkFeeTransaction();
                 $this->createServiceFeeTransaction();
             }

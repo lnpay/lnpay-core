@@ -22,6 +22,11 @@ class ActionName extends \yii\db\ActiveRecord
     const WALLET_TRANSFER_IN = 530;
     const WALLET_TRANSFER_OUT = 540;
 
+    const WALLET_LOOP_OUT = 550;
+    const WALLET_LOOP_IN = 555;
+
+
+
     const NETWORK_FEE_INCURRED = 'network_fee_incurred';
 
     const LN_NODE_USER_ADD = 605;

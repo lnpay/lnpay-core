@@ -503,6 +503,9 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
             case WalletTransactionType::LN_DEPOSIT:
                 $fee = $this->getJsonData(self::DATA_INBOUND_SERVICE_FEE_RATE);
                 break;
+            case WalletTransactionType::LN_LOOP_OUT:
+                $fee = $this->getJsonData(self::DATA_OUTBOUND_SERVICE_FEE_RATE);
+                break;
         }
 
         if ($fee) {

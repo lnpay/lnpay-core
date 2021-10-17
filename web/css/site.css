@@ -150,6 +150,18 @@ h1, h2, h3, h4, h5, h6 {
     /* grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); */
 }
 
+.wallet-loop-container {
+    display: grid;
+    grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr);
+    grid-template-rows: 175px 175px;
+    grid-template-areas:
+            "balance withdraw"
+            ". deposit"
+            ". transfer";
+    padding: 32px;
+    box-shadow: 0 1px 3px hsla(0, 0%, 0%, .2);
+}
+
 .wallet-balance-container {
     display: grid;
     grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr);

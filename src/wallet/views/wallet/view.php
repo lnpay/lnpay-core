@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = 'View';
                 'options'=>[
                     'class'=>'ajaxFormLoader'
                 ],
-                'validationUrl'=>'/wallet/validate-withdrawal?id='.$wallet->publicId
+                'validationUrl'=>'/wallet/wallet/validate-withdrawal?id='.$wallet->publicId
             ]); ?>
             <?php //$form->errorSummary($model); ?>
 

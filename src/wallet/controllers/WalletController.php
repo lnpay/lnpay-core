@@ -5,6 +5,7 @@ namespace lnpay\wallet\controllers;
 use lnpay\base\DashController;
 use lnpay\components\HelperComponent;
 
+use lnpay\wallet\models\LnLoopOutForm;
 use lnpay\wallet\models\LnWalletDepositForm;
 use lnpay\wallet\models\LnWalletWithdrawForm;
 use lnpay\wallet\models\WalletTransactionSearch;
@@ -15,6 +16,7 @@ use lnpay\wallet\models\WalletSearch;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
+use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
@@ -116,6 +118,19 @@ class WalletController extends DashController
     {
         $walletObject = $this->findModel($id);
         return $this->render('views/_access-keys',['wallet'=>$walletObject]);
+    }
+
+    public function actionLoop($id)
+    {
+        $walletObject = $this->findModel($id);
+        $lnLoopOutForm = new LnLoopOutForm();
+
+        $lnLoopOutForm->wallet_id = $walletObject->external_hash;
+        if ($lnLoopOutForm->load(\LNPay::$app->request->post()) && $lnLoopOutForm->validate()) {
+            $lnLoopOutForm->attemptLoopOut();
+            return $this->redirect(\LNPay::$app->request->referrer);
+        }
+        return $this->render('views/_loop',['wallet'=>$walletObject,'lnLoopOutForm'=>$lnLoopOutForm]);
     }
 
     public function actionKeysend($id)

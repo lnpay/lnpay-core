@@ -9,6 +9,7 @@ use yii\base\Model;
 use lnpay\models\User;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 use yii\web\HttpException;
@@ -153,6 +154,7 @@ class LnWalletWithdrawForm extends Model
                 throw new BadRequestHttpException(HelperComponent::getErrorStringFromInvalidModel($this));
             }
 
+            $arrayPaidInvoiceObject = (array) $this->paidInvoiceObject;
             if ($this->decodedInvoiceObject && $this->paidInvoiceObject) {
                 $lnTx = new LnTx();
                 $lnTx->user_id = $this->walletObject->user_id;
@@ -168,7 +170,7 @@ class LnWalletWithdrawForm extends Model
                 $lnTx->settled_at = time();
                 $lnTx->passThru = $this->passThru;
                 $lnTx->ln_node_id = $this->walletObject->ln_node_id;
-                $lnTx->appendJsonData($data);
+                $lnTx->appendJsonData(ArrayHelper::merge($data,['outgoingChannelId'=>@$arrayPaidInvoiceObject['htlcs'][0]['route']['hops'][0]['chanId']]));
 
                 if ($lnTx->save()) {
                     //good to go

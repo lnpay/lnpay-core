@@ -4,7 +4,6 @@ namespace lnpay\wallet\models;
 use lnpay\components\HelperComponent;
 use lnpay\node\components\LndNodeConnector;
 use lnpay\exceptions\WalletBusyException;
-use lnpay\models\BalanceWithdraw;
 use lnpay\models\LnTx;
 use lnpay\wallet\models\WalletTransaction;
 use lnpay\node\models\LnNode;
@@ -12,6 +11,7 @@ use yii\base\Model;
 use lnpay\models\User;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 use yii\web\HttpException;
@@ -122,6 +122,9 @@ class LnWalletKeysendForm extends Model
 
             if ($this->paidInvoiceObject) {
 
+                $arrayPaidInvoiceObject = (array) $this->paidInvoiceObject;
+                $outgoingChanId = @$arrayPaidInvoiceObject['htlcs'][0]['route']['hops'][0]['chanId'];
+
                 foreach ($this->paidInvoiceObject->htlcs as $htlc) {
                     foreach ($htlc['route']['hops'] as $hop) {
                         if ($hop['pubKey'] == $this->dest_pubkey) {
@@ -153,7 +156,7 @@ class LnWalletKeysendForm extends Model
                 $lnTx->custom_records = $customRecords;
                 $lnTx->passThru = $this->passThru;
                 $lnTx->ln_node_id = $this->walletObject->ln_node_id;
-                $lnTx->appendJsonData($data);
+                $lnTx->appendJsonData(ArrayHelper::merge($data,['outgoingChanId'=>$outgoingChanId]));
 
                 if ($lnTx->save()) {
                     //good to go
