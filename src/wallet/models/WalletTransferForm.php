@@ -128,7 +128,7 @@ class WalletTransferForm extends Model
 
     public function executeTransfer()
     {
-        if (\LNPay::$app->mutex->acquire($this->sourceWalletObject->publicId) && \LNPay::$app->mutex->acquire($this->destWalletObject->publicId)) {
+        if (\LNPay::$app->mutex->acquire($this->sourceWalletObject->publicId)) {
             $json_data = [
                 'source_wallet_id' => $this->sourceWalletObject->external_hash,
                 'dest_wallet_id' => $this->destWalletObject->external_hash,
@@ -145,6 +145,7 @@ class WalletTransferForm extends Model
             $wtxDebit->user_label = $this->memo;
             $wtxDebit->appendJsonData($json_data);
             if (!$wtxDebit->save()) {
+                $this->sourceWalletObject->releaseMutex();
                 throw new ServerErrorHttpException(HelperComponent::getErrorStringFromInvalidModel($wtxDebit));
             }
 
@@ -160,6 +161,7 @@ class WalletTransferForm extends Model
                 throw new ServerErrorHttpException(HelperComponent::getErrorStringFromInvalidModel($wtxDebit));
             }
 
+            $this->sourceWalletObject->releaseMutex();
             return ['wtx_transfer_out' => $wtxDebit->id, 'wtx_transfer_in' => $wtxCredit->id];
         } else {
             throw new BadRequestHttpException('Wallet busy try again soon...');

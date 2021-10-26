@@ -10,6 +10,8 @@ use lnpay\wallet\models\Wallet;
 use lnpay\wallet\models\WalletTransaction;
 use lnpay\wallet\models\WalletTransactionType;
 use lnpay\node\models\LnNode;
+use Lnrpc\HopHint;
+use Lnrpc\RouteHint;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\ServerErrorHttpException;
@@ -158,6 +160,22 @@ class LnTx extends \yii\db\ActiveRecord
             'expiry'=> (int) $this->expiry,
             'description_hash'=>hex2bin($this->description_hash)
         ];
+
+        $hintNodeId = User::findOne($this->user_id)->getJsonData('hint_node_id');
+        $hintChanId = User::findOne($this->user_id)->getJsonData('hint_chan_id');
+        if ($hintNodeId && $hintChanId) {
+            $hintOptions = [];
+            $hopHint = new HopHint();
+            $hopHint->setNodeId($hintNodeId);
+            $hopHint->setChanId($hintChanId);
+
+            $routeHint = new RouteHint();
+            $routeHint->setHopHints([$hopHint]);
+            $hintOptions = ['route_hints'=>[$routeHint]];
+
+            $invoiceOptions = ArrayHelper::merge($invoiceOptions,$hintOptions);
+        }
+
 
         if ($this->ln_node_id) {
             $node = LnNode::findOne($this->ln_node_id);

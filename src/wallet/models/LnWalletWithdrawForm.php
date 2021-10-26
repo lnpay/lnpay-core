@@ -151,6 +151,7 @@ class LnWalletWithdrawForm extends Model
             } elseif (!$this->hasErrors()) {
                 throw new ServerErrorHttpException('Failed to withdraw for unknown reason');
             } else {
+                $this->walletObject->releaseMutex();
                 throw new BadRequestHttpException(HelperComponent::getErrorStringFromInvalidModel($this));
             }
 
@@ -188,6 +189,7 @@ class LnWalletWithdrawForm extends Model
                 $wtx->appendJsonData($data);
 
                 if ($wtx->save()) {
+                    $this->walletObject->releaseMutex();
                     return $wtx;
                 } else {
                     throw new \Exception ('Unable to attach paid withdraw invoice to wallet:'.$lnTx->id);

@@ -39,6 +39,7 @@ return [
         ],
         'mutex' => [
             'class' => 'yii\mutex\MysqlMutex',
+            'autoRelease'=>false
         ],
         'queue' => [
             'class' => \yii\queue\db\Queue::class,
