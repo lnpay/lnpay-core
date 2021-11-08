@@ -1,11 +1,11 @@
 <a href="https://docs.lnpay.co/" rel="noopener" target="_blank"><img width="247" height="60" src="https://lnpay.co/frontend-resources/assets/logo_full.svg" alt="LNPAY"></a>
 
-[![License](https://img.shields.io/badge/license-SSPL-green)](https://www.mongodb.com/licensing/server-side-public-license)
+[![License](https://img.shields.io/badge/license-ELv2-yellow)](https://www.elastic.co/licensing/elastic-license)
 ![Build Status](https://github.com/lnpay/lnpay-lms/actions/workflows/main.yml/badge.svg)
 ![Latest Stable Version](https://img.shields.io/github/tag/lnpay/lnpay-lms.svg?label=stable)
 
 
-#### LNPAY LMS is an enterprise toolkit / API for building Lightning Network applications on the web. Built with Yii2/PHP.
+#### LNPAY CORE is an enterprise toolkit / API for building Lightning Network applications on the web. Built with Yii2/PHP.
 
 
 REQUIREMENTS
@@ -22,7 +22,7 @@ DEV ENVIRONMENT
 
 Clone repo
 
-    $ git clone https://github.com/lnpay/lnpay-lms
+    $ git clone https://github.com/tkijewski/lnpay-core
 
 Run the build script
 
