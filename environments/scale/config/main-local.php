@@ -12,6 +12,8 @@ return [
         ],
         'mutex' => [
             'class' => 'yii\redis\Mutex',
+            'autoRelease'=>false,
+            'expire'=>3600,
             'redis' => [
                 'hostname' => getenv('REDIS_HOST'),
                 'port' => 6379,
