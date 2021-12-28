@@ -275,11 +275,19 @@ class LnTx extends \yii\db\ActiveRecord
      * @return LnTx|bool
      * @throws ServerErrorHttpException
      */
-    public static function processKeysendInvoiceAction($invoice,$nodeObject)
+    public static function processSpontaneousInvoiceAction($invoice,$nodeObject)
     {
         $custom_records = [];
         if (@$invoice['amtPaidSat'] == 0) {
             return false;
+        }
+
+        if (@$invoice['isAmp']) {
+            $preimage = bin2hex(@$invoice['htlcs'][0]['amp']['preimage']);
+            $hash = bin2hex(@$invoice['htlcs'][0]['amp']['hash']);
+        } else if (@$invoice['isKeysend']) {
+            $preimage = bin2hex(base64_decode($invoice['rPreimage']));
+            $hash = bin2hex($invoice['rHash']);
         }
 
         foreach ($invoice['htlcs'] as $htlc) {
@@ -331,23 +339,24 @@ class LnTx extends \yii\db\ActiveRecord
         $lnTx->user_id = $w->user_id;
         $lnTx->ln_node_id = $w->ln_node_id;
         $lnTx->num_satoshis = $invoice['amtPaidSat'];
-        $lnTx->memo = 'keysend: custom record ['.$tlv_key.'] ['.$tlv_value.']';
-        $lnTx->payment_preimage = bin2hex($invoice['rPreimage']);
+        $lnTx->memo = 'keysend/amp: custom record ['.$tlv_key.'] ['.$tlv_value.']';
         $lnTx->dest_pubkey = $w->lnNode->default_pubkey;
-        $lnTx->payment_request = 'keysend';
+        $lnTx->payment_request = 'keysend/amp';
         $lnTx->description_hash = @$invoice['descriptionHash'];
-        $lnTx->r_hash_decoded = bin2hex($invoice['rHash']);
+        $lnTx->r_hash_decoded = $hash;
         $lnTx->expiry = null;
         $lnTx->settled = (int)$invoice['settled'];
         $lnTx->settled_at = $invoice['settleDate'];
         $lnTx->expires_at = NULL;
-        $lnTx->is_keysend = true;
+        $lnTx->is_keysend = 1;
+        $lnTx->is_amp = @$invoice['isAmp'];
+        $lnTx->payment_addr = @$invoice['paymentAddr'];
         $lnTx->custom_records = new \yii\db\JsonExpression($custom_records);
         $lnTx->appendJsonData(['wallet_id'=>$w->external_hash]);
         if (@$invoice['settled']) {
             $lnTx->settled = 1;
             $lnTx->num_satoshis = $invoice['amtPaidSat'];
-            $lnTx->payment_preimage = bin2hex(base64_decode($invoice['rPreimage']));
+            $lnTx->payment_preimage = $preimage;
             $lnTx->settled_at = time();
             if ($lnTx->save()) {
                 //If this is tied to a wallet

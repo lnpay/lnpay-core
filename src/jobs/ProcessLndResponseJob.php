@@ -19,7 +19,7 @@ class ProcessLndResponseJob extends \yii\base\BaseObject implements \yii\queue\J
             'nodeArray' => $this->nodeArray,
             'actionArray' => $this->actionArray
         ];
-        \LNPay::info(VarDumper::export($postBody),__METHOD__);
+        \LNPay::info(json_encode($postBody),__METHOD__);
 
         try {
 
@@ -50,8 +50,8 @@ class ProcessLndResponseJob extends \yii\base\BaseObject implements \yii\queue\J
 
                 //Check for keysend payment
                 try {
-                    if (@$invoice['isKeysend'] && @$invoice['htlcs']) { //inbound keysend
-                        $lnTx = LnTx::processKeysendInvoiceAction($invoice,LnNode::findOne($this->nodeArray['id']));
+                    if ( (@$invoice['isKeysend']) && @$invoice['htlcs']) { //inbound keysend
+                        $lnTx = LnTx::processSpontaneousInvoiceAction($invoice,LnNode::findOne($this->nodeArray['id']));
                         return $lnTx->toArray();
                     } else if (@$invoice['isKeysend']) { // outbound keysend do nothing for now
                         return false;
@@ -59,6 +59,19 @@ class ProcessLndResponseJob extends \yii\base\BaseObject implements \yii\queue\J
                 } catch (\Throwable $t) {
                     \LNPay::error('Error processing keysend:'.$t->getMessage(),__METHOD__);
                 }
+
+                //Check for AMP payment
+                try {
+                    if ( (@$invoice['isAmp']) && @$invoice['htlcs']) { //inbound AMP
+                        $lnTx = LnTx::processSpontaneousInvoiceAction($invoice,LnNode::findOne($this->nodeArray['id']));
+                        return $lnTx->toArray();
+                    } else if (@$invoice['isAmp']) { // outbound AMP do nothing for now
+                        return false;
+                    }
+                } catch (\Throwable $t) {
+                    \LNPay::error('Error processing AMP:'.$t->getMessage(),__METHOD__);
+                }
+
 
                 //check for normal invoice payment
                 try {
