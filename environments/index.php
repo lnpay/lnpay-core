@@ -30,6 +30,7 @@ return [
         'path' => 'dev',
         'setWritable' => [
             'runtime',
+            'runtime/node_tls',
             'web/assets',
             'web/upload',
         ],
@@ -44,6 +45,7 @@ return [
         'path' => 'prod',
         'setWritable' => [
             'runtime',
+            'runtime/node_tls',
             'web/assets',
             'web/upload',
         ],
