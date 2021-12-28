@@ -15,6 +15,8 @@ then
     # Restart after enable for apache
     docker restart lnpay-php
 
+    chmod 777 -R node_tls
+
     sleep 3
 
     docker exec lnpay-php php yii migrate --interactive=0 --migrationPath=@yii/rbac/migrations
