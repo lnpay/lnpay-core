@@ -38,10 +38,6 @@ fi
 
 if [ $1 == "destroy" ]
 then
-    cd tests/polar;
-    docker-compose down --volumes
-
-    cd ../../;
     set -e
     docker-compose down --volumes
     rm -rf docker/supervisor/conf.d/lnod_*
