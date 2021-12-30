@@ -26,7 +26,7 @@ Clone repo
 
 Run the build script
 
-    $ cd lnpay-lms
+    $ cd lnpay-core
     $ bash docker.sh build
     
     # Wait for build process, then start the queue workers
