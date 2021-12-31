@@ -72,19 +72,20 @@ class m211229_135314_lnurlp extends Migration
         $this->addColumn('wallet_transaction','wallet_lnurlw_id','int(11) AFTER wallet_lnurlpay_id');
 
         //add wallet_lnurl_active / wallet_lnurl_inactive to status_type table
-        $this->insert('status_type',[
+        $this->insert('status_type',
             [
                 'id'=>450,
                 'type'=>'lnurl',
                 'name'=>'lnurl_active',
                 'display_name'=>'LNURL Active',
-            ],
-            [
-                'id'=>455,
-                'type'=>'lnurl',
-                'name'=>'lnurl_inactive',
-                'display_name'=>'LNURL Inactive',
             ]
+        );
+
+        $this->insert('status_type',[
+            'id'=>455,
+            'type'=>'lnurl',
+            'name'=>'lnurl_inactive',
+            'display_name'=>'LNURL Inactive',
         ]);
 
         //create Wallet LNURL Pay auth_item
@@ -137,7 +138,7 @@ class m211229_135314_lnurlp extends Migration
         //drop wallet_lnurlpay table
         $this->dropTable('wallet_lnurlpay');
 
-        return false;
+        return true;
     }
 
     /*
