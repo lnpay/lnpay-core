@@ -33,7 +33,7 @@ class m211229_135314_lnurlp extends Migration
                             `lnurlp_success_message` text,
                             `lnurlp_success_url` text,
                             `lnurlp_image_base64` text,
-                            `lnurlp_metadata` json DEFAULT NULL,
+                            `lnurlp_metadata` text DEFAULT NULL,
                             PRIMARY KEY (`id`),
                             KEY `user_id` (`user_id`),
                             KEY `wallet_id` (`wallet_id`),

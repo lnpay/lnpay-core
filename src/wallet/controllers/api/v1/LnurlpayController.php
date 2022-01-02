@@ -2,28 +2,8 @@
 
 namespace lnpay\wallet\controllers\api\v1;
 
+use app\wallet\models\WalletLnurlpay;
 use lnpay\base\ApiController;
-use lnpay\behaviors\UserAccessKeyBehavior;
-use lnpay\components\HelperComponent;
-use lnpay\jobs\LnWalletKeysendFormJob;
-use lnpay\models\LnTx;
-use lnpay\models\User;
-use lnpay\wallet\models\LnWalletKeysendForm;
-use lnpay\wallet\models\WalletTransaction;
-use lnpay\wallet\models\LnWalletWithdrawForm;
-use lnpay\wallet\models\Wallet;
-use lnpay\wallet\models\WalletTransactionSearch;
-use lnpay\wallet\models\WalletTransferForm;
-
-use lnpay\node\models\LnNode;
-use Yii;
-use yii\db\Expression;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Json;
-use yii\web\BadRequestHttpException;
-use yii\web\NotFoundHttpException;
-use yii\web\ServerErrorHttpException;
-use yii\web\UnauthorizedHttpException;
 
 class LnurlpayController extends ApiController
 {
@@ -31,8 +11,7 @@ class LnurlpayController extends ApiController
      * @var array restrict the following endpoints to sak only
      */
     public $sakOnlyArray = [
-        'api/v1/wallet-transaction/view-all',
-        'api/v1/wallet/view-all',
+        'api/v1/lnurlpay/view-all',
     ];
 
     public $modelClass = 'lnpay\wallet\models\WalletLnurlpay';
@@ -59,6 +38,50 @@ class LnurlpayController extends ApiController
         ];
     }
 
+    public function actionLnurlProcess($access_key,$wallet_lnurlpay_id,$amount=null)
+    {
+        $w = $this->findByKey($access_key);
+        $lnurlpModel = WalletLnurlpay::findByHash($wallet_lnurlpay_id);
+
+        if ($amount) { //issue the callback with PR
+            //checks
+            if ($amount < $lnurlpModel->lnurlp_minSendable_msat ||
+                $amount > $lnurlpModel->lnurlp_maxSendable_msat
+            ) {
+                $satMin = $lnurlpModel->lnurlp_minSendable_msat/1000;
+                $satMax = $lnurlpModel->lnurlp_maxSendable_msat/1000;
+                return ["status"=>"ERROR","reason"=>"{$amount} sat is not within {$satMin} - {$satMax} sat"];
+            }
+
+
+            $lnTx = $w->generateLnInvoice(
+              [
+                  'description_hash' => hash('sha256',utf8_encode($lnurlpModel->lnurlp_metadata)),
+                  'memo'=>'LNURL PAY (via LNPay.co)'
+              ],
+                \LNPay::$app->request->getQueryParams()
+            );
+            $array = [
+                'pr'        =>  $lnTx->payment_request,
+                'routes'    =>  [],
+            ];
+
+            //add successAction and other things
+
+
+            return $array;
+        } else {
+            return [
+                'minSendable'       => $lnurlpModel->lnurlp_minSendable_msat,
+                'maxSendable'       => $lnurlpModel->lnurlp_maxSendable_msat,
+                'commentAllowed'    => 0,
+                'tag'               => 'payRequest',
+                'metadata'          => $lnurlpModel->lnurlp_metadata
+            ];
+        }
+
+
+    }
 
 
 

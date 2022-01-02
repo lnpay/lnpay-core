@@ -59,64 +59,6 @@ class WalletController extends ApiController
         ];
     }
 
-    public function findByKey($access_key)
-    {
-        /**
-         * @var lnpay\wallet\models\Wallet
-         */
-        $modelClass = $this->modelClass;
-
-        $apiKey = @\LNPay::$app->user->identity->sessionApiKey;
-
-        //If SAK is used, all wallet keys are valid
-        if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_SECRET_API_KEY,$apiKey)) {
-            $wallet = $modelClass::findById($access_key) ?? $modelClass::findByKey($access_key) ?? NULL;
-            if ($wallet) {
-                if ($wallet->user_id == \LNPay::$app->user->id) { //make sure this is the right user
-                    return $wallet;
-                }
-            }
-
-        }
-        //public access key
-        else if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_PUBLIC_API_KEY,@\LNPay::$app->user->identity->sessionApiKey)) {
-            $wallet = $modelClass::findByKey($access_key);
-            if ($wallet) {
-                if (\LNPay::$app->user->id == $wallet->user_id) {
-                    return $wallet;
-                }
-            }
-        } else { //publicly available with no key needed
-            if (in_array($this->action->id,['lnurl-process'])) { //if lnurl which grants public access based on key
-                $wallet = $modelClass::findByKey($access_key);
-                if ($wallet) {
-                    return $wallet;
-                }
-            }
-        }
-
-        if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_PUBLIC_API_KEY,@\LNPay::$app->user->identity->sessionApiKey)) {
-            throw new UnauthorizedHttpException('Invalid Wallet Access Key. Keys prefixed with waka_, waki_, wakr, waklw are valid when using pak_');
-        }
-        throw new UnauthorizedHttpException('Wallet not found: '.$access_key);
-    }
-
-    public function checkAccessKey($item,$access_key=NULL)
-    {
-        if (!$access_key) //assuming it's a wallet access key if it's in the URL
-            $access_key = \LNPay::$app->request->getQueryParam('access_key');
-
-        if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_SECRET_API_KEY,@\LNPay::$app->user->identity->sessionApiKey)) {
-            return true;
-        } else if (UserAccessKeyBehavior::checkKeyAccess(UserAccessKeyBehavior::ROLE_KEY_SUSPENDED,$access_key)) {
-            throw new UnauthorizedHttpException('Key has been suspended');
-        } else if (UserAccessKeyBehavior::checkKeyAccess($item,$access_key))
-            return true;
-        else
-            throw new UnauthorizedHttpException(UserAccessKeyBehavior::getAccessKeyPrefix($access_key).' access key provided does not permission to do this: '.$item);
-
-    }
-
     public function actionCreate()
     {
         $model = new Wallet();

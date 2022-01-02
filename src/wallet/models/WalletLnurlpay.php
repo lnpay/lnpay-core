@@ -71,7 +71,7 @@ class WalletLnurlpay extends \yii\db\ActiveRecord
             [['status_type_id'],'default','value'=>StatusType::WALLET_LNURL_ACTIVE],
             [['lnurlp_short_desc'],'default','value'=>'LNURL PAY (via LNPay.co)'],
             [['lnurlp_minSendable_msat'],'default','value'=>1000],
-            [['lnurlp_maxSendable_msat'],'default','value'=>(\LNPay::$app instanceof \yii\web\Application?\LNPay::$app->user->getJsonData(User::DATA_MAX_DEPOSIT)*1000:1000)],
+            [['lnurlp_maxSendable_msat'],'default','value'=>(\LNPay::$app instanceof \yii\web\Application?\LNPay::$app->user->identity->getJsonData(User::DATA_MAX_DEPOSIT)*1000:1000)],
             [['external_hash'],'default','value'=>function(){ return 'lnurlp_'.HelperComponent::generateRandomString(18); }],
             [['id', 'user_id', 'wallet_id', 'status_type_id', 'lnurlp_minSendable_msat', 'lnurlp_maxSendable_msat', 'lnurlp_commentAllowed'], 'integer'],
             [['json_data', 'lnurlp_successAction', 'lnurlp_metadata'], 'safe'],
@@ -110,13 +110,13 @@ class WalletLnurlpay extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function findByKey($key)
+    /**
+     * @param $external_hash
+     * @return WalletLnurlpay
+     */
+    public static function findByHash($external_hash)
     {
-        $w = UserAccessKey::find()->where(['access_key'=>$key])->one();
-        if ($w)
-            return static::findOne($w->wallet_id);
-        else
-            return null;
+        return static::find()->where(['external_hash'=>$external_hash])->one();
     }
 
     /**
@@ -180,7 +180,7 @@ class WalletLnurlpay extends \yii\db\ActiveRecord
 
         $array[] = $short_desc;
 
-        return $array;
+        return json_encode($array);
     }
 
     /**
@@ -195,7 +195,6 @@ class WalletLnurlpay extends \yii\db\ActiveRecord
                 $baseUrl = ["/v1/wallet/{$this->wallet->getFirstAccessKeyByRole(UserAccessKeyBehavior::ROLE_WALLET_LNURL_PAY)}/lnurlp/{$this->external_hash}"];
                 $this->lnurl_decoded = \LNPay::$app->urlManager->createAbsoluteUrl($baseUrl);
                 $this->lnurl_encoded = \tkijewski\lnurl\encodeUrl($this->lnurl_decoded);
-
 
                 $this->lnurlp_metadata = $this->formulateMetadata();
             }
