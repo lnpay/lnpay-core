@@ -108,12 +108,19 @@ class ActionComponent extends Component
 
     /**
      * @param $event
-     * $event->customData -> ['lndInvoice=>[],'link'=>[]]
      * @return bool
      */
 
     //wallet actions
-    public static function wallet_created($event) { }
+    public static function wallet_created($event)
+    {
+        //Generate default LNURL links
+        $wallet = Wallet::findOne($event->customData['wal']['id']);
+
+        $lnurlp_data = [];
+        $wallet->generateLnurlpay($lnurlp_data);
+
+    }
     public static function wallet_send($event) { }
     public static function wallet_receive($event) { }
     public static function wallet_transfer_in($event) { }

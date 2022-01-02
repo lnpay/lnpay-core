@@ -52,6 +52,12 @@ use yii\web\ServerErrorHttpException;
  */
 class HelloController extends Controller
 {
+    public function actionLp()
+    {
+        $w = Wallet::find()->one();
+        $p = $w->generateLnurlpay();
+        echo VarDumper::export($p);
+    }
     public function actionSsh()
     {
         $nodeId = 'testernode';

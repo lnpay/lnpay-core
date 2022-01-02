@@ -14,7 +14,7 @@ class m211229_135314_lnurlp extends Migration
     {
         //create wallet_lnurlpay table
         $this->execute("CREATE TABLE `wallet_lnurlpay` (
-                            `id` int(11) NOT NULL,
+                            `id` int(11) NOT NULL AUTO_INCREMENT,
                             `created_at` int(11) NOT NULL,
                             `updated_at` int(11) NOT NULL,
                             `user_id` int(11) NOT NULL,
@@ -45,7 +45,7 @@ class m211229_135314_lnurlp extends Migration
 
         //create wallet_lnurlw table, but not all the way
         $this->execute("CREATE TABLE `wallet_lnurlw` (
-                      `id` int(11) NOT NULL,
+                      `id` int(11) NOT NULL AUTO_INCREMENT,
                       `created_at` int(11) NOT NULL,
                       `updated_at` int(11) NOT NULL,
                       `user_id` int(11) NOT NULL,

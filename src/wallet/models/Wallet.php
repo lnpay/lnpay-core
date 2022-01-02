@@ -2,6 +2,7 @@
 
 namespace lnpay\wallet\models;
 
+use app\wallet\models\WalletLnurlpay;
 use lnpay\behaviors\JsonDataBehavior;
 use lnpay\behaviors\UserAccessKeyBehavior;
 use lnpay\components\HelperComponent;
@@ -10,6 +11,7 @@ use lnpay\models\LnTx;
 use lnpay\models\StatusType;
 use lnpay\models\User;
 use lnpay\models\UserAccessKey;
+use lnpay\wallet\exceptions\UnableToGenerateLnurlpayException;
 use lnpay\wallet\models\WalletTransaction;
 use lnpay\node\models\LnNode;
 use Yii;
@@ -71,7 +73,7 @@ class Wallet extends \yii\db\ActiveRecord
     {
         return [
             [['user_label'], 'required'],
-            [['user_id', 'balance','wallet_type_id'], 'integer'],
+            [['user_id', 'balance','wallet_type_id','default_lnurlpay_id','default_lnurlw_id'], 'integer'],
             [['status_type_id'],'default','value'=>StatusType::WALLET_ACTIVE],
             [['wallet_type_id'],'default','value'=>WalletType::GENERIC_WALLET],
             ['ln_node_id','default','value'=>@LnNode::getLnpayNodeQuery()->one()->id],
@@ -245,6 +247,31 @@ class Wallet extends \yii\db\ActiveRecord
         $lnTx->user_id = $this->user_id;
         $lnTx->ln_node_id = $this->ln_node_id;
         return $lnTx->generateInvoice();
+    }
+
+    /**
+     * @param array $lnurlp_data
+     * @return WalletLnurlpay
+     */
+    public function generateLnurlpay($lnurlp_data=[],$metadata=[])
+    {
+        $lnurlp_data = [
+            //'lnurlp_short_desc' => $this->external_hash . ' (via LNPay.co)',
+        ];
+
+        $lnurlpModel = WalletLnurlpay::generateNewModel($lnurlp_data);
+
+        $lnurlpModel->user_id = $this->user_id;
+        $lnurlpModel->wallet_id = $this->id;
+
+        if ($lnurlpModel->save()) {
+            return $lnurlpModel;
+        } else {
+            throw new UnableToGenerateLnurlpayException(HelperComponent::getErrorStringFromInvalidModel($lnurlpModel));
+        }
+
+
+
     }
 
     public function payLnInvoice($request,$options)

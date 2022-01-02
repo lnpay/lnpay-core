@@ -70,6 +70,8 @@ class HelperComponent extends Component
                 break;
             case UserAccessKeyBehavior::ROLE_WALLET_LNURL_WITHDRAW:
                 return 'waklw';
+            case UserAccessKeyBehavior::ROLE_WALLET_LNURL_PAY:
+                return 'waklp';
                 break;
         }
 
