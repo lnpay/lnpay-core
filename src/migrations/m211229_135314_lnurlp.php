@@ -19,6 +19,7 @@ class m211229_135314_lnurlp extends Migration
                             `updated_at` int(11) NOT NULL,
                             `user_id` int(11) NOT NULL,
                             `wallet_id` int(11) NOT NULL,
+                            `user_label` varchar(255) DEFAULT NULL,
                             `status_type_id` int(11) NOT NULL,
                             `external_hash` varchar(45) NOT NULL,
                             `json_data` json DEFAULT NULL,

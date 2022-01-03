@@ -298,5 +298,14 @@ return [
         'access_key' => 'waklw_aliceLnurlWithdraw',
         'json_data' => null
     ],
+    [
+        'id' => null,
+        'created_at' =>1576066208,
+        'updated_at' =>1576066208,
+        'user_id' => 147,
+        'wallet_id' => 11,
+        'access_key' => 'waklp_aliceLnurlPay',
+        'json_data' => null
+    ],
 ];
 

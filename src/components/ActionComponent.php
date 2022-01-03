@@ -117,12 +117,13 @@ class ActionComponent extends Component
         //Generate default LNURL links
         $wallet = Wallet::findByHash($event->customData['wal']['id']);
 
-        $lnurlp_data = [];
+        $lnurlp_data = [
+            'user_label'=>"Base lnurl-pay link"
+        ];
         $l = $wallet->generateLnurlpay($lnurlp_data);
 
         $wallet->default_lnurlpay_id = $l->id;
         $wallet->save();
-
     }
     public static function wallet_send($event) { }
     public static function wallet_receive($event) { }

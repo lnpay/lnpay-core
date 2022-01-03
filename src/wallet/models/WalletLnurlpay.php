@@ -1,6 +1,6 @@
 <?php
 
-namespace app\wallet\models;
+namespace lnpay\wallet\models;
 
 use lnpay\behaviors\JsonDataBehavior;
 use lnpay\behaviors\UserAccessKeyBehavior;
@@ -22,6 +22,7 @@ use Yii;
  * @property int $wallet_id
  * @property int $status_type_id
  * @property string $external_hash
+ * @property string $user_label
  * @property string|null $json_data
  * @property string|null $lnurl_encoded
  * @property string|null $lnurl_decoded
@@ -71,13 +72,13 @@ class WalletLnurlpay extends \yii\db\ActiveRecord
             [['status_type_id'],'default','value'=>StatusType::WALLET_LNURL_ACTIVE],
             [['lnurlp_short_desc'],'default','value'=>'LNURL PAY (via LNPay.co)'],
             [['lnurlp_minSendable_msat'],'default','value'=>1000],
-            [['lnurlp_maxSendable_msat'],'default','value'=>(\LNPay::$app instanceof \yii\web\Application?\LNPay::$app->user->identity->getJsonData(User::DATA_MAX_DEPOSIT)*1000:1000)],
+            [['lnurlp_maxSendable_msat'],'default','value'=>(\LNPay::$app instanceof \yii\web\Application && !YII_ENV_TEST?\LNPay::$app->user->identity->getJsonData(User::DATA_MAX_DEPOSIT)*1000:1000)],
             [['external_hash'],'default','value'=>function(){ return 'lnurlp_'.HelperComponent::generateRandomString(18); }],
             [['id', 'user_id', 'wallet_id', 'status_type_id', 'lnurlp_minSendable_msat', 'lnurlp_maxSendable_msat', 'lnurlp_commentAllowed'], 'integer'],
             [['json_data', 'lnurlp_successAction', 'lnurlp_metadata'], 'safe'],
             [['lnurl_encoded', 'lnurl_decoded', 'lnurlp_short_desc', 'lnurlp_success_message', 'lnurlp_success_url', 'lnurlp_image_base64'], 'string'],
             [['external_hash'], 'string', 'max' => 45],
-            [['lnurlp_identifier'], 'string', 'max' => 255],
+            [['lnurlp_identifier','user_label'], 'string', 'max' => 255],
             ];
     }
 
@@ -92,6 +93,7 @@ class WalletLnurlpay extends \yii\db\ActiveRecord
             'updated_at' => 'Updated At',
             'user_id' => 'User ID',
             'wallet_id' => 'Wallet ID',
+            'user_label'=>'User Label',
             'status_type_id' => 'Status Type ID',
             'external_hash' => 'External Hash',
             'json_data' => 'Json Data',

@@ -2,7 +2,7 @@
 
 namespace lnpay\wallet\models;
 
-use app\wallet\models\WalletLnurlpay;
+use lnpay\wallet\models\WalletLnurlpay;
 use lnpay\behaviors\JsonDataBehavior;
 use lnpay\behaviors\UserAccessKeyBehavior;
 use lnpay\components\HelperComponent;
@@ -265,10 +265,6 @@ class Wallet extends \yii\db\ActiveRecord
      */
     public function generateLnurlpay($lnurlp_data=[],$metadata=[])
     {
-        $lnurlp_data = [
-            //'lnurlp_short_desc' => $this->external_hash . ' (via LNPay.co)',
-        ];
-
         $lnurlpModel = WalletLnurlpay::generateNewModel($lnurlp_data);
 
         $lnurlpModel->user_id = $this->user_id;
@@ -279,9 +275,6 @@ class Wallet extends \yii\db\ActiveRecord
         } else {
             throw new UnableToGenerateLnurlpayException(HelperComponent::getErrorStringFromInvalidModel($lnurlpModel));
         }
-
-
-
     }
 
     public function payLnInvoice($request,$options)
