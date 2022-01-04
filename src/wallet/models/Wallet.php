@@ -79,7 +79,6 @@ class Wallet extends \yii\db\ActiveRecord
             [['wallet_type_id'],'default','value'=>WalletType::GENERIC_WALLET],
             ['ln_node_id','default','value'=>@LnNode::getLnpayNodeQuery()->one()->id],
             ['ln_node_id','checkUserNode'],
-            //[['user_label'],'unique'],
             [['user_id'],'default','value'=>function(){return \LNPay::$app->user->id;}],
             [['external_hash'],'default','value'=>function(){ return 'wal_'.HelperComponent::generateRandomString(14); }],
             [['json_data'], 'safe'],
@@ -189,11 +188,12 @@ class Wallet extends \yii\db\ActiveRecord
 
         //if we are using the user's nodes, make sure they are only adding theirs
         $node = LnNode::findOne($this->ln_node_id);
+        $user_id = (\LNPay::$app instanceof \yii\web\Application?\LNPay::$app->user->id:$this->user_id);
 
-        if (\LNPay::$app->user->isGuest) { //e.g. LNURL-withdraw where there is no authenticated user
+        if (\LNPay::$app instanceof \yii\web\Application && \LNPay::$app->user->isGuest) { //e.g. LNURL-withdraw where there is no authenticated user
             //this seems weird, but it is correct
         } else {
-            if ($node->user_id != \LNPay::$app->user->id)
+            if ($node->user_id != $user_id)
                 $this->addError('ln_node_id','Node does not belong to this user!');
         }
 

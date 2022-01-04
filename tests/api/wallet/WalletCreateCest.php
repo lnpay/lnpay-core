@@ -19,6 +19,9 @@ class WalletCreateCest
             ],
             'user_access_key' => [
                 'class' => \lnpay\fixtures\UserAccessKeyFixture::class,
+            ],
+            'ln_node' => [
+                'class'=>\lnpay\node\fixtures\LnNodeFixture::class
             ]
         ];
     }
@@ -37,6 +40,20 @@ class WalletCreateCest
         $I->haveHttpHeader('X-Api-Key', 'sak_KkKkKkKkKkneieivTI05Fm3YzTza4N');
         $I->sendPOST('/v1/wallet',[
             'user_label'=>'My Test Wallet'
+        ]);
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::CREATED);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"access_keys"');
+        $I->seeResponseContains('"user_label":"My Test Wallet"');
+    }
+
+    public function walletCreateSuccessNotCustodialNode(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'sak_KkKkKkKkKkneieivTI05Fm3YzTza4N');
+        $I->sendPOST('/v1/wallet',[
+            'user_label'=>'My Test Wallet',
+            'ln_node_id'=>'lnod_bob'
         ]);
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::CREATED);
         $I->seeResponseIsJson();

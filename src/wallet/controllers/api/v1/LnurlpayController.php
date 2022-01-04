@@ -62,8 +62,9 @@ class LnurlpayController extends ApiController
 
                 $lnTx = $w->generateLnInvoice(
                     [
+                        'num_satoshis'=>$amount/1000,
                         'description_hash' => hash('sha256',utf8_encode($lnurlpModel->lnurlp_metadata)),
-                        'memo'=>'LNURL PAY (via LNPay.co)'
+                        'memo'=>'LNURL PAY'
                     ],
                     \LNPay::$app->request->getQueryParams()
                 );
@@ -82,7 +83,8 @@ class LnurlpayController extends ApiController
                     'maxSendable'       => $lnurlpModel->lnurlp_maxSendable_msat,
                     'commentAllowed'    => 0,
                     'tag'               => 'payRequest',
-                    'metadata'          => $lnurlpModel->lnurlp_metadata
+                    'metadata'          => $lnurlpModel->lnurlp_metadata,
+                    'callback'          => $lnurlpModel->lnurl_decoded
                 ];
             }
         } catch ( \Throwable $t) {

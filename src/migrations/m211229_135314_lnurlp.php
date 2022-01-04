@@ -70,7 +70,10 @@ class m211229_135314_lnurlp extends Migration
 
         //add wallet_lnurlpay_id, wallet_lnurlw_id column to wallet_transaction table
         $this->addColumn('wallet_transaction','wallet_lnurlpay_id','int(11) AFTER external_hash');
+        $this->execute("ALTER TABLE `wallet_transaction` ADD CONSTRAINT `wallet_transaction_ibfk_5` FOREIGN KEY (`wallet_lnurlpay_id`) REFERENCES `wallet_lnurlpay` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT");
         $this->addColumn('wallet_transaction','wallet_lnurlw_id','int(11) AFTER wallet_lnurlpay_id');
+        $this->execute("ALTER TABLE `wallet_transaction` ADD CONSTRAINT `wallet_transaction_ibfk_6` FOREIGN KEY (`wallet_lnurlw_id`) REFERENCES `wallet_lnurlpay` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT");
+
 
         //add wallet_lnurl_active / wallet_lnurl_inactive to status_type table
         $this->insert('status_type',
@@ -98,16 +101,50 @@ class m211229_135314_lnurlp extends Migration
         $auth->add($lnurl_pay);
         $auth->addChild($lnurl_pay, $auth->getPermission('wallet_deposit'));
 
-        foreach (\lnpay\wallet\models\Wallet::find()->each() as $w) {
-            \lnpay\models\UserAccessKey::createKey($w->user_id,'Wallet LNURL Pay',['wallet_id'=>$w->id]);
-        }
-
         //add default_wallet to user table
         $this->addColumn('user','default_wallet_id','int(11) AFTER password_reset_token');
+        $this->execute("ALTER TABLE `user` ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`default_wallet_id`) REFERENCES `wallet` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT");
+
 
         //add default_lnurlpay_id, default_lnurlw_id, to wallet table
         $this->addColumn('wallet','default_lnurlpay_id','int(11) AFTER external_hash');
+        $this->execute("ALTER TABLE `wallet` ADD CONSTRAINT `wallet_ibfk_5` FOREIGN KEY (`default_lnurlpay_id`) REFERENCES `wallet_lnurlpay` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT");
         $this->addColumn('wallet','default_lnurlw_id','int(11) AFTER external_hash');
+        $this->execute("ALTER TABLE `wallet` ADD CONSTRAINT `wallet_ibfk_6` FOREIGN KEY (`default_lnurlw_id`) REFERENCES `wallet_lnurlw` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT");
+
+
+        $this->insert('wallet_transaction_type',[
+            'id'=>60,
+            'layer'=>'ln',
+            'name'=>'ln_lnurl_pay',
+            'display_name'=>'LNURL Pay',
+        ]);
+
+        $this->insert('wallet_transaction_type',[
+            'id'=>65,
+            'layer'=>'ln',
+            'name'=>'ln_lnurl_withdraw',
+            'display_name'=>'LNURL Withdraw',
+        ]);
+
+        foreach (\lnpay\wallet\models\Wallet::find()->each() as $w) {
+            $user = $w->user;
+
+            //Add auth key permission
+            \lnpay\models\UserAccessKey::createKey($w->user_id,'Wallet LNURL Pay',['wallet_id'=>$w->id]);
+
+            //Add lnurlpay link
+            try {
+                $lnurlpModel = $w->generateLnurlpay(['lnurlp_maxSendable_msat'=>$user->getJsonData($user::DATA_MAX_DEPOSIT)*1000]);
+                $w->default_lnurlpay_id = $lnurlpModel->id;
+                $w->save();
+            } catch ( \Throwable $t)
+            {
+                // not much to do at this point
+                echo $t;
+            }
+
+        }
     }
 
     /**
@@ -115,6 +152,16 @@ class m211229_135314_lnurlp extends Migration
      */
     public function safeDown()
     {
+        //remove foreign constraints
+        $this->dropForeignKey('wallet_transaction_ibfk_5','wallet_transaction');
+        $this->dropForeignKey('wallet_ibfk_6','wallet');
+        $this->dropForeignKey('wallet_ibfk_5','wallet');
+        $this->dropForeignKey('wallet_transaction_ibfk_6','wallet_transaction');
+        $this->dropForeignKey('user_ibfk_2','user');
+
+        $this->truncateTable('wallet_lnurlpay');
+        $this->truncateTable('wallet_lnurlw');
+        $this->delete('wallet_transaction',['wtx_type_id'=>[\lnpay\wallet\models\WalletTransactionType::LN_LNURL_PAY]]);
         //remove default_lnurlpay_id, default_lnurlw_id, to wallet table
         $this->dropColumn('wallet','default_lnurlpay_id');
         $this->dropColumn('wallet','default_lnurlw_id');
@@ -128,6 +175,8 @@ class m211229_135314_lnurlp extends Migration
 
         //remove wallet_lnurl_active / wallet_lnurl_inactive to status_type table
         $this->delete('status_type',['id'=>[450,455]]);
+
+        $this->delete('wallet_transaction_type',['id'=>[60,65]]);
 
         //remove wallet_lnurlpay_id, wallet_lnurlw_id column to wallet_transaction table
         $this->dropColumn('wallet_transaction','wallet_lnurlpay_id');

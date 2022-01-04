@@ -211,6 +211,7 @@ class WalletTransaction extends \yii\db\ActiveRecord
                 return $this->wtx_type_id;
             }
 
+            //These are defaults, most cases the wtx_type_id will be set externally
             if ($this->num_satoshis > 0 && $this->ln_tx_id)
                 return WalletTransactionType::LN_DEPOSIT;
             else if ($this->num_satoshis > 0 && !$this->ln_tx_id)
@@ -225,9 +226,11 @@ class WalletTransaction extends \yii\db\ActiveRecord
         if ($returnActionId) {
             switch ($this->wtx_type_id) {
                 case WalletTransactionType::LN_WITHDRAWAL:
+                case WalletTransactionType::LN_LNURL_WITHDRAW:
                     $action_id = ActionName::WALLET_SEND;
                     break;
                 case WalletTransactionType::LN_DEPOSIT:
+                case WalletTransactionType::LN_LNURL_PAY:
                     $action_id = ActionName::WALLET_RECEIVE;
                     break;
                 case WalletTransactionType::LN_TRANSFER_IN:
