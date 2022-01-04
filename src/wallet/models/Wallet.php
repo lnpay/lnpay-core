@@ -154,6 +154,14 @@ class Wallet extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getDefaultWalletLnurlpay()
+    {
+        return $this->hasOne(WalletLnurlpay::className(), ['id' => 'default_lnurlpay_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getWalletTransactions()
     {
         return $this->hasMany(WalletTransaction::className(), ['wallet_id' => 'id']);
