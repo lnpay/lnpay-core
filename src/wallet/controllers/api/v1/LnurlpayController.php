@@ -45,8 +45,8 @@ class LnurlpayController extends ApiController
             $w = $this->findByKey($access_key);
             $lnurlpModel = WalletLnurlpay::findByHash($wallet_lnurlpay_id);
 
-            if ( (!$w || !$lnurlpModel) || ($w->id != $lnurlpModel->wallet_id)) {
-                throw new UnauthorizedHttpException("Wallet or lnurlpay link is not valid");
+            if ( (!$w || !$lnurlpModel) || ($w->id != $lnurlpModel->wallet_id) || !$lnurlpModel->isActive) {
+                throw new UnauthorizedHttpException("Wallet or lnurlpay link is not valid or active");
             }
 
             if ($amount) { //issue the callback with PR

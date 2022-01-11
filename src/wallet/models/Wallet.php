@@ -337,6 +337,15 @@ class Wallet extends \yii\db\ActiveRecord
         parent::afterSave($insert, $changedAttributes);
 
         if ($insert) {
+            //Generate default LNURL links
+            $lnurlp_data = [
+                'user_label'=>"Base lnurl-pay link"
+            ];
+            $l = $this->generateLnurlpay($lnurlp_data);
+            $this->default_lnurlpay_id = $l->id;
+            $this->save();
+
+            $this->refresh();
             $this->user->registerAction(ActionName::WALLET_CREATED,['wal'=>$this->toArray()]);
         }
     }
@@ -366,11 +375,20 @@ class Wallet extends \yii\db\ActiveRecord
         $fields['id'] = $fields['external_hash'];
         $fields['statusType'] = 'status';
         $fields['walletType'] = 'walletType';
+        $fields['defaultWalletLnurlpay'] = 'defaultWalletLnurlpay';
 
         //$fields['passThru'] = 'json_data';
 
         // remove fields that contain sensitive information
-        unset($fields['user_id'],$fields['ln_node_id'],$fields['external_hash'],$fields['json_data'],$fields['status_type_id'],$fields['wallet_type_id']);
+        unset($fields['user_id'],
+            $fields['ln_node_id'],
+            $fields['external_hash'],
+            $fields['json_data'],
+            $fields['status_type_id'],
+            $fields['wallet_type_id'],
+            $fields['default_lnurlpay_id'],
+            $fields['default_lnurlw_id']
+        );
 
         return $fields;
 

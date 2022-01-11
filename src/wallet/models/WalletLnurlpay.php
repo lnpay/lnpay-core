@@ -166,6 +166,16 @@ class WalletLnurlpay extends \yii\db\ActiveRecord
     }
 
     /**
+     * Get is this lnurl active
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->status_type_id == StatusType::WALLET_LNURL_ACTIVE;
+    }
+
+    /**
      * Formulate metadata right
      *
      * @return boolean
@@ -214,5 +224,43 @@ class WalletLnurlpay extends \yii\db\ActiveRecord
         if ($insert) {
 
         }
+    }
+
+
+
+
+    /**
+     *
+     *
+     * API RESPONSE FIELDS
+     *
+     *
+     */
+
+    public function fields()
+    {
+        $fields = parent::fields();
+        $fields['id'] = $fields['external_hash'];
+        $fields['statusType'] = 'statusType';
+
+        // remove fields that contain sensitive information
+        unset($fields['json_data'],
+            $fields['user_id'],
+            $fields['wallet_id'],
+            $fields['status_type_id'],
+            $fields['external_hash'],
+            $fields['lnurlp_successAction'],
+            $fields['lnurlp_identifier'],
+            $fields['lnurlp_commentAllowed'],
+            $fields['lnurlp_success_message'],
+            $fields['lnurlp_success_url'],
+            $fields['lnurlp_image_base64'],
+            $fields['lnurlp_metadata'],
+
+            $fields['user_id'],
+        );
+
+        return $fields;
+
     }
 }

@@ -42,7 +42,16 @@ class LnurlpayCallbackProcessCest
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendGET('/v1/wallet/waklp_aliceLnurlPay/lnurlp/lnurlp_thisisinvalid');
         $I->seeResponseIsJson();
-        $I->seeResponseContains('"reason":"Wallet or lnurlpay link is not valid"');
+        $I->seeResponseContains('"reason":"Wallet or lnurlpay link is not valid or active"');
+    }
+
+    //Test basic lnurl-pay processing
+    public function getLnurlPayPublicProcessFailInactiveLnurlpId(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->sendGET('/v1/wallet/waklp_aliceLnurlPay/lnurlp/lnurlp_thisisinactive');
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"reason":"Wallet or lnurlpay link is not valid or active"');
     }
 
     public function getLnurlPayPublicProcessFailMismatchWalletAndLnurlpayLink(\ApiTester $I)
@@ -50,7 +59,7 @@ class LnurlpayCallbackProcessCest
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendGET('/v1/wallet/waklw_aliceLnurlWithdraw/lnurlp/lnurlp_0YM18Nt3po8SUmIOKE');
         $I->seeResponseIsJson();
-        $I->seeResponseContains('"reason":"Wallet or lnurlpay link is not valid"');
+        $I->seeResponseContains('"reason":"Wallet or lnurlpay link is not valid or active"');
     }
 
     public function getLnurlPayPublicProcessFailWalletNotfound(\ApiTester $I)
