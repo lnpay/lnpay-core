@@ -19,6 +19,7 @@ class LnWalletKeysendFormJob extends \yii\base\BaseObject implements \yii\queue\
     {
         $wallet = Wallet::findOne($this->wallet_id);
         $model = new LnWalletKeysendForm();
+
         $model->load($this->bodyParams, '');
         $model->wallet_id = $wallet->publicId;
 
@@ -33,6 +34,15 @@ class LnWalletKeysendFormJob extends \yii\base\BaseObject implements \yii\queue\
                     throw new BadRequestHttpException('passThru data must be valid json');
                 }
             }
+        }
+
+        if (isset($this->bodyParams['custom_records']) && is_array($this->bodyParams['custom_records'])) {
+            foreach ($this->bodyParams['custom_records'] as $key => $potentialArray) {
+                if (is_array($potentialArray)) {
+                    $this->bodyParams['custom_records'][$key] = addcslashes(json_encode($potentialArray),'\\');
+                }
+            }
+            $model->custom_records = $this->bodyParams['custom_records'];
         }
 
         $model->passThru = $array;
