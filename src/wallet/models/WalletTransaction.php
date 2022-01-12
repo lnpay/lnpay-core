@@ -351,7 +351,15 @@ class WalletTransaction extends \yii\db\ActiveRecord
         };
 
         // remove fields that contain sensitive information
-        unset($fields['user_id'], $fields['ln_tx_id'], $fields['json_data'], $fields['external_hash'], $fields['updated_at'], $fields['wtx_type_id'],$fields['wallet_id']);
+        unset(
+            $fields['user_id'],
+            $fields['ln_tx_id'],
+            $fields['json_data'],
+            $fields['external_hash'],
+            $fields['updated_at'],
+            $fields['wtx_type_id'],
+            $fields['wallet_id'],
+            $fields['wallet_lnurlpay_id']);
 
         return $fields;
     }

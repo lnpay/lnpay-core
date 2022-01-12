@@ -380,7 +380,7 @@ class Wallet extends \yii\db\ActiveRecord
         $fields['id'] = $fields['external_hash'];
         $fields['statusType'] = 'status';
         $fields['walletType'] = 'walletType';
-        $fields['defaultWalletLnurlpay'] = 'defaultWalletLnurlpay';
+        $fields['defaultLnurlpay'] = 'defaultWalletLnurlpay';
 
         //$fields['passThru'] = 'json_data';
 

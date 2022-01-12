@@ -45,7 +45,7 @@ class WalletCreateCest
         $I->seeResponseIsJson();
         $I->seeResponseContains('"access_keys"');
         $I->seeResponseContains('"user_label":"My Test Wallet"');
-        $I->seeResponseContains('"defaultWalletLnurlpay"');
+        $I->seeResponseContains('"defaultLnurlpay"');
     }
 
     public function walletCreateSuccessNotCustodialNode(\ApiTester $I)
