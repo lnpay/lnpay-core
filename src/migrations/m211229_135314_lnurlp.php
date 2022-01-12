@@ -130,11 +130,11 @@ class m211229_135314_lnurlp extends Migration
         foreach (\lnpay\wallet\models\Wallet::find()->each() as $w) {
             $user = $w->user;
 
-            //Add auth key permission
-            \lnpay\models\UserAccessKey::createKey($w->user_id,'Wallet LNURL Pay',['wallet_id'=>$w->id]);
-
             //Add lnurlpay link
             try {
+                //Add auth key permission
+                \lnpay\models\UserAccessKey::createKey($w->user_id,'Wallet LNURL Pay',['wallet_id'=>$w->id]);
+
                 $lnurlpModel = $w->generateLnurlpay(['lnurlp_maxSendable_msat'=>$user->getJsonData($user::DATA_MAX_DEPOSIT)*1000]);
                 $w->default_lnurlpay_id = $lnurlpModel->id;
                 $w->save();
