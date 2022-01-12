@@ -31,6 +31,7 @@ $config = [
             'enablePrettyUrl' => true,
             'enableStrictParsing' => false,
             'showScriptName' => false,
+            'baseUrl'=>getenv('BASE_URL')
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

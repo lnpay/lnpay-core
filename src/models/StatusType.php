@@ -46,6 +46,9 @@ class StatusType extends \yii\db\ActiveRecord
     const WALLET_ACTIVE = 200;
     const WALLET_INACTIVE = 210;
 
+    const WALLET_LNURL_ACTIVE = 450;
+    const WALLET_LNURL_INACTIVE = 455;
+
 
     const WEBHOOK_ACTIVE = 230;
     const WEBHOOK_INACTIVE = 235;
@@ -81,8 +84,6 @@ class StatusType extends \yii\db\ActiveRecord
     const LN_SUBNODE_STOPPED = 366;
     const LN_SUBNODE_DESTROYED = 370;
 
-    const LN_CLUSTER_ACTIVE = 310;
-    const LN_CLUSTER_INACTIVE = 312;
 
 
 

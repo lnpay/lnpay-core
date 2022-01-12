@@ -22,10 +22,19 @@ class IntegrationWebhookRequestTest extends \Codeception\Test\Unit
     {
         return [
             'users' => [
-                'class' => UserFixture::class,
+                'class' => \lnpay\fixtures\UserFixture::class,
             ],
-            'wallet' => [
-                'class' => WalletFixture::class,
+            'wallets' => [
+                'class' => \lnpay\fixtures\WalletFixture::class,
+            ],
+            'lntx' => [
+                'class' => \lnpay\fixtures\LnTxFixture::class,
+            ],
+            'user_access_key' => [
+                'class' => \lnpay\fixtures\UserAccessKeyFixture::class,
+            ],
+            'wallet_lnurlpay' => [
+                'class' => \lnpay\fixtures\WalletLnurlpayFixture::class,
             ]
         ];
     }
@@ -44,13 +53,13 @@ class IntegrationWebhookRequestTest extends \Codeception\Test\Unit
         expect_that($u = User::findOne(147));
         expect_that($wallet = Wallet::findOne(6));
 
-        expect_that($actionFeedObject = $u->registerAction(ActionName::WALLET_CREATED,$wallet->toArray()));
+        expect_that($actionFeedObject = $u->registerAction(ActionName::WALLET_CREATED,['wal'=>$wallet->toArray()]));
         expect(IntegrationWebhookRequest::find()->where(['action_feed_id'=>$actionFeedObject->id])->exists())->true();
     }
 
     public function testPreparePayload()
     {
-        expect_that($id = User::findOne(147)->registerAction(ActionName::WALLET_CREATED,['wallet'=>123]));
+        expect_that($id = User::findOne(147)->registerAction(ActionName::USER_CREATED,['wallet'=>123]));
         expect_that($testActionFeed = ActionFeed::findOne($id));
 
         expect(IntegrationWebhookRequest::preparePayload($testActionFeed,['id'=>'id_1234']))->hasKey('id');
@@ -58,7 +67,7 @@ class IntegrationWebhookRequestTest extends \Codeception\Test\Unit
 
     public function testPrepareRequest()
     {
-        expect_that($id = User::findOne(147)->registerAction(ActionName::WALLET_CREATED,['wallet'=>123]));
+        expect_that($id = User::findOne(147)->registerAction(ActionName::USER_CREATED,['wallet'=>123]));
         expect_that($testActionFeed = ActionFeed::findOne($id));
 
         expect(IntegrationWebhookRequest::preparePayload($testActionFeed,['id'=>'id_1234']))->hasKey('id');

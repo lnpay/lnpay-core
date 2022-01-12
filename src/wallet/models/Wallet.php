@@ -2,6 +2,7 @@
 
 namespace lnpay\wallet\models;
 
+use lnpay\wallet\models\WalletLnurlpay;
 use lnpay\behaviors\JsonDataBehavior;
 use lnpay\behaviors\UserAccessKeyBehavior;
 use lnpay\components\HelperComponent;
@@ -10,9 +11,11 @@ use lnpay\models\LnTx;
 use lnpay\models\StatusType;
 use lnpay\models\User;
 use lnpay\models\UserAccessKey;
+use lnpay\wallet\exceptions\UnableToGenerateLnurlpayException;
 use lnpay\wallet\models\WalletTransaction;
 use lnpay\node\models\LnNode;
 use Yii;
+use yii\web\BadRequestHttpException;
 use yii\web\ServerErrorHttpException;
 
 /**
@@ -26,9 +29,8 @@ use yii\web\ServerErrorHttpException;
  * @property int $balance
  * @property int|null $ln_node_id
  * @property string|null $json_data
- * @property string $admin_key
- * @property string $invoice_key
- * @property string $readonly_key
+ * @property int|null $default_lnurlpay_id
+ * @property int|null $default_lnurlw_id
  * @property string|null $external_hash
  *
  * @property User $user
@@ -58,7 +60,8 @@ class Wallet extends \yii\db\ActiveRecord
                     UserAccessKeyBehavior::ROLE_WALLET_ADMIN,
                     UserAccessKeyBehavior::ROLE_WALLET_INVOICE,
                     UserAccessKeyBehavior::ROLE_WALLET_READ,
-                    UserAccessKeyBehavior::ROLE_WALLET_LNURL_WITHDRAW
+                    UserAccessKeyBehavior::ROLE_WALLET_LNURL_WITHDRAW,
+                    UserAccessKeyBehavior::ROLE_WALLET_LNURL_PAY
                 ]
             ]
         ];
@@ -71,12 +74,11 @@ class Wallet extends \yii\db\ActiveRecord
     {
         return [
             [['user_label'], 'required'],
-            [['user_id', 'balance','wallet_type_id'], 'integer'],
+            [['user_id', 'balance','wallet_type_id','default_lnurlpay_id','default_lnurlw_id'], 'integer'],
             [['status_type_id'],'default','value'=>StatusType::WALLET_ACTIVE],
             [['wallet_type_id'],'default','value'=>WalletType::GENERIC_WALLET],
             ['ln_node_id','default','value'=>@LnNode::getLnpayNodeQuery()->one()->id],
             ['ln_node_id','checkUserNode'],
-            //[['user_label'],'unique'],
             [['user_id'],'default','value'=>function(){return \LNPay::$app->user->id;}],
             [['external_hash'],'default','value'=>function(){ return 'wal_'.HelperComponent::generateRandomString(14); }],
             [['json_data'], 'safe'],
@@ -102,7 +104,9 @@ class Wallet extends \yii\db\ActiveRecord
             'invoice_key' => 'Invoice Key',
             'readonly_key' => 'Readonly Key',
             'external_hash' => 'External Hash',
-            'wallet_type_id'=>'Wallet Type'
+            'wallet_type_id'=>'Wallet Type',
+            'default_lnurlpay_id'=>'Default LNURL PAY',
+            'default_lnurlw_id'=>'Default LNURL WITHDRAW'
         ];
     }
 
@@ -149,6 +153,14 @@ class Wallet extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getDefaultWalletLnurlpay()
+    {
+        return $this->hasOne(WalletLnurlpay::className(), ['id' => 'default_lnurlpay_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getWalletTransactions()
     {
         return $this->hasMany(WalletTransaction::className(), ['wallet_id' => 'id']);
@@ -176,11 +188,12 @@ class Wallet extends \yii\db\ActiveRecord
 
         //if we are using the user's nodes, make sure they are only adding theirs
         $node = LnNode::findOne($this->ln_node_id);
+        $user_id = (\LNPay::$app instanceof \yii\web\Application?\LNPay::$app->user->id:$this->user_id);
 
-        if (\LNPay::$app->user->isGuest) { //e.g. LNURL-withdraw where there is no authenticated user
+        if (\LNPay::$app instanceof \yii\web\Application && \LNPay::$app->user->isGuest) { //e.g. LNURL-withdraw where there is no authenticated user
             //this seems weird, but it is correct
         } else {
-            if ($node->user_id != \LNPay::$app->user->id)
+            if ($node->user_id != $user_id)
                 $this->addError('ln_node_id','Node does not belong to this user!');
         }
 
@@ -237,14 +250,39 @@ class Wallet extends \yii\db\ActiveRecord
      * @return LnTx
      * @throws ServerErrorHttpException
      */
-    public function generateLnInvoice($invoiceOptions=[])
+    public function generateLnInvoice($invoiceOptions=[],$passThru=[])
     {
         $lnTx = new LnTx();
         $lnTx->num_satoshis = (@$invoiceOptions['num_satoshis']?:0);
+        $lnTx->description_hash = @$invoiceOptions['description_hash'];
         $lnTx->memo = (@$invoiceOptions['memo']?:'Invoice: '.HelperComponent::generateRandomString(8));
         $lnTx->user_id = $this->user_id;
         $lnTx->ln_node_id = $this->ln_node_id;
-        return $lnTx->generateInvoice();
+        $lnTx->passThru = $passThru;
+        $lnTx->appendJsonData(['wallet_id'=>$this->external_hash]);
+        if ($lnTx->validate())
+            $lnTxObject = $lnTx->generateInvoice($checkLimits=true);
+        else
+            throw new BadRequestHttpException(HelperComponent::getErrorStringFromInvalidModel($lnTx));
+        return $lnTxObject;
+    }
+
+    /**
+     * @param array $lnurlp_data
+     * @return WalletLnurlpay
+     */
+    public function generateLnurlpay($lnurlp_data=[],$metadata=[])
+    {
+        $lnurlpModel = WalletLnurlpay::generateNewModel($lnurlp_data);
+
+        $lnurlpModel->user_id = $this->user_id;
+        $lnurlpModel->wallet_id = $this->id;
+
+        if ($lnurlpModel->save()) {
+            return $lnurlpModel;
+        } else {
+            throw new UnableToGenerateLnurlpayException(HelperComponent::getErrorStringFromInvalidModel($lnurlpModel));
+        }
     }
 
     public function payLnInvoice($request,$options)
@@ -299,6 +337,15 @@ class Wallet extends \yii\db\ActiveRecord
         parent::afterSave($insert, $changedAttributes);
 
         if ($insert) {
+            //Generate default LNURL links
+            $lnurlp_data = [
+                'user_label'=>"Base lnurl-pay link"
+            ];
+            $l = $this->generateLnurlpay($lnurlp_data);
+            $this->default_lnurlpay_id = $l->id;
+            $this->save();
+
+            $this->refresh();
             $this->user->registerAction(ActionName::WALLET_CREATED,['wal'=>$this->toArray()]);
         }
     }
@@ -328,11 +375,20 @@ class Wallet extends \yii\db\ActiveRecord
         $fields['id'] = $fields['external_hash'];
         $fields['statusType'] = 'status';
         $fields['walletType'] = 'walletType';
+        $fields['defaultWalletLnurlpay'] = 'defaultWalletLnurlpay';
 
         //$fields['passThru'] = 'json_data';
 
         // remove fields that contain sensitive information
-        unset($fields['user_id'],$fields['ln_node_id'],$fields['external_hash'],$fields['json_data'],$fields['status_type_id'],$fields['wallet_type_id']);
+        unset($fields['user_id'],
+            $fields['ln_node_id'],
+            $fields['external_hash'],
+            $fields['json_data'],
+            $fields['status_type_id'],
+            $fields['wallet_type_id'],
+            $fields['default_lnurlpay_id'],
+            $fields['default_lnurlw_id']
+        );
 
         return $fields;
 

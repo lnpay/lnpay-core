@@ -120,6 +120,12 @@ class WalletController extends DashController
         return $this->render('views/_access-keys',['wallet'=>$walletObject]);
     }
 
+    public function actionLnurlPay($id)
+    {
+        $walletObject = $this->findModel($id);
+        return $this->render('views/_lnurl-pay',['wallet'=>$walletObject]);
+    }
+
     public function actionLoop($id)
     {
         $walletObject = $this->findModel($id);

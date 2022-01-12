@@ -7,6 +7,7 @@ use lnpay\components\HelperComponent;
 use lnpay\node\components\LndNodeConnector;
 use lnpay\models\action\ActionName;
 use lnpay\wallet\models\Wallet;
+use lnpay\wallet\models\WalletLnurlpay;
 use lnpay\wallet\models\WalletTransaction;
 use lnpay\wallet\models\WalletTransactionType;
 use lnpay\node\models\LnNode;
@@ -14,6 +15,7 @@ use Lnrpc\HopHint;
 use Lnrpc\RouteHint;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\VarDumper;
 use yii\web\ServerErrorHttpException;
 
 /**
@@ -419,6 +421,13 @@ class LnTx extends \yii\db\ActiveRecord
                     $wtx->ln_tx_id = $this->id;
                     $wtx->user_label = $this->memo;
                     $wtx->passThru = $this->passThru;
+
+                    if ($lnurlp = $this->getJsonData('wallet_lnurlpay_id')) {
+                        $lnurlpModel = WalletLnurlpay::findByHash($lnurlp);
+                        $wtx->wallet_lnurlpay_id = $lnurlpModel->id;
+                        $wtx->wtx_type_id = WalletTransactionType::LN_LNURL_PAY;
+                    }
+
 
                     if ($wtx->save()) {
                         //yay

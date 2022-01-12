@@ -90,7 +90,7 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
     public function rules()
     {
         return [
-            [['balance','api_parent_id'],'integer'],
+            [['balance','api_parent_id','default_wallet_id'],'integer'],
             ['external_hash', 'default', 'value' => 'usr_'.HelperComponent::generateRandomString(14)],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_API_ADMIN, self::STATUS_API_USER_LNTXBOT]],

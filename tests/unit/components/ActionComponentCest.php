@@ -8,11 +8,27 @@ use lnpay\models\action\ActionName;
 use lnpay\models\User;
 
 use lnpay\events\ActionEvent;
+use lnpay\wallet\models\Wallet;
 use lnpay\wallet\models\WalletTransaction;
 
 
 class ActionComponentCest
 {
+    public function _fixtures()
+    {
+        return [
+            'users' => [
+                'class' => \lnpay\fixtures\UserFixture::class,
+            ],
+            'wallets' => [
+                'class' => \lnpay\fixtures\WalletFixture::class,
+            ],
+            'user_access_key' => [
+                'class' => \lnpay\fixtures\UserAccessKeyFixture::class,
+            ]
+        ];
+    }
+
     public function test_user_created(\FunctionalTester $I)
     {
         $user = new User();

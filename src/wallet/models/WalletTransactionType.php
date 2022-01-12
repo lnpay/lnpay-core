@@ -20,11 +20,20 @@ class WalletTransactionType extends \yii\db\ActiveRecord
     const LN_WITHDRAWAL = 20;
     const LN_TRANSFER_IN = 30;
     const LN_TRANSFER_OUT = 40;
+
     const LN_LOOP_OUT = 50;
     const LN_LOOP_IN = 55;
 
+    //@TODO: add migrations for these
+    const LN_SPONTANEOUS_INBOUND = 80;
+    const LN_SPONTANEOUS_OUTBOUND = 85;
+
+    const LN_LNURL_PAY = 60;
+    const LN_LNURL_WITHDRAW = 65;
+
     const LN_NETWORK_FEE = 70;
     const LN_SERVICE_FEE = 75;
+    const LN_FEE_BALANCE_PAYMENT = 79;
 
     /**
      * {@inheritdoc}

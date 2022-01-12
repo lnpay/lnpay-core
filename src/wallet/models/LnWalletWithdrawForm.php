@@ -185,6 +185,7 @@ class LnWalletWithdrawForm extends Model
                 $wtx->num_satoshis = $this->decodedInvoiceObject->num_satoshis*-1;
                 $wtx->ln_tx_id = $lnTx->id;
                 $wtx->user_label = $lnTx->memo;
+                $wtx->wtx_type_id = WalletTransactionType::LN_WITHDRAWAL;
                 $wtx->passThru = $this->passThru;
                 $wtx->appendJsonData($data);
 

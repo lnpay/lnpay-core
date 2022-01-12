@@ -23,6 +23,7 @@ class UserAccessKeyBehavior extends Behavior
     const ROLE_WALLET_INVOICE = 'Wallet Invoice';
     const ROLE_WALLET_READ = 'Wallet Read';
     const ROLE_WALLET_LNURL_WITHDRAW = 'Wallet LNURL Withdraw';
+    const ROLE_WALLET_LNURL_PAY = 'Wallet LNURL Pay';
 
     const ROLE_KEY_SUSPENDED = 'Key Suspended';
 
