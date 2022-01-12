@@ -154,14 +154,14 @@ class WalletTransaction extends \yii\db\ActiveRecord
                     if ($this->wallet->lnNode->isCustodialNode) {
                         $wtx->wallet_id = $this->wallet_id; //this deducts from existing wallet and will make it go negative (not ideal)
                     } else {
-                        $wtx->wallet_id = $this->wallet->lnNode->fee_wallet_id; //send to fee wallet
+                        $wtx->wallet_id = $this->user->fee_wallet_id; //send to fee wallet
                     }
 
                 } else { //send to the wallet as expected
                     $wtx->wallet_id = $this->wallet_id;
                 }
             } else {
-                $wtx->wallet_id = $this->wallet->lnNode->fee_wallet_id;
+                $wtx->wallet_id = $this->user->fee_wallet_id;
             }
 
             $wtx->num_satoshis = $networkFee;
@@ -186,7 +186,7 @@ class WalletTransaction extends \yii\db\ActiveRecord
             \LNPay::info('tx: '.$this->id.' - Service fee:'.$serviceFee,__METHOD__);
             $wtx = new WalletTransaction();
             $wtx->user_id = $this->user_id;
-            $wtx->wallet_id = ($this->user->feeTargetWallet==User::DATA_FEE_TARGET_WALLET_CONTAINED?$this->wallet_id:$this->wallet->lnNode->fee_wallet_id);
+            $wtx->wallet_id = ($this->user->feeTargetWallet==User::DATA_FEE_TARGET_WALLET_CONTAINED?$this->wallet_id:$this->user->fee_wallet_id);
             $wtx->num_satoshis = $serviceFee;
             $wtx->ln_tx_id = NULL;
             $wtx->user_label = 'LNPAY service fee ('.$this->walletTransactionType->display_name.')';
