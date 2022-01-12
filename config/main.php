@@ -51,28 +51,6 @@ return [
             'channel' => 'lnpay-cloud', // Queue channel key
             'mutex' => \yii\mutex\MysqlMutex::class, // Mutex used to sync queries
         ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\DbTarget',
-                    'levels' => ['error','warning','info'],
-                    'logTable'=>'log',
-                    'except' => [
-
-                    ],
-                    'maskVars'=>[
-                        '_SERVER.DEFAULT_EMAIL_USERNAME',
-                        '_SERVER.DEFAULT_EMAIL_PASSWORD',
-                        '_SERVER.AMPLITUDE_API_KEY',
-                        '_SERVER.DB_USER',
-                        '_SERVER.DB_PASS',
-                        '_SERVER.DB_HOST',
-                        '_SERVER.DB_DB',
-                    ]
-                ]
-            ],
-        ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
             'viewPath' => '@app/mail',

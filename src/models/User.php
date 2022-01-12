@@ -90,7 +90,7 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
     public function rules()
     {
         return [
-            [['balance','api_parent_id','default_wallet_id'],'integer'],
+            [['balance','api_parent_id','default_wallet_id','fee_wallet_id'],'integer'],
             ['external_hash', 'default', 'value' => 'usr_'.HelperComponent::generateRandomString(14)],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_API_ADMIN, self::STATUS_API_USER_LNTXBOT]],
@@ -404,6 +404,14 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getFeeWallet()
+    {
+        return $this->hasOne(Wallet::className(), ['fee_wallet_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getLnNodes()
     {
         return $this->hasMany(LnNode::className(), ['user_id' => 'id']);
@@ -490,7 +498,9 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
             $this::DATA_MAX_WITHDRAWAL => $this::USER_GLOBAL_MAX_LIMIT_SATS,
             $this::DATA_MAX_NETWORK_FEE_PERCENT => 5
         ];
-        $this->save();
+        if (!$this->save()) {
+            throw new \Exception('Error creating default settings:'.HelperComponent::getErrorStringFromInvalidModel($this));
+        }
     }
 
     public function createDefaultWallets(): void
@@ -499,7 +509,9 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
         $wallet->user_label = 'Fee Wallet';
         $wallet->user_id = $this->id;
         $wallet->wallet_type_id = WalletType::FEE_WALLET;
-        $wallet->save();
+        if (!$wallet->save()) {
+            throw new \Exception('Error creating default wallets:'.HelperComponent::getErrorStringFromInvalidModel($wallet));
+        }
         $this->fee_wallet_id = $wallet->id;
 
         $this->save();

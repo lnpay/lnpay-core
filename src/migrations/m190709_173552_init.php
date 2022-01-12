@@ -32,7 +32,7 @@ class m190709_173552_init extends Migration
                               `status` smallint(6) NOT NULL DEFAULT '10',
                               `created_at` int(11) NOT NULL,
                               `updated_at` int(11) NOT NULL,
-                              `fee_wallet_id` int(11) NOT NULL,
+                              `fee_wallet_id` int(11),
                               `balance` int(11) DEFAULT '0',
                               PRIMARY KEY (`id`),
                               UNIQUE KEY `username` (`username`),

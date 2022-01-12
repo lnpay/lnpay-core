@@ -27,6 +27,11 @@ class m210414_152818_wallet_type extends Migration
                 'id'=>5,
                 'name'=>'generic_wallet',
                 'display_name'=>'Generic Wallet'
+            ],
+            [
+                'id'=>15,
+                'name'=>'fee_wallet',
+                'display_name'=>'Fee Wallet'
             ]
         ]);
     }

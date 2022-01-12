@@ -72,7 +72,20 @@ class WalletLnurlpay extends \yii\db\ActiveRecord
             [['status_type_id'],'default','value'=>StatusType::WALLET_LNURL_ACTIVE],
             [['lnurlp_short_desc'],'default','value'=>'LNURL PAY (via LNPay.co)'],
             [['lnurlp_minSendable_msat'],'default','value'=>1000],
-            [['lnurlp_maxSendable_msat'],'default','value'=>(\LNPay::$app instanceof \yii\web\Application && !YII_ENV_TEST?\LNPay::$app->user->identity->getJsonData(User::DATA_MAX_DEPOSIT)*1000:1000)],
+            [['lnurlp_maxSendable_msat'],'default','value'=>function ($model) {
+
+                if (\LNPay::$app instanceof \yii\web\Application && !YII_ENV_TEST) {
+                    if (\LNPay::$app->user->identity) { //if user is logged in
+                        return \LNPay::$app->user->identity->getJsonData(User::DATA_MAX_DEPOSIT) * 1000;
+                    } else { //if brand new user
+                        return 100000000; //100,000 this is fee wallet / default wallets
+                    }
+
+                } else {
+                    return 1000;
+                }
+            }
+            ],
             [['external_hash'],'default','value'=>function(){ return 'lnurlp_'.HelperComponent::generateRandomString(18); }],
             [['id', 'user_id', 'wallet_id', 'status_type_id', 'lnurlp_minSendable_msat', 'lnurlp_maxSendable_msat', 'lnurlp_commentAllowed'], 'integer'],
             [['json_data', 'lnurlp_successAction', 'lnurlp_metadata'], 'safe'],

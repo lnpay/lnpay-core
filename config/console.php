@@ -33,22 +33,6 @@ $config = [
             'showScriptName' => false,
             'baseUrl'=>getenv('BASE_URL')
         ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\DbTarget',
-                    'levels' => ['error','info','warning'],
-                    'logVars' => [],
-                    'logTable'=>'log_console',
-                    'except' => [
-                        'yii\db\Command:*',
-                        'yii\db\Connection:*',
-                        //'yii\web\Session',
-                    ]
-                ],
-            ],
-        ],
     ],
 ];
 

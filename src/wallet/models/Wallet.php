@@ -341,6 +341,11 @@ class Wallet extends \yii\db\ActiveRecord
             $lnurlp_data = [
                 'user_label'=>"Base lnurl-pay link"
             ];
+
+            if ($this->wallet_type_id == WalletType::FEE_WALLET) {
+                $lnurlp_data['lnurlp_maxSendable_msat'] = 100000000; //100,000 sat
+            }
+
             $l = $this->generateLnurlpay($lnurlp_data);
             $this->default_lnurlpay_id = $l->id;
             $this->save();

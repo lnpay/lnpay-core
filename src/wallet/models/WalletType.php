@@ -16,6 +16,7 @@ use Yii;
 class WalletType extends \yii\db\ActiveRecord
 {
     const GENERIC_WALLET = 5;
+    const FEE_WALLET = 15;
 
     /**
      * {@inheritdoc}

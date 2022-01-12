@@ -2,7 +2,7 @@
 
 $this->title = 'Lightning Network Fees';
 $feeTargetWallet = \LNPay::$app->user->identity->getJsonData(\lnpay\models\User::DATA_FEE_TARGET_WALLET);
-$feeWallet = $node->feeWallet;
+$feeWallet = \LNPay::$app->user->identity->feeWallet;
 ?>
 
     <h1>Lightning Network Fees</h1>
