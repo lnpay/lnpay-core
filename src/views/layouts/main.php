@@ -51,6 +51,7 @@ PaywallAsset::register($this);
         [
             'label' => '<img src="/img/icons/home.svg" style="width:15px" /> Legacy LAPPs',
             'url' => 'https://legacy.lnpay.co/',
+            'linkOptions'=>['target'=>'_blank'],
             'encode'=>false,
         ],
         [
