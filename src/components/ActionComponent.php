@@ -132,6 +132,7 @@ class ActionComponent extends Component
     public static function user_created($event): void
     {
         $user = $event->userObject;
+        $user->createDefaultWallets();
         $user->createDefaultSettings();
     }
 

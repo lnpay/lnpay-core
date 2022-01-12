@@ -493,6 +493,18 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
         $this->save();
     }
 
+    public function createDefaultWallets(): void
+    {
+        $wallet = new Wallet();
+        $wallet->user_label = 'Fee Wallet';
+        $wallet->user_id = $this->id;
+        $wallet->wallet_type_id = WalletType::FEE_WALLET;
+        $wallet->save();
+        $this->fee_wallet_id = $wallet->id;
+
+        $this->save();
+    }
+
 
     public function getServiceFeeRate($wtx_type): float
     {
