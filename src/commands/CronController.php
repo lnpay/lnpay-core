@@ -48,7 +48,7 @@ class CronController extends Controller
          * limit the growth of some tables
          */
 
-        /*
+
         try {
             $this->cleanupIwhr();
         } catch (\Throwable $t) {
@@ -65,7 +65,7 @@ class CronController extends Controller
             $this->cleanupQueueLogs();
         } catch (\Throwable $t) {
             \LNPay::error($t->getMessage(),__METHOD__);
-        }*/
+        }
 
     }
 
