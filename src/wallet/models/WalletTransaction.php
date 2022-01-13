@@ -246,7 +246,6 @@ class WalletTransaction extends \yii\db\ActiveRecord
                     $action_id = ActionName::WALLET_LOOP_IN;
                     break;
                 case WalletTransactionType::LN_NETWORK_FEE:
-                case WalletTransactionType::LN_SERVICE_FEE:
                     $action_id = ActionName::NETWORK_FEE_INCURRED;
                     break;
             }

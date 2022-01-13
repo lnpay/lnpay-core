@@ -27,7 +27,7 @@ class ActionName extends \yii\db\ActiveRecord
 
 
 
-    const NETWORK_FEE_INCURRED = 'network_fee_incurred';
+    const NETWORK_FEE_INCURRED = 'billing_fee_incurred';
 
     const LN_NODE_USER_ADD = 605;
     const LN_NODE_USER_REMOVE = 610;
