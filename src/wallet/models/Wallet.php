@@ -380,7 +380,12 @@ class Wallet extends \yii\db\ActiveRecord
         $fields['id'] = $fields['external_hash'];
         $fields['statusType'] = 'status';
         $fields['walletType'] = 'walletType';
-
+        $fields['default_lnurlpay_id'] = function ($model) {
+            if ($model->default_lnurlpay_id)
+                return $model->defaultWalletLnurlpay->external_hash;
+            else
+                return null;
+        };
         //$fields['passThru'] = 'json_data';
 
         // remove fields that contain sensitive information
