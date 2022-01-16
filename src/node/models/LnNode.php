@@ -598,6 +598,12 @@ class LnNode extends \yii\db\ActiveRecord
     {
         $fields = parent::fields();
         $fields['passThru'] = 'json_data';
+        $fields['fee_wallet_id'] = function ($model) {
+            return $this->feeWallet->external_hash;
+        };
+        $fields['keysend_wallet_id'] = function ($model) {
+            return $this->keysendWallet->external_hash;
+        };
 
         unset(  $fields['tls_cert'],
                 $fields['getinfo'],

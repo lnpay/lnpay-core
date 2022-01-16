@@ -241,7 +241,7 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
             throw new UnableToPayInvoiceException($arr);
 
         if (@$arr['status'] != 'SUCCEEDED') { //the payment legit failed for lightning reason
-            $this->_nodeObject->user->registerAction(ActionName::WALLET_SEND_FAILURE,['node_parameters'=>$data,'failureReason'=>@$arr['failureReason']]);
+            $this->_nodeObject->user->registerAction(ActionName::WALLET_SEND_FAILURE,['lnod'=>$this->_nodeObject->toArray(),'request_parameters'=>$data,'failureReason'=>@$arr['failureReason']]);
             throw new UnableToPayInvoiceException(@$arr['failureReason']);
         }
 
@@ -288,7 +288,7 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
             unset($data['dest_custom_records'][self::KEYSEND_TLV_KEY]);
 
 
-            $this->_nodeObject->user->registerAction(ActionName::WALLET_SPONTANEOUS_SEND_FAILURE,['node_parameters'=>$data,'failureReason'=>@$arr['failureReason']]);
+            $this->_nodeObject->user->registerAction(ActionName::WALLET_SPONTANEOUS_SEND_FAILURE,['lnod'=>$this->_nodeObject->toArray(),'request_parameters'=>$data,'failureReason'=>@$arr['failureReason']]);
             throw new UnableToSendKeysendException(@$arr['failureReason']);
         }
 
