@@ -14,8 +14,9 @@ class m220116_141606_wallet_send_failure extends Migration
     {
         $this->execute("INSERT INTO `action_name` (`id`, `type`, `name`, `display_name`, `is_webhook`)
                         VALUES
-                            (511, 'wallet', 'wallet_send_failure', 'Wallet Send Failure', 1),
-                               (512, 'wallet', 'wallet_spontaneous_send_failure', 'Wallet Outbound Keysend Failure', 1);
+                               (515, 'wallet', 'wallet_send_failure', 'Wallet Send Failure', 1),
+                            ('ln_node_invoice_payment_failure', 'ln_node', 'ln_node_invoice_payment_failure', 'LN Node Send Failure', 1),
+                               ('ln_node_spontaneous_send_failure', 'ln_node', 'ln_node_spontaneous_send_failure', 'LN Node Keysend Failure', 1);
                         ");
     }
 
@@ -24,7 +25,7 @@ class m220116_141606_wallet_send_failure extends Migration
      */
     public function safeDown()
     {
-        $this->delete('action_name',['id'=>[511,512]]);
+        $this->delete('action_name',['id'=>['ln_node_invoice_payment_failure','ln_node_spontaneous_send_failure','515']]);
 
         return true;
     }
