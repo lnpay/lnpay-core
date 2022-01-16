@@ -3,9 +3,9 @@
 use yii\db\Migration;
 
 /**
- * Class m210223_184645_fee_action
+ * Class m220116_141606_wallet_send_failure
  */
-class m210223_184645_fee_action extends Migration
+class m220116_141606_wallet_send_failure extends Migration
 {
     /**
      * {@inheritdoc}
@@ -14,7 +14,8 @@ class m210223_184645_fee_action extends Migration
     {
         $this->execute("INSERT INTO `action_name` (`id`, `type`, `name`, `display_name`, `is_webhook`)
                         VALUES
-                            ('billing_fee_incurred', 'network_fee', 'network_fee_incurred', 'LN Network Fee Incurred', 1)
+                            (511, 'wallet', 'wallet_send_failure', 'Wallet Send Failure', 1),
+                               (512, 'wallet', 'wallet_spontaneous_send_failure', 'Wallet Outbound Keysend Failure', 1);
                         ");
     }
 
@@ -23,7 +24,7 @@ class m210223_184645_fee_action extends Migration
      */
     public function safeDown()
     {
-        $this->execute("DELETE FROM action_name WHERE id IN ('network_fee_incurred','billing_fee_payment');");
+        $this->delete('action_name',['id'=>[511,512]]);
 
         return true;
     }
@@ -37,7 +38,7 @@ class m210223_184645_fee_action extends Migration
 
     public function down()
     {
-        echo "m210223_184645_fee_action cannot be reverted.\n";
+        echo "m220116_141606_wallet_send_failure cannot be reverted.\n";
 
         return false;
     }

@@ -18,6 +18,8 @@ class ActionName extends \yii\db\ActiveRecord
 
     const WALLET_CREATED = 500;
     const WALLET_SEND = 510;
+    const WALLET_SEND_FAILURE = 511;
+    const WALLET_SPONTANEOUS_SEND_FAILURE = 512;
     const WALLET_RECEIVE = 520;
     const WALLET_TRANSFER_IN = 530;
     const WALLET_TRANSFER_OUT = 540;
