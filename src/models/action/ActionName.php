@@ -18,8 +18,6 @@ class ActionName extends \yii\db\ActiveRecord
 
     const WALLET_CREATED = 500;
     const WALLET_SEND = 510;
-    const WALLET_SEND_FAILURE = 515;
-
     const WALLET_RECEIVE = 520;
     const WALLET_TRANSFER_IN = 530;
     const WALLET_TRANSFER_OUT = 540;
@@ -34,8 +32,6 @@ class ActionName extends \yii\db\ActiveRecord
     const LN_NODE_USER_ADD = 605;
     const LN_NODE_USER_REMOVE = 610;
     const LN_NODE_CONNECTION_ERROR = 'ln_node_connection_error';
-    const LN_NODE_SPONTANEOUS_SEND_FAILURE = 'ln_node_spontaneous_send_failure';
-    const LN_NODE_INVOICE_PAYMENT_FAILURE = 'ln_node_invoice_payment_failure';
 
     const LND_RPC_INVOICE = 'InvoiceSubscription_Invoice';
     const LND_RPC_PEER_EVENT = 'PeerEventSubscription_PeerEvent';

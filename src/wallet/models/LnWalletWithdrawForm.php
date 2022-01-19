@@ -2,16 +2,13 @@
 namespace lnpay\wallet\models;
 
 use lnpay\components\HelperComponent;
-use lnpay\models\action\ActionName;
 use lnpay\models\BalanceWithdraw;
 use lnpay\models\LnTx;
-use lnpay\node\exceptions\UnableToPayInvoiceException;
 use lnpay\wallet\models\WalletTransaction;
 use yii\base\Model;
 use lnpay\models\User;
 
 use Yii;
-use yii\db\Exception;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
@@ -117,11 +114,6 @@ class LnWalletWithdrawForm extends Model
         }
     }
 
-    public function getRequestParameters()
-    {
-        return ArrayHelper::merge(['payment_request'=>$this->payment_request,'fee_limit_msat'=>$this->fee_limit_msat],[]);
-    }
-
     /**
      * Attempt to pay invoice
      *
@@ -130,23 +122,19 @@ class LnWalletWithdrawForm extends Model
     {
         try {
             if ($this->fee_limit_msat !== NULL) {
-                $this->fee_limit_msat = $this->fee_limit_msat;
+                $fee_limit_msat = $this->fee_limit_msat;
             } else {
-                $this->fee_limit_msat = $this->walletObject->lnNode->getFeeRate($this->decodedInvoiceObject) * 1000;
+                $fee_limit_msat = $this->walletObject->lnNode->getFeeRate($this->decodedInvoiceObject) * 1000;
             }
 
-            $result = $this->walletObject->payLnInvoice($this->payment_request,['fee_limit_msat'=>$this->fee_limit_msat]);
-            if (!empty($result->payment_error)) {
-                throw new UnableToPayInvoiceException($result->payment_error);
-            }
+            $result = $this->walletObject->payLnInvoice($this->payment_request,['fee_limit_msat'=>$fee_limit_msat]);
         } catch (\Throwable $t) {
-            $this->walletObject->user->registerAction(ActionName::WALLET_SEND_FAILURE,[
-                    'spontaneous'=>0,
-                    'wal'=>$this->walletObject->toArray(),
-                    'request_parameters'=>$this->requestParameters,
-                    'failureReason'=>$t->getMessage()]
-            );
             $this->addError($attribute,$t->getMessage());
+            return false;
+        }
+
+        if (!empty($result->payment_error)) {
+            $this->addError($attribute,$result->payment_error);
             return false;
         }
 
