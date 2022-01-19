@@ -40,6 +40,8 @@ class Module extends \yii\base\Module implements BootstrapInterface
         //API Rules
         $app->urlManager->addRules([
                 'GET,HEAD,OPTIONS v1/node/<node_id:\w+>/<controller:\w+>/<action:\w+>' => 'node/api/v1/<controller>/<action>',
+                'GET,HEAD,OPTIONS v1/node/<node_id:\w+>' => 'node/api/v1/ln-node/view',
+                'GET,HEAD,OPTIONS v1/nodes' => 'node/api/v1/ln-node/view-all'
         ], false);
     }
 
