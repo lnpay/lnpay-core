@@ -268,7 +268,6 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
             'timeout_seconds'=>10,
             'amt'=>$num_satoshis,
             'no_inflight_updates'=>1,
-            'amp'=>1,
             'allow_self_payment'=>1,
             'payment_hash'=>hex2bin(hash('sha256',$preimage)),
             'dest_custom_records'=> ArrayHelper::merge($dest_custom_records,[
