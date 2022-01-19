@@ -14,7 +14,7 @@ class m210223_184645_fee_action extends Migration
     {
         $this->execute("INSERT INTO `action_name` (`id`, `type`, `name`, `display_name`, `is_webhook`)
                         VALUES
-                            ('billing_fee_incurred', 'network_fee', 'network_fee_incurred', 'LN Network Fee Incurred', 1)
+                            ('network_fee_incurred', 'network_fee', 'network_fee_incurred', 'LN Network Fee Incurred', 1)
                         ");
     }
 
