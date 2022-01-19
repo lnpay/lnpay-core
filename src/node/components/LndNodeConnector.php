@@ -2,6 +2,7 @@
 namespace lnpay\node\components;
 
 
+use lnpay\models\action\ActionName;
 use lnpay\node\exceptions\UnableToBakeMacaroonException;
 use lnpay\node\exceptions\UnableToCreateInvoiceException;
 use lnpay\node\exceptions\UnableToDecodeInvoiceException;
@@ -228,16 +229,19 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
      */
     public function payInvoice($request,$options=[])
     {
-        $arr = $this->lnd_rpc_request('SendPaymentV2',ArrayHelper::merge([
+        $data = ArrayHelper::merge([
             'payment_request'=>$request,
             'timeout_seconds'=>10,
             'no_inflight_updates'=>1,
-        ],$options));
+        ],$options);
 
-        if (!is_array($arr))
+        $arr = $this->lnd_rpc_request('SendPaymentV2',$data);
+
+        if (!is_array($arr)) //the request to lnd is malformed in some way
             throw new UnableToPayInvoiceException($arr);
 
-        if (@$arr['status'] != 'SUCCEEDED') {
+        if (@$arr['status'] != 'SUCCEEDED') { //the payment legit failed for lightning reason
+            $this->_nodeObject->user->registerAction(ActionName::LN_NODE_INVOICE_PAYMENT_FAILURE,['lnod'=>$this->_nodeObject->toArray(),'request_parameters'=>$data,'failureReason'=>@$arr['failureReason']]);
             throw new UnableToPayInvoiceException(@$arr['failureReason']);
         }
 
@@ -264,6 +268,7 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
             'timeout_seconds'=>10,
             'amt'=>$num_satoshis,
             'no_inflight_updates'=>1,
+            'amp'=>1,
             'allow_self_payment'=>1,
             'payment_hash'=>hex2bin(hash('sha256',$preimage)),
             'dest_custom_records'=> ArrayHelper::merge($dest_custom_records,[
@@ -273,10 +278,17 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
 
         $arr = $this->lnd_rpc_request('SendPaymentV2',$data);
 
-        if (!is_array($arr))
+        if (!is_array($arr)) //the request to LND is malformed somehow
             throw new UnableToSendKeysendException($arr);
 
-        if (@$arr['status'] != 'SUCCEEDED') {
+        if (@$arr['status'] != 'SUCCEEDED') { //legit keysend failure
+            //need to clean up data a bit for db
+            $data['dest'] = bin2hex($data['dest']);
+            $data['payment_hash'] = bin2hex($data['payment_hash']);
+            unset($data['dest_custom_records'][self::KEYSEND_TLV_KEY]);
+
+
+            $this->_nodeObject->user->registerAction(ActionName::LN_NODE_SPONTANEOUS_SEND_FAILURE,['lnod'=>$this->_nodeObject->toArray(),'request_parameters'=>$data,'failureReason'=>@$arr['failureReason']]);
             throw new UnableToSendKeysendException(@$arr['failureReason']);
         }
 
