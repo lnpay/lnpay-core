@@ -2,6 +2,7 @@
 namespace lnpay\wallet\models;
 
 use lnpay\components\HelperComponent;
+use lnpay\models\action\ActionName;
 use lnpay\node\components\LndNodeConnector;
 use lnpay\exceptions\WalletBusyException;
 use lnpay\models\LnTx;
@@ -83,6 +84,15 @@ class LnWalletKeysendForm extends Model
         }
     }
 
+    public function getRequestParameters()
+    {
+        return ArrayHelper::merge([
+            'dest_pubkey'=>$this->dest_pubkey,
+            'amt_msat'=>$this->num_satoshis*1000,
+            'custom_records'=>$this->custom_records,
+        ],$this->payment_options);
+    }
+
     /**
      * Attempt to pay invoice
      *
@@ -100,6 +110,13 @@ class LnWalletKeysendForm extends Model
             $rpcConnector = $this->walletObject->lnNode->getLndConnector('RPC');
             $result = $rpcConnector->keysend($this->dest_pubkey,$this->num_satoshis,$this->custom_records,$this->payment_options);
         } catch (\Throwable $t) {
+            $this->walletObject->user->registerAction(ActionName::WALLET_SEND_FAILURE,[
+                'spontaneous'=>1,
+                'wal'=>$this->walletObject->toArray(),
+                'request_parameters'=>$this->requestParameters,
+                'failureReason'=>$t->getMessage()]
+            );
+
             $this->addError($attribute,$t->getMessage());
             return false;
         }

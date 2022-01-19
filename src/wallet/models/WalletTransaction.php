@@ -358,7 +358,9 @@ class WalletTransaction extends \yii\db\ActiveRecord
             $fields['updated_at'],
             $fields['wtx_type_id'],
             $fields['wallet_id'],
-            $fields['wallet_lnurlpay_id']);
+            $fields['wallet_lnurlpay_id'],
+            $fields['wallet_lnurlw_id']
+        );
 
         return $fields;
     }
