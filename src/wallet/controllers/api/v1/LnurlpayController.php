@@ -2,8 +2,11 @@
 
 namespace lnpay\wallet\controllers\api\v1;
 
+use lnpay\behaviors\UserAccessKeyBehavior;
+use lnpay\wallet\exceptions\InvalidLnurlpayLinkException;
 use lnpay\wallet\models\WalletLnurlpay;
 use lnpay\base\ApiController;
+use yii\web\NotFoundHttpException;
 use yii\web\UnauthorizedHttpException;
 
 class LnurlpayController extends ApiController
@@ -35,9 +38,35 @@ class LnurlpayController extends ApiController
             'delete' => ['DELETE','OPTIONS'],
             'view' =>   ['GET','OPTIONS'],
             'index'=>   ['GET','OPTIONS'],
-            'view-all'=>['GET','OPTIONS']
+            'view-all'=>['GET','OPTIONS'],
+            'probe'=>['GET','OPTIONS']
         ];
     }
+
+/*
+    public function actionView()
+    {
+        $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_READ);
+        return $this->findByKey($access_key);
+    }
+
+
+    public function actionViewAll()
+    {
+        $modelClass = $this->modelClass;
+        return new \yii\data\ActiveDataProvider([
+            'query' => $modelClass::find()->where(['user_id'=>\LNPay::$app->user->id]),
+            'pagination' => [
+                'defaultPageSize' => 100,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC
+                ]
+            ],
+        ]);
+    }
+*/
 
     public function actionLnurlProcess($access_key,$wallet_lnurlpay_id,$amount=null)
     {
@@ -56,13 +85,14 @@ class LnurlpayController extends ApiController
                 ) {
                     $satMin = $lnurlpModel->lnurlp_minSendable_msat/1000;
                     $satMax = $lnurlpModel->lnurlp_maxSendable_msat/1000;
-                    return ["status"=>"ERROR","reason"=>"{$amount} sat is not within {$satMin} - {$satMax} sat"];
+                    $satAmount = $amount/1000;
+                    return ["status"=>"ERROR","reason"=>"{$satAmount} sat is not within {$satMin} - {$satMax} sat"];
                 }
 
 
                 $lnTx = $w->generateLnInvoice(
                     [
-                        'num_satoshis'=>$amount/1000,
+                        'num_satoshis'=>ceil($amount/1000),
                         'description_hash' => hash('sha256',utf8_encode($lnurlpModel->lnurlp_metadata)),
                         'memo'=>'LNURL PAY'
                     ],
@@ -90,8 +120,41 @@ class LnurlpayController extends ApiController
         } catch ( \Throwable $t) {
             return ["status"=>"ERROR","reason"=>$t->getMessage()];
         }
+    }
+
+    public function actionProbe($lnurlpay_encoded)
+    {
+        try {
+            $lnurlp = \tkijewski\lnurl\decodeUrl($lnurlpay_encoded);
+            if (@$lnurlp['url']) {
+                $url = $lnurlp['url'];
+            } else {
+                throw new InvalidLnurlpayLinkException('invalid lnurlpay link');
+            }
+
+            $client = new \GuzzleHttp\Client([
+                'curl'=> [],
+                'http_errors'=>true,
+                'headers' => ['SERVICE'=>'LNPAY-PROBE'],
+                'debug'=>false
+            ]);
+
+            $r = null;
+            $response = $client->request('GET', $url);
+            $r = $response->getBody()->getContents();
+
+        } catch (\Throwable $t) {
+            throw new InvalidLnurlpayLinkException($t->getMessage());
+        }
+
+        $json = json_decode($r,TRUE);
+        if (@$json['metadata'])
+            $json['metadata'] = json_decode($json['metadata'],TRUE);
+
+        return $json;
 
     }
+
 
 
 
