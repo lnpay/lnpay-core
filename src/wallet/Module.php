@@ -57,6 +57,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
             //WALLET LNURL
             'GET,OPTIONS v1/wallet/<access_key:\w+>/lnurlp/<wallet_lnurlpay_id:\w+>' => 'wallet/api/v1/lnurlpay/lnurl-process',
+            'GET,OPTIONS v1/lnurlp/probe/<lnurlpay_encoded:\w+>' => 'wallet/api/v1/lnurlpay/probe',
 
         ], false);
     }
