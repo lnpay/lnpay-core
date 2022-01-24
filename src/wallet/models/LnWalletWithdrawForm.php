@@ -143,8 +143,9 @@ class LnWalletWithdrawForm extends Model
             $this->walletObject->user->registerAction(ActionName::WALLET_SEND_FAILURE,[
                     'spontaneous'=>0,
                     'wal'=>$this->walletObject->toArray(),
-                    'request_parameters'=>$this->requestParameters,
-                    'failureReason'=>$t->getMessage()]
+                    'node_request_parameters'=>$this->requestParameters,
+                    'failureReason'=>$t->getMessage(),
+                    'passThru'=>$this->passThru]
             );
             $this->addError($attribute,$t->getMessage());
             return false;
