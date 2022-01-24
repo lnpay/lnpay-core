@@ -30,6 +30,7 @@ class LnWalletWithdrawForm extends Model
     public $decodedInvoiceObject = null;
     public $wallet_id = null;
     public $passThru = [];
+    public $wtx_type_id = null;
 
     /**
      * @inheritdoc
@@ -38,7 +39,7 @@ class LnWalletWithdrawForm extends Model
     {
         return [
             [['payment_request','wallet_id'], 'required'],
-            [['wallet_id','fee_limit_msat'],'integer'],
+            [['wallet_id','fee_limit_msat','wtx_type_id'],'integer'],
             [['fee_limit_msat'], 'compare', 'compareValue' => 0, 'operator' => '>=', 'type' => 'number'],
             ['payment_request', 'string'],
             ['payment_request', 'checkWallet'],
@@ -198,7 +199,7 @@ class LnWalletWithdrawForm extends Model
                 $wtx->num_satoshis = $this->decodedInvoiceObject->num_satoshis*-1;
                 $wtx->ln_tx_id = $lnTx->id;
                 $wtx->user_label = $lnTx->memo;
-                $wtx->wtx_type_id = WalletTransactionType::LN_WITHDRAWAL;
+                $wtx->wtx_type_id = ($this->wtx_type_id?:WalletTransactionType::LN_WITHDRAWAL);
                 $wtx->passThru = $this->passThru;
                 $wtx->appendJsonData($data);
 

@@ -28,7 +28,8 @@ class WalletTransactionType extends \yii\db\ActiveRecord
     const LN_SPONTANEOUS_INBOUND = 80;
     const LN_SPONTANEOUS_OUTBOUND = 85;
 
-    const LN_LNURL_PAY = 60;
+    const LN_LNURL_PAY_INBOUND = 60;
+    const LN_LNURL_PAY_OUTBOUND = 62;
     const LN_LNURL_WITHDRAW = 65;
 
     const LN_NETWORK_FEE = 70;

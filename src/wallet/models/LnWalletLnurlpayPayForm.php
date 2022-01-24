@@ -24,6 +24,7 @@ class LnWalletLnurlpayPayForm extends Model
     public $_lnurlpay_decoded = NULL;
     public $_pr = NULL;
     public $probe_json = [];
+    public $passThru = [];
 
 
     /**
@@ -78,7 +79,8 @@ class LnWalletLnurlpayPayForm extends Model
         ]);
 
         $r = null;
-        $url = $this->_lnurlpay_decoded.'?amount='.$this->amt_msat;
+        $lnurl = $this->_lnurlpay_decoded . (stripos($this->_lnurlpay_decoded,'?')!==FALSE?'&':'?');
+        $url = $lnurl.'amount='.$this->amt_msat;
         $response = $client->request('GET', $url);
         $r = $response->getBody()->getContents();
         $r = json_decode($r,TRUE);

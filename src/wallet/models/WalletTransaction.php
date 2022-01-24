@@ -227,10 +227,11 @@ class WalletTransaction extends \yii\db\ActiveRecord
             switch ($this->wtx_type_id) {
                 case WalletTransactionType::LN_WITHDRAWAL:
                 case WalletTransactionType::LN_LNURL_WITHDRAW:
+                case WalletTransactionType::LN_LNURL_PAY_OUTBOUND:
                     $action_id = ActionName::WALLET_SEND;
                     break;
                 case WalletTransactionType::LN_DEPOSIT:
-                case WalletTransactionType::LN_LNURL_PAY:
+                case WalletTransactionType::LN_LNURL_PAY_INBOUND:
                     $action_id = ActionName::WALLET_RECEIVE;
                     break;
                 case WalletTransactionType::LN_TRANSFER_IN:

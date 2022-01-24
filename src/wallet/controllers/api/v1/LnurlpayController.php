@@ -10,6 +10,9 @@ use lnpay\wallet\models\LnWalletLnurlpayPayForm;
 use lnpay\wallet\models\LnWalletWithdrawForm;
 use lnpay\wallet\models\WalletLnurlpay;
 use lnpay\base\ApiController;
+use lnpay\wallet\models\WalletTransactionType;
+use yii\helpers\Json;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\UnauthorizedHttpException;
 
@@ -168,13 +171,29 @@ class LnurlpayController extends ApiController
         $form->load(\LNPay::$app->getRequest()->getBodyParams(),'');
         $form->probe_json = $this->actionProbe($form->lnurlpay_encoded);
 
+        $array = [];
+        $bp = \LNPay::$app->getRequest()->getBodyParams();
+        if ($passThru = @$bp['passThru']) {
+            if (is_array($passThru)) {
+                $array = $passThru;
+            } else {
+                try {
+                    $array = Json::decode($passThru);
+                } catch (\Throwable $t) {
+                    throw new BadRequestHttpException('passThru data must be valid json');
+                }
+            }
+        }
+        $form->passThru = $array;
+
         if ($form->validate()) {
             $invoice = $form->requestRemoteInvoice();
 
             $model = new LnWalletWithdrawForm();
             $model->payment_request = $invoice;
             $model->wallet_id = $wallet->id;
-            //$model->passThru = $pt;
+            $model->passThru = $form->passThru;
+            $model->wtx_type_id = WalletTransactionType::LN_LNURL_PAY_OUTBOUND;
 
             return $model->processWithdrawal(['method'=>'lnurlpay']);
 

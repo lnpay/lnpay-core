@@ -24,6 +24,9 @@ class LnurlpayCest
             ],
             'wallet_lnurlpay' => [
                 'class' => \lnpay\fixtures\WalletLnurlpayFixture::class,
+            ],
+            'wallet_transaction' => [
+                'class' => \lnpay\fixtures\WalletTransactionFixture::class,
             ]
         ];
     }
@@ -96,26 +99,4 @@ class LnurlpayCest
         $I->seeResponseIsJson();
         $I->seeResponseContains('cannot accept less');
     }
-
-    /* TO DO THIS
-public function payLnurlpayFailSucceedWithdrawPermission(\ApiTester $I)
-{
-    $I->haveHttpHeader('Content-Type', 'application/json');
-    $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
-    $I->sendPOST('/v1/wallet/waklw_aliceLnurlWithdraw/lnurlp/pay',[
-        'amt_msat'=>100000,
-        'lnurlpay_encoded'=>'lnurl1dp68gup69uhnzwfj9ccnvwpwxcujuvf39a5kuer90qkhgetnwsh8q6rs9amrztmhv9kxcet59amkz6mvwp0kzmrfvdj5cmn4wfk9qcte9akxuatjd3cz7mrww4excuzlxpv56vfcfe6rxur08pf42m2ffa9525qq4ry'
-    ]);
-    $I->seeResponseIsJson();
-    $I->seeResponseContains('"metadata"');
-
-    $I->haveHttpHeader('Content-Type', 'application/json');
-    $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
-    $I->sendPOST('/v1/wallet/waklw_aliceLnurlWithdraw/lnurlp/pay',[
-        'amt_msat'=>100000,
-        'lnurlpay_encoded'=>'lnurl1dp68gup69uhnzwfj9ccnvwpwxcujuvf39a5kuer90qkhgetnwsh8q6rs9amrztmhv9kxcet59amkz6mvwp0kzmrfvdj5cmn4wfk9qcte9akxuatjd3cz7mrww4excuzlxpv56vfcfe6rxur08pf42m2ffa9525qq4ry'
-    ]);
-    $I->seeResponseIsJson();
-    $I->seeResponseContains('"metadata"');
-}*/
 }
