@@ -3,7 +3,11 @@
 namespace lnpay\wallet\controllers\api\v1;
 
 use lnpay\behaviors\UserAccessKeyBehavior;
+use lnpay\components\HelperComponent;
 use lnpay\wallet\exceptions\InvalidLnurlpayLinkException;
+use lnpay\wallet\exceptions\UnableToPayLnurlpayException;
+use lnpay\wallet\models\LnWalletLnurlpayPayForm;
+use lnpay\wallet\models\LnWalletWithdrawForm;
 use lnpay\wallet\models\WalletLnurlpay;
 use lnpay\base\ApiController;
 use yii\web\NotFoundHttpException;
@@ -15,7 +19,7 @@ class LnurlpayController extends ApiController
      * @var array restrict the following endpoints to sak only
      */
     public $sakOnlyArray = [
-        //'api/v1/lnurlpay/view-all',
+
     ];
 
     public $modelClass = 'lnpay\wallet\models\WalletLnurlpay';
@@ -152,6 +156,32 @@ class LnurlpayController extends ApiController
             $json['metadata'] = json_decode($json['metadata'],TRUE);
 
         return $json;
+
+    }
+
+    public function actionPay($access_key)
+    {
+        $wallet = $this->findByKey($access_key);
+        $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_WITHDRAW);
+
+        $form = new LnWalletLnurlpayPayForm();
+        $form->load(\LNPay::$app->getRequest()->getBodyParams(),'');
+        $form->probe_json = $this->actionProbe($form->lnurlpay_encoded);
+
+        if ($form->validate()) {
+            $invoice = $form->requestRemoteInvoice();
+
+            $model = new LnWalletWithdrawForm();
+            $model->payment_request = $invoice;
+            $model->wallet_id = $wallet->id;
+            //$model->passThru = $pt;
+
+            return $model->processWithdrawal(['method'=>'lnurlpay']);
+
+        } else {
+            throw new UnableToPayLnurlpayException(HelperComponent::getErrorStringFromInvalidModel($form));
+        }
+
 
     }
 
