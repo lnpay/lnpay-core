@@ -55,7 +55,7 @@ return
         'external_hash'=>'wtx_TransferIntoBob',
         'json_data'=>null,
     ],
-    [ //transfer in to bob
+    [ //transfer in to alice
         'id'=>8,
         'created_at'=>1627498299,
         'updated_at'=>1627498299,

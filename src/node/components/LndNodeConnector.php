@@ -233,6 +233,7 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
             'payment_request'=>$request,
             'timeout_seconds'=>10,
             'no_inflight_updates'=>1,
+            'allow_self_payment'=>1
         ],$options);
 
         $arr = $this->lnd_rpc_request('SendPaymentV2',$data);

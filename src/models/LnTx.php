@@ -425,7 +425,7 @@ class LnTx extends \yii\db\ActiveRecord
                     if ($lnurlp = $this->getJsonData('wallet_lnurlpay_id')) {
                         $lnurlpModel = WalletLnurlpay::findByHash($lnurlp);
                         $wtx->wallet_lnurlpay_id = $lnurlpModel->id;
-                        $wtx->wtx_type_id = WalletTransactionType::LN_LNURL_PAY;
+                        $wtx->wtx_type_id = WalletTransactionType::LN_LNURL_PAY_INBOUND;
                     }
 
 

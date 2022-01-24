@@ -3,9 +3,16 @@
 namespace lnpay\wallet\controllers\api\v1;
 
 use lnpay\behaviors\UserAccessKeyBehavior;
+use lnpay\components\HelperComponent;
 use lnpay\wallet\exceptions\InvalidLnurlpayLinkException;
+use lnpay\wallet\exceptions\UnableToPayLnurlpayException;
+use lnpay\wallet\models\LnWalletLnurlpayPayForm;
+use lnpay\wallet\models\LnWalletWithdrawForm;
 use lnpay\wallet\models\WalletLnurlpay;
 use lnpay\base\ApiController;
+use lnpay\wallet\models\WalletTransactionType;
+use yii\helpers\Json;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\UnauthorizedHttpException;
 
@@ -15,7 +22,7 @@ class LnurlpayController extends ApiController
      * @var array restrict the following endpoints to sak only
      */
     public $sakOnlyArray = [
-        //'api/v1/lnurlpay/view-all',
+
     ];
 
     public $modelClass = 'lnpay\wallet\models\WalletLnurlpay';
@@ -152,6 +159,48 @@ class LnurlpayController extends ApiController
             $json['metadata'] = json_decode($json['metadata'],TRUE);
 
         return $json;
+
+    }
+
+    public function actionPay($access_key)
+    {
+        $wallet = $this->findByKey($access_key);
+        $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_WITHDRAW);
+
+        $form = new LnWalletLnurlpayPayForm();
+        $form->load(\LNPay::$app->getRequest()->getBodyParams(),'');
+        $form->probe_json = $this->actionProbe($form->lnurlpay_encoded);
+
+        $array = [];
+        $bp = \LNPay::$app->getRequest()->getBodyParams();
+        if ($passThru = @$bp['passThru']) {
+            if (is_array($passThru)) {
+                $array = $passThru;
+            } else {
+                try {
+                    $array = Json::decode($passThru);
+                } catch (\Throwable $t) {
+                    throw new BadRequestHttpException('passThru data must be valid json');
+                }
+            }
+        }
+        $form->passThru = $array;
+
+        if ($form->validate()) {
+            $invoice = $form->requestRemoteInvoice();
+
+            $model = new LnWalletWithdrawForm();
+            $model->payment_request = $invoice;
+            $model->wallet_id = $wallet->id;
+            $model->passThru = $form->passThru;
+            $model->wtx_type_id = WalletTransactionType::LN_LNURL_PAY_OUTBOUND;
+
+            return $model->processWithdrawal(['method'=>'lnurlpay']);
+
+        } else {
+            throw new UnableToPayLnurlpayException(HelperComponent::getErrorStringFromInvalidModel($form));
+        }
+
 
     }
 
