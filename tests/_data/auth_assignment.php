@@ -142,5 +142,10 @@ return [
         'item_name'=>'Wallet Invoice',
         'user_id' =>'waki_aliceLnurlWithdraw',
         'created_at' => time()
-    ]
+    ],
+    [
+        'item_name'=>'Wallet LNURL Pay',
+        'user_id' =>'waklp_aliceLnurlPay',
+        'created_at' => time()
+    ],
 ];

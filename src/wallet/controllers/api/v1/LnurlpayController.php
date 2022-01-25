@@ -84,7 +84,10 @@ class LnurlpayController extends ApiController
                 if ($lnurlpModel) {
                     $access_key = $lnurlpModel->wallet->getFirstAccessKeyByRole(UserAccessKeyBehavior::ROLE_WALLET_LNURL_PAY);
                     return $this->actionLnurlProcess($access_key,$username);
+                } else {
+                    throw new BadRequestHttpException('cannot find lnurlp link');
                 }
+                break;
             default:
                 throw new BadRequestHttpException('Invalid lightning address');
         }
@@ -147,7 +150,7 @@ class LnurlpayController extends ApiController
     public function actionProbe($lnurlpayEncodedOrLnAddress)
     {
         try {
-            if (stripos($lnurlpayEncodedOrLnAddress,'@')!==NULL) {
+            if (stripos($lnurlpayEncodedOrLnAddress,'@')!==FALSE) {
                 $url = static::getUrlFromLnAddress($lnurlpayEncodedOrLnAddress);
             } else if ($lnurlp = \tkijewski\lnurl\decodeUrl($lnurlpayEncodedOrLnAddress)) {
                 if (@$lnurlp['url']) {
@@ -189,11 +192,7 @@ class LnurlpayController extends ApiController
 
         $form = new LnWalletLnurlpayPayForm();
         $form->load(\LNPay::$app->getRequest()->getBodyParams(),'');
-        if ($form->lnurlpay_encoded) {
-            $form->probe_json = $this->actionProbe($form->lnurlpay_encoded);
-        } else {
-            $form->probe_json = $this->actionProbe(null,$form->ln_address);
-        }
+        $form->probe_json = $this->actionProbe($form->lnurlpay_encoded??$form->ln_address);
 
 
         $array = [];
@@ -208,6 +207,12 @@ class LnurlpayController extends ApiController
                     throw new BadRequestHttpException('passThru data must be valid json');
                 }
             }
+        }
+        if ($form->ln_address) {
+            $array['target_ln_address'] = $form->ln_address;
+        }
+        if ($form->lnurlpay_encoded) {
+            $array['target_lnurlp_encoded'] = $form->lnurlpay_encoded;
         }
         $form->passThru = $array;
 
@@ -233,7 +238,10 @@ class LnurlpayController extends ApiController
     {
         $username = explode('@',$lnAddress)[0];
         $domain = explode('@',$lnAddress)[1];
-        $url = 'http://'.$domain.'/.well-known/lnurlp/'.$username;
+        if (YII_ENV_TEST)
+            $url = 'http://localhost/index-test.php/.well-known/lnurlp/'.$username;
+        else
+            $url = 'https://'.$domain.'/.well-known/lnurlp/'.$username;
 
         return $url;
     }

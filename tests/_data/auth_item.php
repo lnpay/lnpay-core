@@ -47,6 +47,15 @@ return [
         'updated_at'=>time()
     ],
     [
+        'name'=>'Wallet LNURL Pay',
+        'type' =>'1',
+        'description' => 'deposit',
+        'rule_name'=>null,
+        'data'=>null,
+        'created_at'=>time(),
+        'updated_at'=>time()
+    ],
+    [
         'name'=>'Wallet Read',
         'type' =>'1',
         'description' => 'Can read',

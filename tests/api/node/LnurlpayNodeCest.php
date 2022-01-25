@@ -51,4 +51,18 @@ class LnurlpayNodeCest
         $I->seeResponseContains('"ln_lnurl_pay_outbound"');
         $I->seeResponseContains('"dog"');
     }
+
+    public function payLnaddressSucceedWithdrawPermission(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendPOST('/v1/wallet/waklw_aliceLnurlWithdraw/lnurlp/pay',[
+            'amt_msat'=>1000,
+            'ln_address'=>'lnurlp_0YM18Nt3po8SUmIOKE@localhost',
+            'passThru'=>['dog'=>'cat']
+        ]);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"ln_lnurl_pay_outbound"');
+        $I->seeResponseContains('"dog"');
+    }
 }
