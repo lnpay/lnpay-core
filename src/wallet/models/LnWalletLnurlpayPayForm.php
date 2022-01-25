@@ -21,6 +21,7 @@ class LnWalletLnurlpayPayForm extends Model
 {
     public $amt_msat = NULL;
     public $lnurlpay_encoded = NULL;
+    public $ln_address = null;
     public $_lnurlpay_decoded = NULL;
     public $_pr = NULL;
     public $probe_json = [];
@@ -33,9 +34,12 @@ class LnWalletLnurlpayPayForm extends Model
     public function rules()
     {
         return [
-            [['lnurlpay_encoded','amt_msat','probe_json'], 'required'],
+            [['amt_msat','probe_json'], 'required'],
+            ['lnurlpay_encoded', 'required', 'when' => function($model) { return empty($model->ln_address); }],
+            ['ln_address', 'required', 'when' => function($model) { return empty($model->lnurlpay_encoded); }],
             [['amt_msat'], 'compare', 'compareValue' => 0, 'operator' => '>='],
             [['lnurlpay_encoded'],'validLnurl'],
+            [['ln_address'],'email'],
             [['amt_msat'],'amountCheck']
         ];
     }
@@ -79,7 +83,7 @@ class LnWalletLnurlpayPayForm extends Model
         ]);
 
         $r = null;
-        $lnurl = $this->_lnurlpay_decoded . (stripos($this->_lnurlpay_decoded,'?')!==FALSE?'&':'?');
+        $lnurl = $this->probe_json['callback'] . (stripos($this->probe_json['callback'],'?')!==FALSE?'&':'?');
         $url = $lnurl.'amount='.$this->amt_msat;
         $response = $client->request('GET', $url);
         $r = $response->getBody()->getContents();

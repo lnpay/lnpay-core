@@ -37,7 +37,7 @@ class ApiController extends ActiveController
                 QueryParamAuth::class,
                 HttpBasicAuth::class
             ],
-            'except'=>['lnurl-process','options']
+            'except'=>['lnurl-process','options','lightning-address']
         ];
         $behaviors['contentNegotiator'] = [
             'class' => 'yii\filters\ContentNegotiator',
@@ -135,7 +135,7 @@ class ApiController extends ActiveController
                 }
             }
         } else { //publicly available with no key needed
-            if (in_array($this->action->id,['lnurl-process'])) { //if lnurl which grants public access based on key
+            if (in_array($this->action->id,['lnurl-process','lightning-address'])) { //if lnurl which grants public access based on key
                 $wallet = Wallet::findByKey($access_key);
                 if ($wallet) {
                     return $wallet;
