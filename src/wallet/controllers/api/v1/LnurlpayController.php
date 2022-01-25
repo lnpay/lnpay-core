@@ -46,6 +46,7 @@ class LnurlpayController extends ApiController
             'view' =>   ['GET','OPTIONS'],
             'index'=>   ['GET','OPTIONS'],
             'view-all'=>['GET','OPTIONS'],
+            'lightning-address'=>   ['GET','OPTIONS'],
             'probe'=>['GET','OPTIONS']
         ];
     }
@@ -74,6 +75,23 @@ class LnurlpayController extends ApiController
         ]);
     }
 */
+    public function actionLightningAddress($username)
+    {
+        $prefix = explode("_",$username);
+        switch ($prefix[0]) {
+            case 'lnurlp':
+                $lnurlpModel = WalletLnurlpay::findByHash($username);
+                if ($lnurlpModel) {
+                    $access_key = $lnurlpModel->wallet->getFirstAccessKeyByRole(UserAccessKeyBehavior::ROLE_WALLET_LNURL_PAY);
+                    return $this->actionLnurlProcess($access_key,$username);
+                } else {
+                    throw new BadRequestHttpException('cannot find lnurlp link');
+                }
+                break;
+            default:
+                throw new BadRequestHttpException('Invalid lightning address');
+        }
+    }
 
     public function actionLnurlProcess($access_key,$wallet_lnurlpay_id,$amount=null)
     {
@@ -129,14 +147,19 @@ class LnurlpayController extends ApiController
         }
     }
 
-    public function actionProbe($lnurlpay_encoded)
+    public function actionProbe($lnurlpayEncodedOrLnAddress)
     {
         try {
-            $lnurlp = \tkijewski\lnurl\decodeUrl($lnurlpay_encoded);
-            if (@$lnurlp['url']) {
-                $url = $lnurlp['url'];
+            if (stripos($lnurlpayEncodedOrLnAddress,'@')!==FALSE) {
+                $url = static::getUrlFromLnAddress($lnurlpayEncodedOrLnAddress);
+            } else if ($lnurlp = \tkijewski\lnurl\decodeUrl($lnurlpayEncodedOrLnAddress)) {
+                if (@$lnurlp['url']) {
+                    $url = $lnurlp['url'];
+                } else {
+                    throw new InvalidLnurlpayLinkException('invalid lnurlpay link');
+                }
             } else {
-                throw new InvalidLnurlpayLinkException('invalid lnurlpay link');
+                throw new \Exception('lnurlpay_encoded or ln_address must be specified');
             }
 
             $client = new \GuzzleHttp\Client([
@@ -169,7 +192,8 @@ class LnurlpayController extends ApiController
 
         $form = new LnWalletLnurlpayPayForm();
         $form->load(\LNPay::$app->getRequest()->getBodyParams(),'');
-        $form->probe_json = $this->actionProbe($form->lnurlpay_encoded);
+        $form->probe_json = $this->actionProbe($form->lnurlpay_encoded??$form->ln_address);
+
 
         $array = [];
         $bp = \LNPay::$app->getRequest()->getBodyParams();
@@ -183,6 +207,12 @@ class LnurlpayController extends ApiController
                     throw new BadRequestHttpException('passThru data must be valid json');
                 }
             }
+        }
+        if ($form->ln_address) {
+            $array['target_ln_address'] = $form->ln_address;
+        }
+        if ($form->lnurlpay_encoded) {
+            $array['target_lnurlp_encoded'] = $form->lnurlpay_encoded;
         }
         $form->passThru = $array;
 
@@ -204,6 +234,17 @@ class LnurlpayController extends ApiController
 
     }
 
+    public static function getUrlFromLnAddress($lnAddress)
+    {
+        $username = explode('@',$lnAddress)[0];
+        $domain = explode('@',$lnAddress)[1];
+        if (YII_ENV_TEST)
+            $url = 'http://localhost/index-test.php/.well-known/lnurlp/'.$username;
+        else
+            $url = 'https://'.$domain.'/.well-known/lnurlp/'.$username;
+
+        return $url;
+    }
 
 
 

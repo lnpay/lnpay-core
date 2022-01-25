@@ -39,6 +39,24 @@ class LnurlpayCest
     {
     }
 
+    public function getLnAddressProbeSuccess(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendGET('/v1/lnurlp/probe/lnurlp_0YM18Nt3po8SUmIOKE@localhost');
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"metadata"');
+        $I->seeResponseContains('"maxSendable"');
+    }
+
+    public function getLnAddressProbeFail(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendGET('/v1/lnurlp/probe/lnurlp_0YM18Nt3po8INVALID@localhost');
+        $I->seeResponseCodeIs(500);
+    }
+
     public function getLnurlpayProbeSuccess(\ApiTester $I)
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
@@ -99,4 +117,6 @@ class LnurlpayCest
         $I->seeResponseIsJson();
         $I->seeResponseContains('cannot accept less');
     }
+
+
 }

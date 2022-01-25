@@ -49,4 +49,8 @@ return [
         'parent'=>'Wallet LNURL Withdraw',
         'child' =>'wallet_withdraw',
     ],
+    [
+        'parent'=>'Wallet LNURL Pay',
+        'child' =>'wallet_deposit',
+    ],
 ];
