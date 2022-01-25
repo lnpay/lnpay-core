@@ -58,7 +58,7 @@ class LnurlpayNodeCest
         $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
         $I->sendPOST('/v1/wallet/waklw_aliceLnurlWithdraw/lnurlp/pay',[
             'amt_msat'=>1000,
-            'ln_address'=>'lnurlp_0YM18Nt3po8SUmIOKE@localhost',
+            'ln_address'=>'lnurlp_0YM18Nt3po8SUmIOKE@localhost.com',
             'passThru'=>['dog'=>'cat']
         ]);
         $I->seeResponseIsJson();

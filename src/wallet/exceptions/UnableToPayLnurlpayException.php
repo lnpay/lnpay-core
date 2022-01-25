@@ -2,7 +2,9 @@
 
 namespace lnpay\wallet\exceptions;
 
-class UnableToPayLnurlpayException extends \yii\base\Exception
+use yii\web\ServerErrorHttpException;
+
+class UnableToPayLnurlpayException extends ServerErrorHttpException
 {
     /**
      * Constructor.
