@@ -406,7 +406,7 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
      */
     public function getFeeWallet()
     {
-        return $this->hasOne(Wallet::className(), ['fee_wallet_id' => 'id']);
+        return $this->hasOne(Wallet::className(), ['id' => 'fee_wallet_id']);
     }
 
     /**
