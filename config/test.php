@@ -68,7 +68,8 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'mutex' => [
-            'class' => 'yii\mutex\FileMutex'
+            'class' => 'yii\mutex\MysqlMutex',
+            'autoRelease'=>false
         ],
         'user' => [
             'identityClass' => 'lnpay\models\User',

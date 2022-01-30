@@ -71,6 +71,21 @@ foreach ($files as $file) {
 //Copy .env.example to .env for convenience on dev init...If .env not exist!
 if ($envName=='Development' && !file_exists("$root/.env")) {
     copyFile($root,'.env.example','.env',$all,$params);
+
+    //set keys
+    $env = file_get_contents("$root/.env");
+
+    //cookie validation
+    $bytes = random_bytes(32);
+    $key = strtr(substr(base64_encode($bytes), 0, 32), '+/=', '_-.');
+    $env = str_replace('yii-cookie-validation-key',$key,$env);
+
+    //general encryption
+    $bytes = random_bytes(32);
+    $key = strtr(substr(base64_encode($bytes), 0, 32), '+/=', '_-.');
+    $env = str_replace('general-encryption-key',$key,$env);
+
+    file_put_contents("$root/.env",$env);
 }
 
 $callbacks = ['setCookieValidationKey', 'setWritable', 'setExecutable'];
