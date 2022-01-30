@@ -233,6 +233,7 @@ class LnNode extends \yii\db\ActiveRecord
         $np->attributes = $attributes;
         $np->user_id = $this->user_id;
         $np->ln_node_id = $this->id;
+        $np->macaroon_hex = HelperComponent::encryptForDbUse($np->macaroon_hex,getenv('GENERAL_ENCRYPTION_KEY'),$this->id);
         if ($np->save()) {
             return $np;
         } else {

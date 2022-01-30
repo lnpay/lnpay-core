@@ -7,6 +7,7 @@
 
 namespace lnpay\commands;
 
+use lnpay\components\HelperComponent;
 use lnpay\node\models\LnNode;
 use lnpay\models\StatusType;
 use yii\console\Controller;
@@ -31,9 +32,15 @@ class PlayController extends Controller
         */
     }
 
-    public function actionPopulate()
+    public function actionEncrypt()
     {
+        $key = getenv('GENERAL_ENCRYPTION_KEY');
+        $iv = 'test-iv';
+        $ciphertext = HelperComponent::encryptForDbUse('test-data',$key,$iv);
 
+        echo 'Ciphertext: [', $ciphertext , "]\n";
+        echo 'Key:        [', $key, "]\n";
+        echo 'Cleartext:  [', HelperComponent::decryptForDbUse($ciphertext,$key,$iv), "]\n";
 
     }
 

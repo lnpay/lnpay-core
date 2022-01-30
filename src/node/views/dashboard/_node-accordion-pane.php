@@ -1,6 +1,6 @@
 <h2>Macaroon Hex</h2>
 <div class="well">
-    <pre><code><?=$lnNodeProfile->macaroon_hex;?></code></pre>
+    <pre><code><?=$lnNodeProfile->macaroonObject->hex;?></code></pre>
 </div>
 
 <h2>Permissions</h2>

@@ -68,7 +68,6 @@ class LnNodeProfileSearch extends LnNodeProfile
         $query->andFilterWhere(['like', 'id', $this->id])
             ->andFilterWhere(['like', 'ln_node_id', $this->ln_node_id])
             ->andFilterWhere(['like', 'user_label', $this->user_label])
-            ->andFilterWhere(['like', 'macaroon_hex', $this->macaroon_hex])
             ->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'password', $this->password])
             ->andFilterWhere(['like', 'access_key', $this->access_key])

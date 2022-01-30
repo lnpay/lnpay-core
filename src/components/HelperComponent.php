@@ -214,4 +214,26 @@ class HelperComponent extends Component
         return @$r['alias'];
     }
 
+    public static function encryptForDbUse($data,$key,$iv)
+    {
+        $method = 'aes-256-cbc';
+        $key = substr(hash('sha256',$key),0,32);
+        $iv = substr(hash('sha256',$iv),0,32);
+
+        $e = bin2hex( base64_decode( openssl_encrypt( $data, $method, hex2bin( $key ), 0, hex2bin( $iv )) ));
+
+        return $e;
+    }
+
+    public static function decryptForDbUse($cipherText,$key,$iv)
+    {
+        $method = 'aes-256-cbc';
+
+        $cipherText = base64_encode(hex2bin($cipherText));
+        $key = substr(hash('sha256',$key),0,32);
+        $iv = substr(hash('sha256',$iv),0,32);
+
+        return openssl_decrypt( $cipherText, $method, hex2bin( $key ), 0, hex2bin( $iv ));
+    }
+
 }

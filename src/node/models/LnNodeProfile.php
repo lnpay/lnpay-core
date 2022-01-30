@@ -112,7 +112,17 @@ class LnNodeProfile extends \yii\db\ActiveRecord
      */
     public function getMacaroonObject()
     {
-        return new LnMacaroonObject($this->macaroon_hex);
+        return new LnMacaroonObject($this->getDecryptedMacaroonHex());
+    }
+
+    public function getDecryptedMacaroonHex()
+    {
+        //if encrypted
+        if ($dec = HelperComponent::decryptForDbUse($this->macaroon_hex,getenv('GENERAL_ENCRYPTION_KEY'),$this->ln_node_id)) {
+            return $dec;
+        } else { //for backwards compatibility
+            return $this->macaroon_hex;
+        }
     }
 
     public function getLndConnectString()
@@ -127,7 +137,7 @@ class LnNodeProfile extends \yii\db\ActiveRecord
      */
     public function verify_macaroon($attribute_name, $params)
     {
-        $m = new LnMacaroonObject($this->macaroon_hex);
+        $m = new LnMacaroonObject($this->getDecryptedMacaroonHex());
 
         if (!$m->isValidMacaroon) {
             $this->addError($attribute_name,'Invalid macaroon!');
