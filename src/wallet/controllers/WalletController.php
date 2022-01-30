@@ -8,6 +8,7 @@ use lnpay\components\HelperComponent;
 use lnpay\wallet\models\LnLoopOutForm;
 use lnpay\wallet\models\LnWalletDepositForm;
 use lnpay\wallet\models\LnWalletWithdrawForm;
+use lnpay\wallet\models\WalletNodeChangeForm;
 use lnpay\wallet\models\WalletTransactionSearch;
 use lnpay\wallet\models\WalletTransferForm;
 
@@ -165,8 +166,18 @@ class WalletController extends DashController
 
     public function actionLnNode($id)
     {
+        $walletNodeChangeForm = new WalletNodeChangeForm();
+        if ($walletNodeChangeForm->load(\LNPay::$app->request->post())) {
+            if ($walletNodeChangeForm->validate()) {
+                $result = $walletNodeChangeForm->switchWalletTargetNode();
+                if ($result) {
+                    return $this->redirect(\LNPay::$app->request->referrer);
+                }
+            }
+        }
+
         $walletObject = $this->findModel($id);
-        return $this->render('views/_ln-node',['wallet'=>$walletObject]);
+        return $this->render('views/_ln-node',['wallet'=>$walletObject,'walletNodeChangeForm'=>$walletNodeChangeForm]);
     }
 
     public function actionValidateWithdrawal($id)

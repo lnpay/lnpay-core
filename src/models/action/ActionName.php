@@ -23,6 +23,7 @@ class ActionName extends \yii\db\ActiveRecord
     const WALLET_RECEIVE = 520;
     const WALLET_TRANSFER_IN = 530;
     const WALLET_TRANSFER_OUT = 540;
+    const WALLET_CHANGE_NODE = 545;
 
     const WALLET_LOOP_OUT = 550;
     const WALLET_LOOP_IN = 555;
