@@ -1,5 +1,6 @@
 <?php
 /* @var  \lnpay\wallet\models\Wallet $wallet */
+/* @var  \lnpay\wallet\models\WalletNodeChangeForm $walletNodeChangeForm */
 $this->title = "LN Node: ".$wallet->user_label;
 $this->params['breadcrumbs'][] = ['label' => 'Wallets', 'url' => ['/wallet/dashboard']];
 $this->params['breadcrumbs'][] = ['label' => $wallet->user_label, 'url' => ['/wallet/view','id'=>$wallet->external_hash]];
@@ -7,6 +8,7 @@ $this->params['breadcrumbs'][] = 'Lightning Node';
 
 $lnNode = $wallet->lnNode;
 $isCustodial = $wallet->ln_node_id == \lnpay\node\models\LnNode::getLnpayNodeQuery()->one()->id;
+$user = \LNPay::$app->user->identity;
 ?>
 
 <?php $this->beginContent('@app/views/layouts/sidebar/_nav-wallets.php',compact('wallet')); ?>
@@ -24,6 +26,32 @@ $isCustodial = $wallet->ln_node_id == \lnpay\node\models\LnNode::getLnpayNodeQue
     </p>
     <p> Lightning Network transactions for this wallet are handled via this node.</p>
 </div>
+<?php
+
+if ($user->lnNode) {
+
+?>
+<div class="col-md-6 well">
+    <h2>Change Node Form</h2>
+    <div class="row">
+        <?php $form = \yii\widgets\ActiveForm::begin([
+            'options'=>[],
+        ]); ?>
+        <?php // $form->errorSummary($walletNodeChangeForm); ?>
+
+        <?php
+            if ($user->lnNode) { //user has at least 1 node!
+                $q = $user->getLnNodeQuery()->where(['!=','id',$wallet->ln_node_id])->all();
+                echo $form->field($walletNodeChangeForm, 'target_ln_node_id')->dropDownList(\yii\helpers\ArrayHelper::map($q,'id','alias'),[]);
+            }
+        ?>
+        <?= $form->field($walletNodeChangeForm, 'wallet_id')->hiddenInput(['value'=>$wallet->external_hash])->label(false); ?>
+        <?= $form->field($walletNodeChangeForm, 'transfer_balance')->checkbox()->hint('Transfer the sat balance ('.$wallet->balance.' sat) to the new node via keysend'); ?>
+        <?= \yii\helpers\Html::submitButton('Change Node', ['class' => 'styled-button-success','style'=>'white-space:unset;']) ?>
+        <?php \yii\widgets\ActiveForm::end(); ?>
+    </div>
+</div>
+<?php } ?>
 
 
 <?php $this->endContent(); ?>

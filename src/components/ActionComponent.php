@@ -150,25 +150,7 @@ class ActionComponent extends Component
         }
 
 
-        //Add our default fee catch wallet
-        $wallet = new Wallet();
-        $wallet->user_label = '['.$node->id.'] Fee Wallet';
-        $wallet->user_id = $node->user_id;
-        $wallet->ln_node_id = $node->id;
-        $wallet->save();
 
-        $node->fee_wallet_id = $wallet->id;
-        $node->save();
-
-        //add our default keysend catch wallet
-        $wallet = new Wallet();
-        $wallet->user_label = '['.$node->id.'] Keysend Wallet';
-        $wallet->user_id = $node->user_id;
-        $wallet->ln_node_id = $node->id;
-        $wallet->save();
-
-        $node->keysend_wallet_id = $wallet->id;
-        $node->save();
 
     }
 

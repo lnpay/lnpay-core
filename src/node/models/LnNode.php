@@ -535,6 +535,26 @@ class LnNode extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
+            //Add our default fee catch wallet
+            $wallet = new Wallet();
+            $wallet->user_label = '['.$this->id.'] Fee Wallet';
+            $wallet->user_id = $this->user_id;
+            $wallet->ln_node_id = $this->id;
+            $wallet->save();
+
+            $this->fee_wallet_id = $wallet->id;
+            $this->save();
+
+            //add our default keysend catch wallet
+            $wallet = new Wallet();
+            $wallet->user_label = '['.$this->id.'] Keysend Wallet';
+            $wallet->user_id = $this->user_id;
+            $wallet->ln_node_id = $this->id;
+            $wallet->save();
+
+            $this->keysend_wallet_id = $wallet->id;
+            $this->save();
+
             switch ($this->ln_node_implementation_id) {
                 default:
                     $this->user->registerAction(ActionName::LN_NODE_USER_ADD,['lnod'=>$this->toArray()]);

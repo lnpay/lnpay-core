@@ -5,6 +5,7 @@ use lnpay\components\HelperComponent;
 use lnpay\node\components\LndNodeConnector;
 use lnpay\node\components\LnMacaroonObject;
 use lnpay\models\StatusType;
+use lnpay\wallet\models\Wallet;
 use yii\base\Exception;
 use yii\base\Model;
 
