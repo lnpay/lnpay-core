@@ -506,7 +506,7 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
     public function createDefaultWallets(): void
     {
         $wallet = new Wallet();
-        $wallet->user_label = 'Fee Wallet';
+        $wallet->user_label = 'Billing Wallet';
         $wallet->user_id = $this->id;
         $wallet->wallet_type_id = WalletType::FEE_WALLET;
         if (!$wallet->save()) {

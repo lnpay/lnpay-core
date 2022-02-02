@@ -538,7 +538,7 @@ class LnNode extends \yii\db\ActiveRecord
         if ($insert) {
             //Add our default fee catch wallet
             $wallet = new Wallet();
-            $wallet->user_label = '['.$this->id.'] Fee Wallet';
+            $wallet->user_label = '['.$this->id.'] Network Fees';
             $wallet->user_id = $this->user_id;
             $wallet->ln_node_id = $this->id;
             $wallet->save();
@@ -548,7 +548,7 @@ class LnNode extends \yii\db\ActiveRecord
 
             //add our default keysend catch wallet
             $wallet = new Wallet();
-            $wallet->user_label = '['.$this->id.'] Keysend Wallet';
+            $wallet->user_label = '['.$this->id.'] Inbound Keysend';
             $wallet->user_id = $this->user_id;
             $wallet->ln_node_id = $this->id;
             $wallet->save();
