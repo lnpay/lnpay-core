@@ -24,7 +24,7 @@ return [
             'dsn' => 'mysql:host='.getenv('DB_HOST').';dbname='.getenv('DB_DB'),
             'username' => getenv('DB_USER'),
             'password' => getenv('DB_PASS'),
-            'charset' => 'utf8',
+            'charset' => 'utf8mb4',
         ],
         'mongodb' => [
             'class' => '\yii\mongodb\Connection',
