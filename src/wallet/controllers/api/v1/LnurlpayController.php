@@ -93,7 +93,7 @@ class LnurlpayController extends ApiController
         }
     }
 
-    public function actionLnurlProcess($access_key,$wallet_lnurlpay_id,$amount=null)
+    public function actionLnurlProcess($access_key,$wallet_lnurlpay_id,$amount=null,$comment=null)
     {
         try {
             $w = $this->findByKey($access_key);
@@ -115,11 +115,13 @@ class LnurlpayController extends ApiController
                 }
 
 
+
+
                 $lnTx = $w->generateLnInvoice(
                     [
                         'num_satoshis'=>ceil($amount/1000),
                         'description_hash' => hash('sha256',utf8_encode($lnurlpModel->lnurlp_metadata)),
-                        'memo'=>'LNURL PAY'
+                        'memo'=>($comment??'LNURL PAY')
                     ],
                     \LNPay::$app->request->getQueryParams()
                 );
@@ -136,7 +138,7 @@ class LnurlpayController extends ApiController
                 return [
                     'minSendable'       => $lnurlpModel->lnurlp_minSendable_msat,
                     'maxSendable'       => $lnurlpModel->lnurlp_maxSendable_msat,
-                    'commentAllowed'    => 0,
+                    'commentAllowed'    => $lnurlpModel->lnurlp_commentAllowed,
                     'tag'               => 'payRequest',
                     'metadata'          => $lnurlpModel->lnurlp_metadata,
                     'callback'          => $lnurlpModel->lnurl_decoded
@@ -225,7 +227,7 @@ class LnurlpayController extends ApiController
             $model->passThru = $form->passThru;
             $model->wtx_type_id = WalletTransactionType::LN_LNURL_PAY_OUTBOUND;
 
-            return $model->processWithdrawal(['method'=>'lnurlpay']);
+            return $model->processWithdrawal(['method'=>'lnurlpay','lnurlp_comment'=>$form->comment]);
 
         } else {
             throw new UnableToPayLnurlpayException(HelperComponent::getErrorStringFromInvalidModel($form));

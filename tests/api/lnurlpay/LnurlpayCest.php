@@ -118,5 +118,18 @@ class LnurlpayCest
         $I->seeResponseContains('cannot accept less');
     }
 
+    public function payLnurlpayCommentTooLong(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendPOST('/v1/wallet/waklw_aliceLnurlWithdraw/lnurlp/pay',[
+            'amt_msat'=>1202,
+            'lnurlpay_encoded'=>'lnurl1dp68gup69uhnzwfj9ccnvwpwxcujuvf39a5kuer90qkhgetnwsh8q6rs9amrztmhv9kxcet59amkz6mvwp0kzmrfvdj5cmn4wfk9qcte9akxuatjd3cz7mrww4excuzlvdhk6mt9de6yzmrvdamk2eq44lz39',
+            'comment'=>'commentcommentcomment'
+        ]);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('Comment length is too long');
+    }
+
 
 }

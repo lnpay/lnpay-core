@@ -26,6 +26,7 @@ class LnWalletLnurlpayPayForm extends Model
     public $_pr = NULL;
     public $probe_json = [];
     public $passThru = [];
+    public $comment = NULL;
 
 
     /**
@@ -40,7 +41,9 @@ class LnWalletLnurlpayPayForm extends Model
             [['amt_msat'], 'compare', 'compareValue' => 0, 'operator' => '>='],
             [['lnurlpay_encoded'],'validLnurl'],
             [['ln_address'],'email'],
-            [['amt_msat'],'amountCheck']
+            [['amt_msat'],'amountCheck'],
+            [['comment'],'string'],
+            [['comment'],'commentCheck']
         ];
     }
 
@@ -73,6 +76,16 @@ class LnWalletLnurlpayPayForm extends Model
         }
     }
 
+    public function commentCheck()
+    {
+        $commentAllowed = @$this->probe_json['commentAllowed'];
+        if ($this->comment && $commentAllowed) {
+            if (strlen($this->comment) > $commentAllowed) {
+                $this->addError('comment','Comment length is too long ('.strlen($this->comment).') - endpoint supports ('.$commentAllowed.') characters');
+            }
+        }
+    }
+
     public function requestRemoteInvoice()
     {
         $client = new \GuzzleHttp\Client([
@@ -85,6 +98,11 @@ class LnWalletLnurlpayPayForm extends Model
         $r = null;
         $lnurl = $this->probe_json['callback'] . (stripos($this->probe_json['callback'],'?')!==FALSE?'&':'?');
         $url = $lnurl.'amount='.$this->amt_msat;
+
+        if ($this->comment) {
+            $url .= '&comment='.$this->comment;
+        }
+
         $response = $client->request('GET', $url);
         $r = $response->getBody()->getContents();
         $r = json_decode($r,TRUE);
