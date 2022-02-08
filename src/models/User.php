@@ -6,6 +6,7 @@ use lnpay\components\ActionComponent;
 use lnpay\components\HelperComponent;
 use lnpay\models\action\ActionName;
 use lnpay\behaviors\JsonDataBehavior;
+use lnpay\org\models\Org;
 use lnpay\wallet\models\WalletTransactionType;
 use lnpay\wallet\models\WalletType;
 use lnpay\node\models\LnNode;
@@ -415,6 +416,14 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
     public function getLnNodes()
     {
         return $this->hasMany(LnNode::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrg()
+    {
+        return $this->hasOne(Org::className(), ['id' => 'org_id']);
     }
 
 

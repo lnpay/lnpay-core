@@ -2,6 +2,7 @@
 namespace lnpay\node\models;
 
 use lnpay\components\HelperComponent;
+use lnpay\models\User;
 use lnpay\node\components\LndNodeConnector;
 use lnpay\node\components\LnMacaroonObject;
 use lnpay\models\StatusType;
@@ -327,6 +328,7 @@ class NodeAddForm extends Model
         }
 
         $node->user_id = $this->user_id?:\LNPay::$app->user->id;
+        $node->org_id = User::findOne($node->user_id)->org_id;
         $node->alias = $nodeInfo['alias'];
         $node->ln_node_implementation_id = $this->node_implementation;
         $node->default_pubkey = $nodeInfo['identity_pubkey'];

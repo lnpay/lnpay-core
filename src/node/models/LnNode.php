@@ -14,6 +14,7 @@ use lnpay\models\action\ActionData;
 use lnpay\models\action\ActionName;
 use lnpay\models\StatusType;
 use lnpay\models\User;
+use lnpay\org\models\Org;
 use lnpay\wallet\models\Wallet;
 use Yii;
 use yii\helpers\VarDumper;
@@ -80,8 +81,9 @@ class LnNode extends \yii\db\ActiveRecord
             ['rpc_status_id','default','value'=>StatusType::LN_NODE_RPC_UP],
             ['rest_status_id','default','value'=>StatusType::LN_NODE_REST_UP],
             ['ln_node_implementation_id','default','value' => 'lnd'],
+            ['is_custodian','default','value' => 0],
             [['wallet_password','network'],'string'],
-            [['rpc_port', 'rest_port', 'ln_port','internal_rpc_port', 'internal_rest_port', 'internal_ln_port', 'status_type_id', 'rpc_status_id', 'rest_status_id','user_id','onchain_total_sats','onchain_confirmed_sats'], 'integer'],
+            [['org_id','rpc_port', 'rest_port', 'ln_port','internal_rpc_port', 'internal_rest_port', 'internal_ln_port', 'status_type_id', 'rpc_status_id', 'rest_status_id','user_id','onchain_total_sats','onchain_confirmed_sats'], 'integer'],
             [['tls_cert','onchain_nextaddr'], 'string'],
             [['getinfo', 'json_data'], 'safe'],
             [['id', 'alias', 'default_pubkey', 'uri', 'host'], 'string', 'max' => 255],
@@ -158,6 +160,14 @@ class LnNode extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrg()
+    {
+        return $this->hasOne(Org::class, ['id' => 'org_id']);
     }
 
     /**
@@ -244,8 +254,15 @@ class LnNode extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public static function getLnpayNodeQuery()
+    public static function getCustodialNodeQuery($user_id=null)
     {
+        if ($user_id) { //if user_id is supplied, attempt to find the org's custodial node
+            $user = User::findOne($user_id);
+            if ($user) {
+                return static::find()->where(['org_id'=>$user->org_id,'is_custodian'=>1])->orderBy('ln_node.created_at ASC');
+            }
+
+        }
         return static::find()->orderBy('ln_node.created_at ASC');
     }
 
@@ -289,7 +306,7 @@ class LnNode extends \yii\db\ActiveRecord
      */
     public static function decodeInvoiceHelper($payment_request)
     {
-        $node = static::getLnpayNodeQuery()->one();
+        $node = static::getCustodialNodeQuery()->one();
         return $node->getLndConnector()->decodeInvoice($payment_request);
     }
 

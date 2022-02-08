@@ -38,7 +38,7 @@ class NodeApiController extends ApiController
         if (parent::beforeAction($event)) {
             if ($node_id = \LNPay::$app->request->getQueryParam('node_id')) {
                 if ($node_id == 'default')
-                    $this->nodeObject = LnNode::getLnpayNodeQuery()->one();
+                    $this->nodeObject = LnNode::getCustodialNodeQuery(\LNPay::$app->user->id)->one();
                 else
                     $this->nodeObject = LnNode::find()->where(['id'=>$node_id,'user_id'=>\LNPay::$app->user->id])->one();
 

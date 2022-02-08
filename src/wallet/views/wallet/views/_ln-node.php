@@ -7,7 +7,7 @@ $this->params['breadcrumbs'][] = ['label' => $wallet->user_label, 'url' => ['/wa
 $this->params['breadcrumbs'][] = 'Lightning Node';
 
 $lnNode = $wallet->lnNode;
-$isCustodial = $wallet->ln_node_id == \lnpay\node\models\LnNode::getLnpayNodeQuery()->one()->id;
+$isCustodial = $wallet->ln_node_id == \lnpay\node\models\LnNode::getCustodialNodeQuery($wallet->user_id)->one()->id;
 $user = \LNPay::$app->user->identity;
 ?>
 

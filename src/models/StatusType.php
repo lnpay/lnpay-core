@@ -49,6 +49,9 @@ class StatusType extends \yii\db\ActiveRecord
     const WALLET_LNURL_ACTIVE = 450;
     const WALLET_LNURL_INACTIVE = 455;
 
+    const ORG_ACTIVE = 500;
+    const ORG_INACTIVE = 510;
+
 
     const WEBHOOK_ACTIVE = 230;
     const WEBHOOK_INACTIVE = 235;
@@ -76,6 +79,7 @@ class StatusType extends \yii\db\ActiveRecord
     const TYPE_FAUCET = 'faucet';
     const TYPE_LN_NODE = 'ln_node';
     const TYPE_PYWL = 'pywl';
+    const TYPE_ORG = 'org';
 
     const LN_SUBNODE_PENDING = 350;
     const LN_SUBNODE_UNLOCKING = 354;

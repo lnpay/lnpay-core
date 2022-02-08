@@ -27,7 +27,7 @@ $user = \LNPay::$app->user->identity;
         $q = $user->getLnNodeQuery()->all();
         echo $form->field($model, 'ln_node_id')->dropDownList(\yii\helpers\ArrayHelper::map($q,'id','alias'),$opts);
     } else {
-        $custodialNode = \lnpay\node\models\LnNode::getLnpayNodeQuery()->one();
+        $custodialNode = \lnpay\node\models\LnNode::getCustodialNodeQuery($user->id)->one();
         echo $form->field($model, 'ln_node_id')->dropDownList([$custodialNode->id=>$custodialNode->alias.' (CUSTODIAL)'],$opts);
     }
 

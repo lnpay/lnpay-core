@@ -182,7 +182,7 @@ class LnTx extends \yii\db\ActiveRecord
         if ($this->ln_node_id) {
             $node = LnNode::findOne($this->ln_node_id);
         } else {
-            $node = LnNode::getLnpayNodeQuery()->one();
+            $node = LnNode::getCustodialNodeQuery($this->user_id)->one();
         }
 
         if ($checkLimits) {
