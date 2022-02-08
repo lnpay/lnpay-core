@@ -138,7 +138,7 @@ class LnurlpayController extends ApiController
                 return [
                     'minSendable'       => $lnurlpModel->lnurlp_minSendable_msat,
                     'maxSendable'       => $lnurlpModel->lnurlp_maxSendable_msat,
-                    'commentAllowed'    => $lnurlpModel->lnurlp_commentAllowed,
+                    'commentAllowed'    => $lnurlpModel->lnurlp_commentAllowed??0,
                     'tag'               => 'payRequest',
                     'metadata'          => $lnurlpModel->lnurlp_metadata,
                     'callback'          => $lnurlpModel->lnurl_decoded
@@ -225,6 +225,7 @@ class LnurlpayController extends ApiController
             $model->payment_request = $invoice;
             $model->wallet_id = $wallet->id;
             $model->passThru = $form->passThru;
+            $model->target_msat = $form->amt_msat;
             $model->wtx_type_id = WalletTransactionType::LN_LNURL_PAY_OUTBOUND;
 
             return $model->processWithdrawal(['method'=>'lnurlpay','lnurlp_comment'=>$form->comment]);

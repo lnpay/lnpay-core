@@ -31,6 +31,7 @@ class LnWalletWithdrawForm extends Model
     public $wallet_id = null;
     public $passThru = [];
     public $wtx_type_id = null;
+    public $target_msat = null;
 
     /**
      * @inheritdoc
@@ -111,11 +112,20 @@ class LnWalletWithdrawForm extends Model
     {
         $maxWithdraw = $this->walletObject->balance;
         $invoiceNumSatoshis = $this->decodedInvoiceObject->num_satoshis;
+        $invoiceNumMsat = $this->decodedInvoiceObject->numMsat;
 
         if ($invoiceNumSatoshis > $maxWithdraw) {
             $this->addError($attribute,'Invoice too large :) Max balance: '.$maxWithdraw);
             return false;
         }
+
+        if ($this->target_msat) {
+            if ($this->target_msat != $invoiceNumMsat) {
+                $this->addError($attribute,"Requested invoice ({$this->target_msat}) and invoice generated ({$invoiceNumMsat}) do not match.");
+                return false;
+            }
+        }
+
     }
 
     public function getRequestParameters()
