@@ -42,6 +42,12 @@ $bakeMac->permissions = $model->defaultMacaroonPerms;
         <div class="form-group">
             <div id="node-add-warning" class="alert alert-info">
                 <?php
+                echo $form->field($model, 'is_custodian')->checkbox()->hint('Give other members access to this node?'); ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <div id="node-add-warning" class="alert alert-info">
+                <?php
                 $model->readyToAdd = false;
                 echo $form->field($model, 'readyToAdd')->checkbox(); ?>
             </div>

@@ -13,6 +13,7 @@ return [
         '@lnpay'=> dirname(__DIR__).'/src/',
         '@app/node'=> dirname(__DIR__).'/src/node/',
         '@app/wallet'=> dirname(__DIR__).'/src/wallet/',
+        '@app/org'=> dirname(__DIR__).'/src/org/',
         '@vendor'=> dirname(__DIR__).'/vendor',
     ],
     'basePath' => dirname(__DIR__).'/src/',

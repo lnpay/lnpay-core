@@ -23,13 +23,12 @@ $user = \LNPay::$app->user->identity;
     }
     $types = \yii\helpers\ArrayHelper::map(\lnpay\wallet\models\WalletType::getAvailableWalletTypes(),'id','display_name');
 
-    if ($user->lnNode) { //user has at least 1 node!
-        $q = $user->getLnNodeQuery()->all();
-        echo $form->field($model, 'ln_node_id')->dropDownList(\yii\helpers\ArrayHelper::map($q,'id','alias'),$opts);
-    } else {
-        $custodialNode = \lnpay\node\models\LnNode::getCustodialNodeQuery($user->id)->one();
-        echo $form->field($model, 'ln_node_id')->dropDownList([$custodialNode->id=>$custodialNode->alias.' (CUSTODIAL)'],$opts);
-    }
+
+    $q = $user->getLnNodeQuery()->all();
+    if(!$q)
+        $q = \lnpay\node\models\LnNode::getCustodialNodeQuery()->limit(1)->all(); //this is backward compat for lnpay custodial setup as is
+    echo $form->field($model, 'ln_node_id')->dropDownList(\yii\helpers\ArrayHelper::map($q,'id',function ($node){return $node->alias." ({$node->org->display_name})";}),$opts);
+
 
 
 

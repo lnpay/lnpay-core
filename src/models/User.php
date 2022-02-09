@@ -7,6 +7,7 @@ use lnpay\components\HelperComponent;
 use lnpay\models\action\ActionName;
 use lnpay\behaviors\JsonDataBehavior;
 use lnpay\org\models\Org;
+use lnpay\org\models\OrgUserType;
 use lnpay\wallet\models\WalletTransactionType;
 use lnpay\wallet\models\WalletType;
 use lnpay\node\models\LnNode;
@@ -391,7 +392,7 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
      */
     public function getLnNodeQuery()
     {
-        return LnNode::find()->where(['user_id'=>$this->id]);
+        return LnNode::find()->where(['user_id'=>$this->id])->orWhere(['org_id'=>$this->org_id,'is_custodian'=>1]);
     }
 
     /**
@@ -424,6 +425,14 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
     public function getOrg()
     {
         return $this->hasOne(Org::className(), ['id' => 'org_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrgUserType()
+    {
+        return $this->hasOne(OrgUserType::className(), ['id' => 'org_user_type_id']);
     }
 
 

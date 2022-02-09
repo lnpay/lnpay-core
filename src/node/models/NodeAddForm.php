@@ -32,6 +32,7 @@ class NodeAddForm extends Model
     public $node_network;
     public $node_uri;
     public $node_id = NULL;
+    public $is_custodian;
 
     public $user_id = NULL;
 
@@ -94,6 +95,7 @@ class NodeAddForm extends Model
             [['node_host','node_rest_port','node_grpc_port','node_macaroon'],'required'],
             [['node_host','node_macaroon','node_tls_cert'],'string'],
             [['node_rest_port','node_grpc_port','readyToAdd'],'integer'],
+            [['is_custodian'],'boolean'],
             [['node_tls_cert'],'verify_tls_cert'],
             ['node_macaroon','verify_macaroon'],
             ['node_host','test_rest_connect'],
@@ -292,7 +294,8 @@ class NodeAddForm extends Model
     {
         return [
             'invoice_request'=>'Payment Request',
-            'readyToAdd'=>'I understand I am being reckless and the implications'
+            'readyToAdd'=>'I understand that an admin.macaroon will give the service access to funds',
+            'is_custodian'=>'Is custodial node for other members of organization'
         ];
     }
 
@@ -340,6 +343,7 @@ class NodeAddForm extends Model
         $node->tls_cert = $this->node_tls_cert;
         $node->getinfo = $nodeInfo;
         $node->status_type_id = StatusType::LN_NODE_ACTIVE;
+        $node->is_custodian = $this->is_custodian;
         $node->network = $this->node_network?:'unknown';
 
         if ($node->save()) {

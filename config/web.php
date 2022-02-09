@@ -6,7 +6,8 @@ $config = [
         'log',
         'monitor',
         'node',
-        'wallet'
+        'wallet',
+        'org'
     ],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
@@ -25,6 +26,9 @@ $config = [
         ],
         'wallet' => [
             'class' => lnpay\wallet\Module::class
+        ],
+        'org' => [
+            'class' => lnpay\org\Module::class
         ],
     ],
     'components' => [

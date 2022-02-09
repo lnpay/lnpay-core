@@ -259,10 +259,14 @@ class LnNode extends \yii\db\ActiveRecord
         if ($user_id) { //if user_id is supplied, attempt to find the org's custodial node
             $user = User::findOne($user_id);
             if ($user) {
-                return static::find()->where(['org_id'=>$user->org_id,'is_custodian'=>1])->orderBy('ln_node.created_at ASC');
+                $orgNode = static::find()->where(['org_id'=>$user->org_id,'is_custodian'=>1])->orderBy('ln_node.created_at ASC');
+                if ($orgNode->exists()) { //if org node exists return, otherwise backwards compatible with base node
+                    return $orgNode;
+                }
             }
 
         }
+        //return base node
         return static::find()->orderBy('ln_node.created_at ASC');
     }
 

@@ -11,6 +11,7 @@ use lnpay\assets\PaywallAsset;
 use lnpay\widgets\Alert;
 
 PaywallAsset::register($this);
+$user = \LNPay::$app->user->identity;
 
 ?>
 <?php $this->beginPage() ?>
@@ -85,7 +86,8 @@ PaywallAsset::register($this);
             . '<img src="/img/icons/settings.svg" style="height: 25px;"/>'
             . '</a>'
             . '<div class="dropdown-menu" aria-labelledby="navbarDropdown">'
-            .'<a class="dropdown-item btn btn-link" href="/account/index">Your Account</a>'
+            .'<a class="dropdown-item btn btn-link" href="/org/home/view">'.$user->org->display_name.'</a>'
+            .'<a class="dropdown-item btn btn-link" href="/account/index">Account Info</a>'
                 . '<a class="dropdown-item">'
                 . Html::beginForm(['/home/logout'], 'post')
                 . Html::submitButton(
@@ -94,7 +96,7 @@ PaywallAsset::register($this);
                 )
                 . Html::endForm() . '</a>'
             . '</div>'
-          . '</li>'
+          . '</li>',
         ];
     }
 

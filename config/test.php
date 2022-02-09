@@ -13,6 +13,7 @@ $config = [
         '@root'=> dirname(__DIR__),
         '@app'=> dirname(__DIR__).'/src/',
         '@app/node'=> dirname(__DIR__).'/src/node/',
+        '@app/org'=> dirname(__DIR__).'/src/org/',
         '@vendor'=> dirname(__DIR__).'/vendor',
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
