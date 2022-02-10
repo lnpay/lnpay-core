@@ -67,6 +67,15 @@ class LnurlpayCest
         $I->seeResponseContains('"maxSendable"');
     }
 
+    public function getViewLnurlpayId(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendGET('/v1/lnurlp/lnurlp_0YM18Nt3po8SUmIOKE');
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"lnurlp_0YM18Nt3po8SUmIOKE"');
+    }
+
     public function getLnurlpayProbeFail(\ApiTester $I)
     {
         $I->haveHttpHeader('Content-Type', 'application/json');

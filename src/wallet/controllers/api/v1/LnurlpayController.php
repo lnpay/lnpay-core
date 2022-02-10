@@ -22,7 +22,7 @@ class LnurlpayController extends ApiController
      * @var array restrict the following endpoints to sak only
      */
     public $sakOnlyArray = [
-
+        //'api/v1/lnurlpay/view'
     ];
 
     public $modelClass = 'lnpay\wallet\models\WalletLnurlpay';
@@ -51,30 +51,37 @@ class LnurlpayController extends ApiController
         ];
     }
 
-/*
-    public function actionView()
+    public static function findModel($wallet_lnurlpay_id)
     {
-        $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_READ);
-        return $this->findByKey($access_key);
+        return WalletLnurlpay::find()->where(['external_hash'=>$wallet_lnurlpay_id,'user_id'=>\LNPay::$app->user->id])->one();
     }
 
-
-    public function actionViewAll()
+    public function actionView($wallet_lnurlpay_id)
     {
-        $modelClass = $this->modelClass;
-        return new \yii\data\ActiveDataProvider([
-            'query' => $modelClass::find()->where(['user_id'=>\LNPay::$app->user->id]),
-            'pagination' => [
-                'defaultPageSize' => 100,
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'created_at' => SORT_DESC
-                ]
-            ],
-        ]);
+        if ($l = static::findModel($wallet_lnurlpay_id)) {
+            return $l;
+        } else {
+            throw new InvalidLnurlpayLinkException('Unknown lnurlpay id');
+        }
     }
-*/
+
+    /*
+        public function actionViewAll()
+        {
+            $modelClass = $this->modelClass;
+            return new \yii\data\ActiveDataProvider([
+                'query' => $modelClass::find()->where(['user_id'=>\LNPay::$app->user->id]),
+                'pagination' => [
+                    'defaultPageSize' => 100,
+                ],
+                'sort' => [
+                    'defaultOrder' => [
+                        'created_at' => SORT_DESC
+                    ]
+                ],
+            ]);
+        }
+    */
     public function actionLightningAddress($username)
     {
         $prefix = explode("_",$username);
