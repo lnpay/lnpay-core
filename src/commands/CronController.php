@@ -89,13 +89,13 @@ class CronController extends Controller
 
     public function cleanupQueueLogs()
     {
-        \LNPay::info('Cleaning up Queue Push history older than 30 days');
-        $cutoffTime = time() - 1296000*2; //30 days
+        \LNPay::info('Cleaning up Queue Push history older than 15 days');
+        $cutoffTime = time() - 1296000; //15 days
         \LNPay::$app->db->createCommand('DELETE FROM queue_push WHERE job_class = :class')->bindValue(':class','lnpay\jobs\AnalyticsLogJob')->execute();
         \LNPay::$app->db->createCommand('DELETE FROM queue_push WHERE pushed_at < '.$cutoffTime)->execute();
 
-        \LNPay::info('Cleaning up Queue Exec history older than 30 days');
-        $cutoffTime = time() - 1296000*2; //30 days
+        \LNPay::info('Cleaning up Queue Exec history older than 15 days');
+        $cutoffTime = time() - 1296000; //15 days
         \LNPay::$app->db->createCommand('DELETE FROM queue_exec WHERE finished_at < '.$cutoffTime)->execute();
     }
 
