@@ -59,6 +59,11 @@ class LnWalletKeysendFormJob extends \yii\base\BaseObject implements \yii\queue\
 
     public function canRetry($attempt, $error)
     {
-        return ($attempt < 5) && ($error instanceof \lnpay\exceptions\WalletBusyException);
+        if (($attempt < 5) && ($error instanceof \lnpay\exceptions\WalletBusyException)) {
+            sleep(1);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
