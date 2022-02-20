@@ -82,8 +82,8 @@ class CronController extends Controller
 
     public function cleanupApiLogs()
     {
-        \LNPay::info('Cleaning up API logs older than 30 days');
-        $cutoffTime = time() - 1296000*2; //30 days
+        \LNPay::info('Cleaning up API logs older than 15 days');
+        $cutoffTime = time() - 1296000; //15 days
         \LNPay::$app->db->createCommand('DELETE FROM user_api_log WHERE created_at < '.$cutoffTime)->execute();
     }
 
