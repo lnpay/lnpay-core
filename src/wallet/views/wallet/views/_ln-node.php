@@ -41,7 +41,7 @@ if ($user->lnNode) {
 
         <?php
             if ($user->lnNode) { //user has at least 1 node!
-                $q = $user->getLnNodeQuery()->where(['!=','id',$wallet->ln_node_id])->all();
+                $q = $user->getLnNodeQuery()->andWhere(['!=','id',$wallet->ln_node_id])->all();
                 echo $form->field($walletNodeChangeForm, 'target_ln_node_id')->dropDownList(\yii\helpers\ArrayHelper::map($q,'id','alias'),[]);
             }
         ?>
