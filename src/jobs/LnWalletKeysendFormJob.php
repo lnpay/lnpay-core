@@ -54,7 +54,7 @@ class LnWalletKeysendFormJob extends \yii\base\BaseObject implements \yii\queue\
 
     public function getTtr()
     {
-        return 8;
+        return 12;
     }
 
     public function canRetry($attempt, $error)
