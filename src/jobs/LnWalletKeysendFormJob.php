@@ -54,13 +54,12 @@ class LnWalletKeysendFormJob extends \yii\base\BaseObject implements \yii\queue\
 
     public function getTtr()
     {
-        return 12;
+        return 20;
     }
 
     public function canRetry($attempt, $error)
     {
         if (($attempt < 50) && ($error instanceof \lnpay\exceptions\WalletBusyException)) {
-            sleep(.1);
             return true;
         } else {
             return false;
