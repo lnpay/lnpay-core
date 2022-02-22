@@ -40,7 +40,7 @@ if ($user->lnNode) {
         <?php // $form->errorSummary($walletNodeChangeForm); ?>
 
         <?php
-            $q = $user->getLnNodeQuery()->andWhere(['!=','id',$wallet->ln_node_id])->all();
+            $q = $user->getLnNodeQuery()->all();
             echo $form->field($walletNodeChangeForm, 'target_ln_node_id')->dropDownList(\yii\helpers\ArrayHelper::map($q,'id','alias'),[]);
         ?>
         <?= $form->field($walletNodeChangeForm, 'wallet_id')->hiddenInput(['value'=>$wallet->external_hash])->label(false); ?>

@@ -5,6 +5,7 @@ namespace lnpay\org\controllers;
 use lnpay\models\ChangePasswordForm;
 use lnpay\models\User;
 use lnpay\org\models\Org;
+use lnpay\org\models\OrgUserType;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
@@ -24,6 +25,12 @@ class HomeController extends BaseOrgController
 
     public function actionMembers()
     {
+        if (Yii::$app->user->identity->org_user_type_id != OrgUserType::TYPE_OWNER) {
+            Yii::$app->session->setFlash('error','Must be org owner!');
+            return $this->redirect('view');
+        }
+
+
         $dataProvider = new ActiveDataProvider([
             'query' => $this->orgObject->getUsers()
         ]);

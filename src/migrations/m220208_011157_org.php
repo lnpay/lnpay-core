@@ -68,8 +68,24 @@ class m220208_011157_org extends Migration
 
         //create default orgs for users
             //populate user with default org
+        $this->insert('org',[
+            'id'=>2000,
+            'created_at'=>time(),
+            'updated_at'=>time(),
+            'name'=>'lnpay_default_org',
+            'display_name'=>'LNPay Organization',
+            'external_hash'=>'org_EoqWo3Gs',
+            'status_type_id'=>500
+        ]);
 
-        //loop through ln_nodes and set any org_id's based on user
+        \lnpay\models\User::updateAll(['org_id'=>2000,'org_user_type_id'=>40]);
+
+        //on push for prod migrate
+        //Set lnpay user as default org owner
+        //set lnpay nodes is_custodian appropriately
+        //1. Create new orgs per users with LN node
+        //2. Update user table to reflect org association
+        //3. Update node table to reflect org association
 
     }
 
@@ -78,6 +94,7 @@ class m220208_011157_org extends Migration
      */
     public function safeDown()
     {
+        $this->delete('org',['id'=>2000]);
         $this->dropForeignKey('ln_node_ibfk_10','ln_node');
         $this->dropColumn('ln_node','org_id');
         $this->dropColumn('ln_node','is_custodian');
@@ -89,6 +106,7 @@ class m220208_011157_org extends Migration
         $this->dropTable('org');
 
         $this->delete('status_type',['type'=>'org']);
+
 
 
         return true;
