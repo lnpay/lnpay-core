@@ -1,7 +1,7 @@
 <?php
 namespace lnpay\exceptions;
 
-class WalletBusyException extends \yii\base\Exception
+class WalletBusyException extends \yii\web\ServerErrorHttpException
 {
     /**
      * Constructor.

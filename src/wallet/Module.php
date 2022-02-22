@@ -63,7 +63,6 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'GET,OPTIONS v1/lnurlp/<wallet_lnurlpay_id:\w+>' => 'wallet/api/v1/lnurlpay/view',
 
 
-
         ], false);
     }
 
