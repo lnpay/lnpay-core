@@ -55,7 +55,7 @@ class EventsController extends ApiController
     public function actionHtlc()
     {
         $model = new HtlcEventQueryForm();
-        $model->load(Yii::$app->request->getQueryParams(),'');
+        $model->load(\LNPay::$app->request->getQueryParams(),'');
 
         if ($model->validate()) {
             //execute query
@@ -69,7 +69,7 @@ class EventsController extends ApiController
     public function actionHtlcsummary($period) //minute, hour, day
     {
         $model = new HtlcEventQueryForm();
-        $model->load(Yii::$app->request->getQueryParams(),'');
+        $model->load(\LNPay::$app->request->getQueryParams(),'');
 
         if (!$model->endAt)
             $model->endAt = time()*1000000000;

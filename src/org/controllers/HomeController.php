@@ -25,8 +25,8 @@ class HomeController extends BaseOrgController
 
     public function actionMembers()
     {
-        if (Yii::$app->user->identity->org_user_type_id != OrgUserType::TYPE_OWNER) {
-            Yii::$app->session->setFlash('error','Must be org owner!');
+        if (\LNPay::$app->user->identity->org_user_type_id != OrgUserType::TYPE_OWNER) {
+            \LNPay::$app->session->setFlash('error','Must be org owner!');
             return $this->redirect('view');
         }
 
