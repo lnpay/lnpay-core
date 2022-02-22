@@ -22,7 +22,7 @@ class LnurlpayController extends ApiController
      * @var array restrict the following endpoints to sak only
      */
     public $sakOnlyArray = [
-
+        //'api/v1/lnurlpay/view'
     ];
 
     public $modelClass = 'lnpay\wallet\models\WalletLnurlpay';
@@ -51,30 +51,37 @@ class LnurlpayController extends ApiController
         ];
     }
 
-/*
-    public function actionView()
+    public static function findModel($wallet_lnurlpay_id)
     {
-        $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_READ);
-        return $this->findByKey($access_key);
+        return WalletLnurlpay::find()->where(['external_hash'=>$wallet_lnurlpay_id,'user_id'=>\LNPay::$app->user->id])->one();
     }
 
-
-    public function actionViewAll()
+    public function actionView($wallet_lnurlpay_id)
     {
-        $modelClass = $this->modelClass;
-        return new \yii\data\ActiveDataProvider([
-            'query' => $modelClass::find()->where(['user_id'=>\LNPay::$app->user->id]),
-            'pagination' => [
-                'defaultPageSize' => 100,
-            ],
-            'sort' => [
-                'defaultOrder' => [
-                    'created_at' => SORT_DESC
-                ]
-            ],
-        ]);
+        if ($l = static::findModel($wallet_lnurlpay_id)) {
+            return $l;
+        } else {
+            throw new InvalidLnurlpayLinkException('Unknown lnurlpay id');
+        }
     }
-*/
+
+    /*
+        public function actionViewAll()
+        {
+            $modelClass = $this->modelClass;
+            return new \yii\data\ActiveDataProvider([
+                'query' => $modelClass::find()->where(['user_id'=>\LNPay::$app->user->id]),
+                'pagination' => [
+                    'defaultPageSize' => 100,
+                ],
+                'sort' => [
+                    'defaultOrder' => [
+                        'created_at' => SORT_DESC
+                    ]
+                ],
+            ]);
+        }
+    */
     public function actionLightningAddress($username)
     {
         $prefix = explode("_",$username);
@@ -138,7 +145,7 @@ class LnurlpayController extends ApiController
                 return [
                     'minSendable'       => $lnurlpModel->lnurlp_minSendable_msat,
                     'maxSendable'       => $lnurlpModel->lnurlp_maxSendable_msat,
-                    'commentAllowed'    => $lnurlpModel->lnurlp_commentAllowed,
+                    'commentAllowed'    => $lnurlpModel->lnurlp_commentAllowed??0,
                     'tag'               => 'payRequest',
                     'metadata'          => $lnurlpModel->lnurlp_metadata,
                     'callback'          => $lnurlpModel->lnurl_decoded
@@ -225,6 +232,7 @@ class LnurlpayController extends ApiController
             $model->payment_request = $invoice;
             $model->wallet_id = $wallet->id;
             $model->passThru = $form->passThru;
+            $model->target_msat = $form->amt_msat;
             $model->wtx_type_id = WalletTransactionType::LN_LNURL_PAY_OUTBOUND;
 
             return $model->processWithdrawal(['method'=>'lnurlpay','lnurlp_comment'=>$form->comment]);
