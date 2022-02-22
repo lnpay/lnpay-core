@@ -183,13 +183,18 @@ class Wallet extends \yii\db\ActiveRecord
         $node = LnNode::findOne($this->ln_node_id);
         $user_id = (\LNPay::$app instanceof \yii\web\Application?\LNPay::$app->user->id:$this->user_id);
 
-        //if we are using the org custodial node
-        if ($this->ln_node_id == LnNode::getCustodialNodeQuery($user_id)->one()->id)
-            return true;
-
         if (\LNPay::$app instanceof \yii\web\Application && \LNPay::$app->user->isGuest) { //e.g. LNURL-withdraw where there is no authenticated user
             //this seems weird, but it is correct
         } else {
+            $user = User::findOne($user_id);
+
+            //if we are using the org custodial node
+            $userNodes = $user->getLnNodeQuery()->all();
+            foreach ($userNodes as $uN) { //if submitted node id matches one we already have
+                if ($uN->user_id == $node->user_id)
+                    return true;
+            }
+
             if ($node->user_id != $user_id)
                 $this->addError('ln_node_id','Node does not belong to this user!');
         }
@@ -387,7 +392,6 @@ class Wallet extends \yii\db\ActiveRecord
 
         // remove fields that contain sensitive information
         unset($fields['user_id'],
-            $fields['ln_node_id'],
             $fields['external_hash'],
             $fields['json_data'],
             $fields['status_type_id'],
