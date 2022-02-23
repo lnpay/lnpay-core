@@ -151,7 +151,7 @@ class WalletTransaction extends \yii\db\ActiveRecord
 
             if ($this->user->feeTargetWallet==User::DATA_FEE_TARGET_WALLET_CONTAINED) {
                 if ( ($this->wallet->balance + $networkFee) < 0) { //this will result in negative balance to wallet
-                    if ($this->wallet->lnNode->isCustodialNode) {
+                    if ($this->wallet->lnNode->is_custodian) {
                         $wtx->wallet_id = $this->wallet_id; //this deducts from existing wallet and will make it go negative (not ideal)
                     } else {
                         $wtx->wallet_id = $this->user->fee_wallet_id; //send to fee wallet
