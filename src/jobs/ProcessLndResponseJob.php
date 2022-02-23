@@ -31,7 +31,7 @@ class ProcessLndResponseJob extends \yii\base\BaseObject implements \yii\queue\J
 
             //send to mongo
             if (getenv('MONGO_DB')) {
-                $collection = Yii::$app->mongodb->getCollection($this->nodeArray['id'].'_'.$this->nodeArray['id']);
+                $collection = \LNPay::$app->mongodb->getCollection($this->nodeArray['id'].'_'.$this->nodeArray['id']);
                 $collection->insert($this->responseArray);
             }
 

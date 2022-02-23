@@ -206,7 +206,7 @@ class WalletController extends ApiController
     {
         try {
             if ($pr) {
-                $result = LnNode::getLnpayNodeQuery()->one()->getLndConnector()->decodeInvoice($pr);
+                $result = LnNode::decodeInvoiceHelper($pr);
                 $wallet = @Wallet::find()->where(new Expression("JSON_EXTRACT(wallet.json_data, '$.ott.{$ott}') = '{$result['num_satoshis']}'"))->one();
                 if (!$wallet) {
                     throw new UnauthorizedHttpException('Invalid satoshi amount');

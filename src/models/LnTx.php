@@ -152,6 +152,7 @@ class LnTx extends \yii\db\ActiveRecord
     public function generateInvoice($checkLimits=false)
     {
         $this->user_id = ($this->user_id?:\LNPay::$app->user->id);
+        $user = User::findOne($this->user_id);
 
         if (\LNPay::$app->user->isGuest || !\LNPay::$app->user->identity->getJsonData(User::DATA_IS_PAID_TIER))
             $this->memo = $this->memo. ' (via LNPAY.co)';
@@ -163,8 +164,8 @@ class LnTx extends \yii\db\ActiveRecord
             'description_hash'=>hex2bin($this->description_hash)
         ];
 
-        $hintNodeId = User::findOne($this->user_id)->getJsonData('hint_node_id');
-        $hintChanId = User::findOne($this->user_id)->getJsonData('hint_chan_id');
+        $hintNodeId = $user->getJsonData('hint_node_id');
+        $hintChanId = $user->getJsonData('hint_chan_id');
         if ($hintNodeId && $hintChanId) {
             $hintOptions = [];
             $hopHint = new HopHint();
@@ -182,11 +183,11 @@ class LnTx extends \yii\db\ActiveRecord
         if ($this->ln_node_id) {
             $node = LnNode::findOne($this->ln_node_id);
         } else {
-            $node = LnNode::getLnpayNodeQuery()->one();
+            $node = $user->getLnNodeQuery()->one();
         }
 
         if ($checkLimits) {
-            if ($max = User::findOne($this->user_id)->getJsonData(User::DATA_MAX_DEPOSIT)) {
+            if ($max = $user->getJsonData(User::DATA_MAX_DEPOSIT)) {
                 if ($this->num_satoshis > $max) {
                     throw new \yii\web\BadRequestHttpException('Receiving is limited to: '.$max.' satoshi per invoice');
                 }

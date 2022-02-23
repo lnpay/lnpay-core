@@ -96,6 +96,7 @@
             "lnpay\\": "src",
             "lnpay\\node\\": "src/node",
             "lnpay\\wallet\\": "src/wallet",
+            "lnpay\\org\\": "src/org",
             "lnpay\\fixtures\\": "tests/fixtures"
         }
     }

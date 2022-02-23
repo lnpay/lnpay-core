@@ -28,7 +28,7 @@ if ($details = \LNPay::$app->session->getFlash('new_node_details')) {
 
 <?php if ($nodes->count() > 0) { ?>
 <div class="ln-node-index">
-    <h1>My Nodes</h1>
+    <h1>Available Nodes</h1>
 
     <div class="row">
         <?php foreach ($nodes->all() as $node) { ?>
@@ -36,10 +36,20 @@ if ($details = \LNPay::$app->session->getFlash('new_node_details')) {
                 <div class="thumbnail text-center">
                     <h2><?=$node->getInfoValueByKey('alias');?></h2>
                     <div class="caption">
-                        <p><strong><?=$node->getInfoValueByKey('version');?></strong></p>
+                        <p><strong>
+                            <?php if ($node->user_id == \LNPay::$app->user->id) { ?>
+                                <?=$node->getInfoValueByKey('version');?>
+                            <?php } ?>
+                        </strong></p>
                         <p><span class="badge"><strong><?=$node->network;?></strong></span></p>
                         <br/>
-                        <p><?=Html::a('View Node <i class="fas fa-arrow-right"></i>',['/node/ln/index','id'=>$node->id],['class'=>'btn btn-primary']);?></p>
+                        <p>
+                            <?php if ($node->user_id == \LNPay::$app->user->id) { ?>
+                                <?=Html::a('View Node <i class="fas fa-arrow-right"></i>',['/node/ln/index','id'=>$node->id],['class'=>'btn btn-primary']);?>
+                            <?php } else { ?>
+                                <span class="badge"><strong><?=$node->org->display_name;?></strong></span>
+                            <?php } ?>
+                        </p>
                     </div>
                 </div>
             </div>

@@ -77,7 +77,7 @@ class Wallet extends \yii\db\ActiveRecord
             [['user_id', 'balance','wallet_type_id','default_lnurlpay_id','default_lnurlw_id'], 'integer'],
             [['status_type_id'],'default','value'=>StatusType::WALLET_ACTIVE],
             [['wallet_type_id'],'default','value'=>WalletType::GENERIC_WALLET],
-            ['ln_node_id','default','value'=>@LnNode::getLnpayNodeQuery()->one()->id],
+            ['ln_node_id','default','value'=>@LnNode::getCustodialNodeQuery(\LNPay::$app->user->id)->one()->id],
             ['ln_node_id','checkUserNode'],
             [['user_id'],'default','value'=>function(){return \LNPay::$app->user->id;}],
             [['external_hash'],'default','value'=>function(){ return 'wal_'.HelperComponent::generateRandomString(14); }],
@@ -144,9 +144,6 @@ class Wallet extends \yii\db\ActiveRecord
      */
     public function getLnNode()
     {
-        if (!$this->ln_node_id) {
-            return LnNode::getLnpayNodeQuery();
-        }
         return $this->hasOne(LnNode::className(), ['id' => 'ln_node_id']);
     }
 
@@ -182,10 +179,6 @@ class Wallet extends \yii\db\ActiveRecord
 
     public function checkUserNode($attribute,$params)
     {
-        //if we are using the lnpay custodial node
-        if ($this->ln_node_id == LnNode::getLnpayNodeQuery()->one()->id)
-            return true;
-
         //if we are using the user's nodes, make sure they are only adding theirs
         $node = LnNode::findOne($this->ln_node_id);
         $user_id = (\LNPay::$app instanceof \yii\web\Application?\LNPay::$app->user->id:$this->user_id);
@@ -193,6 +186,15 @@ class Wallet extends \yii\db\ActiveRecord
         if (\LNPay::$app instanceof \yii\web\Application && \LNPay::$app->user->isGuest) { //e.g. LNURL-withdraw where there is no authenticated user
             //this seems weird, but it is correct
         } else {
+            $user = User::findOne($user_id);
+
+            //if we are using the org custodial node
+            $userNodes = $user->getLnNodeQuery()->all();
+            foreach ($userNodes as $uN) { //if submitted node id matches one we already have
+                if ($uN->user_id == $node->user_id)
+                    return true;
+            }
+
             if ($node->user_id != $user_id)
                 $this->addError('ln_node_id','Node does not belong to this user!');
         }
@@ -390,7 +392,6 @@ class Wallet extends \yii\db\ActiveRecord
 
         // remove fields that contain sensitive information
         unset($fields['user_id'],
-            $fields['ln_node_id'],
             $fields['external_hash'],
             $fields['json_data'],
             $fields['status_type_id'],

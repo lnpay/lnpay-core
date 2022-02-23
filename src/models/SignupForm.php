@@ -1,6 +1,8 @@
 <?php
 namespace lnpay\models;
 
+use lnpay\org\models\Org;
+use lnpay\org\models\OrgUserType;
 use Yii;
 use yii\base\Model;
 use lnpay\models\User;
@@ -15,6 +17,8 @@ class SignupForm extends Model
     public $password;
     public $api_parent_id;
     public $verifyCode;
+    public $org_id;
+    public $org_user_type_id;
 
 
     const SCENARIO_API_SIGNUP = 'api_signup';
@@ -39,8 +43,8 @@ class SignupForm extends Model
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
 
-            ['api_parent_id', 'required'],
             ['api_parent_id', 'integer'],
+            [['org_id','org_user_type_id'],'integer']
         ];
     }
 
@@ -62,6 +66,18 @@ class SignupForm extends Model
         if (!$this->validate()) {
             return null;
         }
+
+        if ($this->org_id) {
+            $org_id = $this->org_id;
+            //$this->>org_user_type_id should be set by the form!
+        } else { //create new org
+            $o = new Org();
+            $o->name = explode("@",$this->email)[0];
+            $o->display_name = $o->name;
+            $o->save();
+            $org_id = $o->id;
+            $this->org_user_type_id = OrgUserType::TYPE_OWNER;
+        }
         
         $user = new User();
         $user->username = $this->email;
@@ -69,6 +85,8 @@ class SignupForm extends Model
         $user->setPassword($this->password);
         $user->generateAuthKey();
         $user->api_parent_id = $this->api_parent_id;
+        $user->org_id = $org_id;
+        $user->org_user_type_id = $this->org_user_type_id;
 
         if ($this->scenario == self::SCENARIO_API_SIGNUP)
             $user->status = $user::STATUS_API_USER_LNTXBOT;
