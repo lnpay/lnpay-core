@@ -517,7 +517,7 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
             $this::DATA_MAX_NETWORK_FEE_PERCENT => 5
         ];
         if (!$this->save()) {
-            throw new \Exception('Error creating default settings:'.HelperComponent::getErrorStringFromInvalidModel($this));
+            throw new \Exception('Error creating default settings:'.HelperComponent::getFirstErrorFromFailedValidation($this));
         }
     }
 
@@ -528,7 +528,7 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
         $wallet->user_id = $this->id;
         $wallet->wallet_type_id = WalletType::FEE_WALLET;
         if (!$wallet->save()) {
-            throw new \Exception('Error creating default wallets:'.HelperComponent::getErrorStringFromInvalidModel($wallet));
+            throw new \Exception('Error creating default wallets:'.HelperComponent::getFirstErrorFromFailedValidation($wallet));
         }
         $this->fee_wallet_id = $wallet->id;
 

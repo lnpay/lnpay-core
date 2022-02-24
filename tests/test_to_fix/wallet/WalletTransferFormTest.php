@@ -23,13 +23,13 @@ class WalletTransferFormTest extends \Codeception\Test\Unit
         expect_that($model->source_wallet_id = 'wa_invalid');
         expect_that($model->dest_wallet_id = 'LWAcasdfOt6i93WFh');
         expect($model->validate())->false();
-        expect(HelperComponent::getErrorStringFromInvalidModel($model))->equals("Invalid source wallet id");
+        expect(HelperComponent::getFirstErrorFromFailedValidation($model))->equals("Invalid source wallet id");
 
         expect_that($model = new WalletTransferForm());
         expect_that($model->source_wallet_id = 'LWAcasdfOt6i93WFh');
         expect_that($model->dest_wallet_id = 'wa_invalid');
         expect($model->validate())->false();
-        expect(HelperComponent::getErrorStringFromInvalidModel($model))->equals("Invalid dest wallet id");
+        expect(HelperComponent::getFirstErrorFromFailedValidation($model))->equals("Invalid dest wallet id");
     }
 
     public function testDifferentWallets()
@@ -38,7 +38,7 @@ class WalletTransferFormTest extends \Codeception\Test\Unit
         expect_that($model->source_wallet_id = 'w_asdfm3krm2k3mr23');
         expect_that($model->dest_wallet_id = 'w_asdfm3krm2k3mr23');
         expect($model->validate())->false();
-        expect(HelperComponent::getErrorStringFromInvalidModel($model))->equals("Source and destination wallets cannot be the same!");
+        expect(HelperComponent::getFirstErrorFromFailedValidation($model))->equals("Source and destination wallets cannot be the same!");
     }
 
     public function testInsufficientBalance()
@@ -48,7 +48,7 @@ class WalletTransferFormTest extends \Codeception\Test\Unit
         expect_that($model->source_wallet_id = 'wal_LWAcZwCeDsezSfFe');
         expect_that($model->dest_wallet_id = 'LWAcasdfOt6i93WFh');
         expect($model->validate())->false();
-        expect(HelperComponent::getErrorStringFromInvalidModel($model))->equals("Insufficient balance in source wallet");
+        expect(HelperComponent::getFirstErrorFromFailedValidation($model))->equals("Insufficient balance in source wallet");
     }
 
     public function testInvalidJson()
@@ -59,7 +59,7 @@ class WalletTransferFormTest extends \Codeception\Test\Unit
         expect_that($model->dest_wallet_id = 'LWAcasdfOt6i93WFh');
         expect_that($model->lnPayParams = 'asd');
         expect($model->validate())->false();
-        expect(HelperComponent::getErrorStringFromInvalidModel($model))->equals("Invalid lnPayParams json specified");
+        expect(HelperComponent::getFirstErrorFromFailedValidation($model))->equals("Invalid lnPayParams json specified");
     }
 
     public function testWalletTransferSuccess()

@@ -115,7 +115,7 @@ class ActionFeed extends \yii\db\ActiveRecord
             $ad->action_feed_id = $this->id;
             $ad->data = json_decode($this->_actionData,TRUE);
             if (!$ad->save())
-                throw new \Exception('Unable to save action data! -- '.HelperComponent::getErrorStringFromInvalidModel($this));
+                throw new \Exception('Unable to save action data! -- '.HelperComponent::getFirstErrorFromFailedValidation($this));
         }
 
 

@@ -76,7 +76,7 @@ class WalletController extends ApiController
         } elseif (!$model->hasErrors()) {
             throw new ServerErrorHttpException('Failed to create the object for unknown reason.');
         } else {
-            throw new BadRequestHttpException(HelperComponent::getErrorStringFromInvalidModel($model));
+            throw new BadRequestHttpException(HelperComponent::getFirstErrorFromFailedValidation($model));
         }
     }
 
@@ -322,7 +322,7 @@ class WalletController extends ApiController
         if ($lnTx->validate())
             $lnTxObject = $lnTx->generateInvoice($checkLimits=true);
         else
-            throw new BadRequestHttpException(HelperComponent::getErrorStringFromInvalidModel($lnTx));
+            throw new BadRequestHttpException(HelperComponent::getFirstErrorFromFailedValidation($lnTx));
 
         \LNPay::$app->response->statusCode = 201;
         return LnTx::findOne($lnTxObject->id);
@@ -342,7 +342,7 @@ class WalletController extends ApiController
             $wtx_out = WalletTransaction::findOne($result['wtx_transfer_out']);
         }
         else
-            throw new BadRequestHttpException(HelperComponent::getErrorStringFromInvalidModel($wtf));
+            throw new BadRequestHttpException(HelperComponent::getFirstErrorFromFailedValidation($wtf));
 
         \LNPay::$app->response->statusCode = 201;
         return ['wtx_transfer_in'=>$wtx_in->toArray(),'wtx_transfer_out'=>$wtx_out->toArray()];

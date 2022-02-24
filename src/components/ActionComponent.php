@@ -37,7 +37,7 @@ class ActionComponent extends Component
             $action->action_name_id = $event->action_id;
             $action->actionData = $event->customData;
             if (!$action->save()) {
-                \LNPay::error(HelperComponent::getErrorStringFromInvalidModel($action),__METHOD__);
+                \LNPay::error(HelperComponent::getFirstErrorFromFailedValidation($action),__METHOD__);
                 throw new \Exception('Could not save action');
             }
 
