@@ -4,8 +4,10 @@ namespace lnpay\wallet\controllers\api\v1;
 
 use lnpay\behaviors\UserAccessKeyBehavior;
 use lnpay\components\HelperComponent;
+use lnpay\models\CustyDomain;
 use lnpay\wallet\exceptions\InvalidLnurlpayLinkException;
 use lnpay\wallet\exceptions\UnableToPayLnurlpayException;
+use lnpay\wallet\exceptions\UnableToUpdateLnurlpayException;
 use lnpay\wallet\models\LnWalletLnurlpayPayForm;
 use lnpay\wallet\models\LnWalletWithdrawForm;
 use lnpay\wallet\models\WalletLnurlpay;
@@ -22,7 +24,7 @@ class LnurlpayController extends ApiController
      * @var array restrict the following endpoints to sak only
      */
     public $sakOnlyArray = [
-        //'api/v1/lnurlpay/view'
+        'api/v1/lnurlpay/update'
     ];
 
     public $modelClass = 'lnpay\wallet\models\WalletLnurlpay';
@@ -65,6 +67,20 @@ class LnurlpayController extends ApiController
         }
     }
 
+    public function actionUpdate($wallet_lnurlpay_id)
+    {
+        if ($l = static::findModel($wallet_lnurlpay_id)) {
+            $l->load(\LNPay::$app->request->post(),'');
+            if ($l->validate() && $l->save()) {
+                return static::findModel($wallet_lnurlpay_id);
+            } else {
+                throw new UnableToUpdateLnurlpayException(HelperComponent::getFirstErrorFromFailedValidation($l));
+            }
+        } else {
+            throw new InvalidLnurlpayLinkException('Unknown lnurlpay id');
+        }
+    }
+
     /*
         public function actionViewAll()
         {
@@ -85,19 +101,30 @@ class LnurlpayController extends ApiController
     public function actionLightningAddress($username)
     {
         $prefix = explode("_",$username);
-        switch ($prefix[0]) {
-            case 'lnurlp':
-                $lnurlpModel = WalletLnurlpay::findByHash($username);
-                if ($lnurlpModel) {
-                    $access_key = $lnurlpModel->wallet->getFirstAccessKeyByRole(UserAccessKeyBehavior::ROLE_WALLET_LNURL_PAY);
-                    return $this->actionLnurlProcess($access_key,$username);
-                } else {
-                    throw new BadRequestHttpException('cannot find lnurlp link');
-                }
-                break;
-            default:
-                throw new BadRequestHttpException('Invalid lightning address');
+        if ($prefix[0] == 'lnurlp') {
+            $lnurlpModel = WalletLnurlpay::findByHash($username);
         }
+        $referrer = parse_url(\LNPay::$app->request->referrer);
+        if (@$referrer['host']) {
+            $host = $referrer['host'];
+        } else {
+            $host = parse_url(\LNPay::$app->request->absoluteUrl)['host'];
+        }
+        if ($cd = CustyDomain::find()->where(['domain_name'=>$host])->one()) {
+            //This is a ln address with a domain that is in our system!
+            $lnurlpModel = WalletLnurlpay::find()
+                ->where(['lnurlp_identifier'=>$username,'custy_domain_id'=>$cd->id])
+                ->one();
+        }
+
+        if (@$lnurlpModel) {
+            $access_key = $lnurlpModel->wallet->getFirstAccessKeyByRole(UserAccessKeyBehavior::ROLE_WALLET_LNURL_PAY);
+            return $this->actionLnurlProcess($access_key,$username);
+        } else {
+            throw new BadRequestHttpException('Invalid username ('.$username.') for domain:'.$host);
+        }
+
+
     }
 
     public function actionLnurlProcess($access_key,$wallet_lnurlpay_id,$amount=null,$comment=null)
