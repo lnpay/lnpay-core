@@ -207,7 +207,7 @@ class LnTx extends \yii\db\ActiveRecord
         $this->expires_at = time() + $this->expiry;
 
         if (!$this->save())
-            throw new ServerErrorHttpException(HelperComponent::getErrorStringFromInvalidModel($this));
+            throw new ServerErrorHttpException(HelperComponent::getFirstErrorFromFailedValidation($this));
         return $this;
     }
 
@@ -262,7 +262,7 @@ class LnTx extends \yii\db\ActiveRecord
                     if ($lnTx->save()) {
                         //we are good
                     } else {
-                        throw new ServerErrorHttpException(HelperComponent::getErrorStringFromInvalidModel($lnTx));
+                        throw new ServerErrorHttpException(HelperComponent::getFirstErrorFromFailedValidation($lnTx));
                     }
                 }
             }
@@ -375,12 +375,12 @@ class LnTx extends \yii\db\ActiveRecord
                         //Hooray
 
                     } else {
-                        throw new \Exception(HelperComponent::getErrorStringFromInvalidModel($wtx));
+                        throw new \Exception(HelperComponent::getFirstErrorFromFailedValidation($wtx));
                     }
 
                 return $lnTx;
             } else {
-                throw new ServerErrorHttpException(HelperComponent::getErrorStringFromInvalidModel($lnTx));
+                throw new ServerErrorHttpException(HelperComponent::getFirstErrorFromFailedValidation($lnTx));
             }
         }
 
@@ -433,8 +433,8 @@ class LnTx extends \yii\db\ActiveRecord
                     if ($wtx->save()) {
                         //yay
                     } else {
-                        echo HelperComponent::getErrorStringFromInvalidModel($wtx);
-                        throw new \Exception(HelperComponent::getErrorStringFromInvalidModel($wtx));
+                        echo HelperComponent::getFirstErrorFromFailedValidation($wtx);
+                        throw new \Exception(HelperComponent::getFirstErrorFromFailedValidation($wtx));
                     }
                 }
             }

@@ -217,7 +217,7 @@ class JsonDataBehavior extends Behavior
             if ($this->owner->save())
                 return true;
             else
-                throw new \Exception(HelperComponent::getErrorStringFromInvalidModel($this->owner));
+                throw new \Exception(HelperComponent::getFirstErrorFromFailedValidation($this->owner));
         }
     }
 

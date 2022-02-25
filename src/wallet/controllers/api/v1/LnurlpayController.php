@@ -238,7 +238,7 @@ class LnurlpayController extends ApiController
             return $model->processWithdrawal(['method'=>'lnurlpay','lnurlp_comment'=>$form->comment]);
 
         } else {
-            throw new UnableToPayLnurlpayException(HelperComponent::getErrorStringFromInvalidModel($form));
+            throw new UnableToPayLnurlpayException(HelperComponent::getFirstErrorFromFailedValidation($form));
         }
 
 

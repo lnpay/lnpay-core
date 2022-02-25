@@ -93,7 +93,7 @@ class WalletController extends DashController
                 \LNPay::$app->session->setFlash('success',"Transfer successful!");
                 return $this->redirect(\LNPay::$app->request->referrer);
             } else {
-                \LNPay::$app->session->setFlash('error',HelperComponent::getErrorStringFromInvalidModel($tModel));
+                \LNPay::$app->session->setFlash('error',HelperComponent::getFirstErrorFromFailedValidation($tModel));
                 return $this->redirect(\LNPay::$app->request->referrer);
             }
         }

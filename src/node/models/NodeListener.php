@@ -187,7 +187,7 @@ class NodeListener extends \yii\db\ActiveRecord
         if ($listener->save())
             return $listener;
         else
-            throw new \Exception(HelperComponent::getErrorStringFromInvalidModel($listener));
+            throw new \Exception(HelperComponent::getFirstErrorFromFailedValidation($listener));
     }
 
     /**

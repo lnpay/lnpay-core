@@ -114,7 +114,7 @@ class WalletNodeChangeForm extends Model
         $walletObject = $this->walletObject;
         $walletObject->ln_node_id = $this->target_ln_node_id;
         if (!$walletObject->save()) {
-            $this->addError('target_ln_node_id',HelperComponent::getErrorStringFromInvalidModel($walletObject));
+            $this->addError('target_ln_node_id',HelperComponent::getFirstErrorFromFailedValidation($walletObject));
             return false;
         }
 
