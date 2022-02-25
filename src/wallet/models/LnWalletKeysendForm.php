@@ -136,7 +136,7 @@ class LnWalletKeysendForm extends Model
                 throw new ServerErrorHttpException('Failed to keysend for unknown reason');
             } else {
                 $this->walletObject->releaseMutex();
-                throw new BadRequestHttpException(HelperComponent::getErrorStringFromInvalidModel($this));
+                throw new BadRequestHttpException(HelperComponent::getFirstErrorFromFailedValidation($this));
             }
 
             if ($this->paidInvoiceObject) {
@@ -180,7 +180,7 @@ class LnWalletKeysendForm extends Model
                 if ($lnTx->save()) {
                     //good to go
                 } else {
-                    throw new \Exception (HelperComponent::getErrorStringFromInvalidModel($lnTx));
+                    throw new \Exception (HelperComponent::getFirstErrorFromFailedValidation($lnTx));
                 }
 
                 $wtx = new WalletTransaction();
@@ -196,7 +196,7 @@ class LnWalletKeysendForm extends Model
                     $this->walletObject->releaseMutex();
                     return $wtx;
                 } else {
-                    throw new \Exception ('Unable to attach paid withdraw invoice to wallet:'.HelperComponent::getErrorStringFromInvalidModel($lnTx));
+                    throw new \Exception ('Unable to attach paid withdraw invoice to wallet:'.HelperComponent::getFirstErrorFromFailedValidation($lnTx));
                 }
 
             } else {

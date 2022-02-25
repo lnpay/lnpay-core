@@ -31,13 +31,13 @@ class HelperComponent extends Component
         return $data;
     }
 
-    public static function getErrorStringFromInvalidModel($model) {
+    public static function getFirstErrorFromFailedValidation($model) {
         $errors = $model->getErrors();
-        $errorStr = 'Invalid Attribute :(';
         foreach ($errors as $attr => $errorArray) {
             $errorStr = $errorArray[0];
         }
-        return $errorStr;
+
+        return @$errorStr ?? 'No Invalid Attribute';
     }
 
 

@@ -51,8 +51,8 @@ class ChangePasswordFormTest extends Unit
         expect_that($model->currentPassword = '123451');
         expect($model->validate())
             ->false();
-        codecept_debug(HelperComponent::getErrorStringFromInvalidModel($model));
-        expect(HelperComponent::getErrorStringFromInvalidModel($model))
+        codecept_debug(HelperComponent::getFirstErrorFromFailedValidation($model));
+        expect(HelperComponent::getFirstErrorFromFailedValidation($model))
             ->equals("Current password is incorrect.");
 
         // Current password is correct.

@@ -176,7 +176,7 @@ class LnWalletWithdrawForm extends Model
                 throw new ServerErrorHttpException('Failed to withdraw for unknown reason');
             } else {
                 $this->walletObject->releaseMutex();
-                throw new BadRequestHttpException(HelperComponent::getErrorStringFromInvalidModel($this));
+                throw new BadRequestHttpException(HelperComponent::getFirstErrorFromFailedValidation($this));
             }
 
             $arrayPaidInvoiceObject = (array) $this->paidInvoiceObject;
@@ -200,7 +200,7 @@ class LnWalletWithdrawForm extends Model
                 if ($lnTx->save()) {
                     //good to go
                 } else {
-                    throw new \Exception (HelperComponent::getErrorStringFromInvalidModel($lnTx));
+                    throw new \Exception (HelperComponent::getFirstErrorFromFailedValidation($lnTx));
                 }
 
                 $wtx = new WalletTransaction();

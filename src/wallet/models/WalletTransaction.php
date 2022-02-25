@@ -172,7 +172,7 @@ class WalletTransaction extends \yii\db\ActiveRecord
             if ($wtx->save()) {
                 return $wtx;
             } else {
-                throw new \Exception('Unable to save network fee: '.HelperComponent::getErrorStringFromInvalidModel($wtx));
+                throw new \Exception('Unable to save network fee: '.HelperComponent::getFirstErrorFromFailedValidation($wtx));
             }
         }
         return null;
@@ -195,7 +195,7 @@ class WalletTransaction extends \yii\db\ActiveRecord
             if ($wtx->save()) {
                 return $wtx;
             } else {
-                throw new \Exception('Unable to save lnpay fee: '.HelperComponent::getErrorStringFromInvalidModel($wtx));
+                throw new \Exception('Unable to save lnpay fee: '.HelperComponent::getFirstErrorFromFailedValidation($wtx));
             }
         }
         return null;

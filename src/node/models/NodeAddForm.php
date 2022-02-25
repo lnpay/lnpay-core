@@ -350,7 +350,7 @@ class NodeAddForm extends Model
             $node->addProfile(['macaroon_hex'=>$this->submittedMacaroonObject->hex,'user_label'=>'admin.macaroon','is_default'=>1]);
             return $node;
         } else {
-            throw new Exception(HelperComponent::getErrorStringFromInvalidModel($node));
+            throw new Exception(HelperComponent::getFirstErrorFromFailedValidation($node));
         }
     }
 }

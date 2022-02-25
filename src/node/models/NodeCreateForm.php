@@ -77,7 +77,7 @@ class NodeCreateForm extends Model
         $node->network = $this->network;
         $node->ln_node_implementation_id = LnNodeImplementation::LND_SUBNODE;
         if (!$node->save()) {
-            throw new \Exception(HelperComponent::getErrorStringFromInvalidModel($node));
+            throw new \Exception(HelperComponent::getFirstErrorFromFailedValidation($node));
         }
 
         unset($result['internal_rpc_port']);

@@ -146,7 +146,7 @@ class WalletTransferForm extends Model
             $wtxDebit->appendJsonData($json_data);
             if (!$wtxDebit->save()) {
                 $this->sourceWalletObject->releaseMutex();
-                throw new ServerErrorHttpException(HelperComponent::getErrorStringFromInvalidModel($wtxDebit));
+                throw new ServerErrorHttpException(HelperComponent::getFirstErrorFromFailedValidation($wtxDebit));
             }
 
             //create debit transaction
@@ -158,7 +158,7 @@ class WalletTransferForm extends Model
             $wtxCredit->user_label = $this->memo;
             $wtxCredit->appendJsonData($json_data);
             if (!$wtxCredit->save()) {
-                throw new ServerErrorHttpException(HelperComponent::getErrorStringFromInvalidModel($wtxDebit));
+                throw new ServerErrorHttpException(HelperComponent::getFirstErrorFromFailedValidation($wtxDebit));
             }
 
             $this->sourceWalletObject->releaseMutex();

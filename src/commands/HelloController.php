@@ -88,7 +88,7 @@ class HelloController extends Controller
         if ($t->validate()) {
             $t->executeTransfer();
         } else {
-            echo HelperComponent::getErrorStringFromInvalidModel($t);
+            echo HelperComponent::getFirstErrorFromFailedValidation($t);
         }
 
     }
@@ -101,7 +101,7 @@ class HelloController extends Controller
         $lnTx->payment_preimage = $preimage;
         $lnTx->settled_at = time();
         if (!$lnTx->save()) {
-            echo HelperComponent::getErrorStringFromInvalidModel($lnTx);
+            echo HelperComponent::getFirstErrorFromFailedValidation($lnTx);
         }
     }
 

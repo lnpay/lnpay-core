@@ -138,7 +138,7 @@ class BaseLink extends \yii\db\ActiveRecord
         if ($this->save()) {
             return $this;
         } else {
-            throw new \Exception(HelperComponent::getErrorStringFromInvalidModel($this));
+            throw new \Exception(HelperComponent::getFirstErrorFromFailedValidation($this));
         }
     }
 

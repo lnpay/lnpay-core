@@ -247,7 +247,7 @@ class LnNode extends \yii\db\ActiveRecord
         if ($np->save()) {
             return $np;
         } else {
-            throw new \Exception(HelperComponent::getErrorStringFromInvalidModel($np));
+            throw new \Exception(HelperComponent::getFirstErrorFromFailedValidation($np));
         }
     }
 

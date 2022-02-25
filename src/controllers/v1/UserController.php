@@ -74,7 +74,7 @@ class UserController extends ApiController
         } elseif (!$model->hasErrors()) {
             throw new ServerErrorHttpException('Failed to create the object for unknown reason.');
         } else {
-            throw new BadRequestHttpException(HelperComponent::getErrorStringFromInvalidModel($model));
+            throw new BadRequestHttpException(HelperComponent::getFirstErrorFromFailedValidation($model));
         }
     }
 

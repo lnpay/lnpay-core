@@ -96,7 +96,7 @@ class LnLoopOutForm extends Model
         $wtxDebit->user_label = $this->label. ' (loop out)';
         $wtxDebit->appendJsonData(['dest_address'=>$this->addr]);
         if (!$wtxDebit->save()) {
-            throw new ServerErrorHttpException(HelperComponent::getErrorStringFromInvalidModel($wtxDebit));
+            throw new ServerErrorHttpException(HelperComponent::getFirstErrorFromFailedValidation($wtxDebit));
         }
 
         //Success!

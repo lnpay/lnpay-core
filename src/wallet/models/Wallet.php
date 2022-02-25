@@ -265,7 +265,7 @@ class Wallet extends \yii\db\ActiveRecord
         if ($lnTx->validate())
             $lnTxObject = $lnTx->generateInvoice($checkLimits=true);
         else
-            throw new BadRequestHttpException(HelperComponent::getErrorStringFromInvalidModel($lnTx));
+            throw new BadRequestHttpException(HelperComponent::getFirstErrorFromFailedValidation($lnTx));
         return $lnTxObject;
     }
 
@@ -283,7 +283,7 @@ class Wallet extends \yii\db\ActiveRecord
         if ($lnurlpModel->save()) {
             return $lnurlpModel;
         } else {
-            throw new UnableToGenerateLnurlpayException(HelperComponent::getErrorStringFromInvalidModel($lnurlpModel));
+            throw new UnableToGenerateLnurlpayException(HelperComponent::getFirstErrorFromFailedValidation($lnurlpModel));
         }
     }
 

@@ -62,7 +62,7 @@ class EventsController extends ApiController
             $query = $model->constructQuery();
             return $query->all();
         } else {
-            throw new BadRequestHttpException(HelperComponent::getErrorStringFromInvalidModel($model));
+            throw new BadRequestHttpException(HelperComponent::getFirstErrorFromFailedValidation($model));
         }
     }
 
@@ -132,7 +132,7 @@ class EventsController extends ApiController
 
 
         } else {
-            throw new BadRequestHttpException(HelperComponent::getErrorStringFromInvalidModel($model));
+            throw new BadRequestHttpException(HelperComponent::getFirstErrorFromFailedValidation($model));
         }
     }
 
