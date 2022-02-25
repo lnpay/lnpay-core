@@ -255,11 +255,13 @@ class WalletLnurlpay extends \yii\db\ActiveRecord
         $fields = parent::fields();
         $fields['id'] = $fields['external_hash'];
         $fields['statusType'] = 'statusType';
+        $fields['wallet_id'] = function ($model) {
+            return $model->wallet->external_hash;
+        };
 
         // remove fields that contain sensitive information
         unset($fields['json_data'],
             $fields['user_id'],
-            $fields['wallet_id'],
             $fields['status_type_id'],
             $fields['external_hash'],
             $fields['lnurlp_successAction'],
