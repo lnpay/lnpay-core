@@ -155,7 +155,7 @@ class CustyDomain extends \yii\db\ActiveRecord
     {
         $fields = parent::fields();
 
-        unset($fields['id'], $fields['user_id'], $fields['port'],$fields['display_name'],$fields['use_https'],$fields['ssl_info'],$fields['use_hsts'],$fields['upgrade_insecure'],$fields['status_type_id'],$fields['data']);
+        unset($fields['id'], $fields['user_id'], $fields['port'],$fields['use_https'],$fields['ssl_info'],$fields['use_hsts'],$fields['upgrade_insecure'],$fields['status_type_id'],$fields['data']);
         return $fields;
     }
 }

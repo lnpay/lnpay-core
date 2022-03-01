@@ -60,7 +60,10 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'GET,OPTIONS v1/lnurlp/probe/<lnurlpayEncodedOrLnAddress:[a-zA-Z0-9_@.]+>' => 'wallet/api/v1/lnurlpay/probe',
             'GET,OPTIONS .well-known/lnurlp/<username:\w+>' => 'wallet/api/v1/lnurlpay/lightning-address',
             'POST,OPTIONS v1/wallet/<access_key:\w+>/lnurlp/pay' => 'wallet/api/v1/lnurlpay/pay',
+            'POST,OPTIONS v1/wallet/<access_key:\w+>/lnurlp' => 'wallet/api/v1/lnurlpay/create',
             'GET,OPTIONS v1/lnurlp/<wallet_lnurlpay_id:\w+>' => 'wallet/api/v1/lnurlpay/view',
+            'POST,PUT,PATCH,OPTIONS v1/lnurlp/<wallet_lnurlpay_id:\w+>' => 'wallet/api/v1/lnurlpay/update',
+
 
 
         ], false);

@@ -16,6 +16,9 @@ class LnurlpayCest
             'wallets' => [
                 'class' => \lnpay\fixtures\WalletFixture::class,
             ],
+            'custy_domain' => [
+                'class' => \lnpay\fixtures\CustyDomainFixture::class,
+            ],
             'lntx' => [
                 'class' => \lnpay\fixtures\LnTxFixture::class,
             ],
@@ -138,6 +141,65 @@ class LnurlpayCest
         ]);
         $I->seeResponseIsJson();
         $I->seeResponseContains('Comment length is too long');
+    }
+
+    public function CreateLnurlPaySuccess(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendPOST('/v1/wallet/waka_aliceLnurlPay/lnurlp',[
+            'lnurlp_minSendable_msat'=>1202,
+            'lnurlp_maxSendable_msat'=>10000,
+            'identifier'=>'username'
+        ]);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('wallet_id');
+    }
+
+    public function UpdateLnurlpaySuccessDomainName(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendPOST('/v1/wallet/waka_aliceLnurlPay/lnurlp',[
+            'custy_domain_id'=>5
+        ]);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"domain_name":"lnpay.local"');
+    }
+
+    public function UpdateLnurlpaySuccessDomainNull(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendPOST('/v1/wallet/waka_aliceLnurlPay/lnurlp',[
+            'custy_domain_id'=>NULL
+        ]);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"custyDomain":null');
+    }
+
+    public function UpdateLnurlpayFailDomainName(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendPOST('/v1/wallet/waka_aliceLnurlPay/lnurlp',[
+            'custy_domain_id'=>6
+        ]);
+        $I->seeResponseCodeIs(400);
+    }
+
+
+    public function CreateLnurlPayFail(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
+        $I->sendPOST('/v1/wallet/waka_aliceLnurlPay/lnurlp',[
+            'lnurlp_minSendable_msat'=>11,
+            'lnurlp_maxSendable_msat'=>10000,
+            'identifier'=>'username',
+        ]);
+        $I->seeResponseIsJson();
+        $I->seeResponseCodeIs(400);
     }
 
 

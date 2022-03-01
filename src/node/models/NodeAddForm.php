@@ -294,8 +294,8 @@ class NodeAddForm extends Model
     {
         return [
             'invoice_request'=>'Payment Request',
-            'readyToAdd'=>'I understand that an admin.macaroon will give the service access to funds',
-            'is_custodian'=>'Is custodial node for other members of organization'
+            'readyToAdd'=>'admin.macaroon is encrypted and used to send/receive from this lightning node',
+            'is_custodian'=>'Is custodial node for other members of your organization'
         ];
     }
 
