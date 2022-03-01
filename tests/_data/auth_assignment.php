@@ -148,4 +148,9 @@ return [
         'user_id' =>'waklp_aliceLnurlPay',
         'created_at' => time()
     ],
+    [
+        'item_name'=>'Wallet Admin',
+        'user_id' =>'waka_aliceLnurlPay',
+        'created_at' => time()
+    ],
 ];

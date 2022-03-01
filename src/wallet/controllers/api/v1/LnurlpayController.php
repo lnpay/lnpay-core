@@ -6,6 +6,7 @@ use lnpay\behaviors\UserAccessKeyBehavior;
 use lnpay\components\HelperComponent;
 use lnpay\models\CustyDomain;
 use lnpay\wallet\exceptions\InvalidLnurlpayLinkException;
+use lnpay\wallet\exceptions\UnableToCreateLnurlpayException;
 use lnpay\wallet\exceptions\UnableToPayLnurlpayException;
 use lnpay\wallet\exceptions\UnableToUpdateLnurlpayException;
 use lnpay\wallet\models\LnWalletLnurlpayPayForm;
@@ -78,6 +79,23 @@ class LnurlpayController extends ApiController
             }
         } else {
             throw new InvalidLnurlpayLinkException('Unknown lnurlpay id');
+        }
+    }
+
+    public function actionCreate($access_key)
+    {
+        $wallet = $this->findByKey($access_key);
+        $this->checkAccessKey(UserAccessKeyBehavior::ROLE_WALLET_ADMIN);
+
+        $l = new WalletLnurlpay();
+        $l->user_id = \LNPay::$app->user->id;
+        $l->wallet_id = $wallet->id;
+
+        $l->load(\LNPay::$app->request->post(),'');
+        if ($l->validate() && $l->save()) {
+            return $l;
+        } else {
+            throw new UnableToCreateLnurlpayException(HelperComponent::getFirstErrorFromFailedValidation($l));
         }
     }
 

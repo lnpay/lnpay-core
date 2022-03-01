@@ -6,6 +6,7 @@ use lnpay\behaviors\JsonDataBehavior;
 use lnpay\behaviors\UserAccessKeyBehavior;
 use lnpay\components\HelperComponent;
 use lnpay\models\action\ActionName;
+use lnpay\models\CustyDomain;
 use lnpay\models\StatusType;
 use lnpay\models\User;
 use lnpay\models\UserAccessKey;
@@ -90,10 +91,25 @@ class WalletLnurlpay extends \yii\db\ActiveRecord
             [['external_hash'],'default','value'=>function(){ return 'lnurlp_'.HelperComponent::generateRandomString(18); }],
             [['id', 'user_id', 'wallet_id', 'status_type_id', 'lnurlp_minSendable_msat', 'lnurlp_maxSendable_msat', 'lnurlp_commentAllowed','custy_domain_id'], 'integer'],
             [['json_data', 'lnurlp_successAction', 'lnurlp_metadata'], 'safe'],
+            [['custy_domain_id'],'domainOwner'],
             [['lnurl_encoded', 'lnurl_decoded', 'lnurlp_short_desc', 'lnurlp_success_message', 'lnurlp_success_url', 'lnurlp_image_base64'], 'string'],
             [['external_hash'], 'string', 'max' => 45],
             [['lnurlp_identifier','user_label'], 'string', 'max' => 255],
             ];
+    }
+
+    public function domainOwner($attribute,$params)
+    {
+        if (!$this->custy_domain_id)
+            return;
+
+        if ($d = CustyDomain::findOne($this->custy_domain_id)) {
+            if ($d->user_id != \LNPay::$app->user->id) {
+                $this->addError($attribute,'Domain does not belong to this user or org!');
+            }
+        } else {
+            $this->addError($attribute,'Invalid domain ID specified');
+        }
     }
 
     /**
@@ -163,6 +179,16 @@ class WalletLnurlpay extends \yii\db\ActiveRecord
     public function getStatusType()
     {
         return $this->hasOne(StatusType::className(), ['id' => 'status_type_id']);
+    }
+
+    /**
+     * Gets query for [[CustyDomain]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCustyDomain()
+    {
+        return $this->hasOne(CustyDomain::className(), ['id' => 'custy_domain_id']);
     }
 
     /**
@@ -259,11 +285,13 @@ class WalletLnurlpay extends \yii\db\ActiveRecord
         $fields['wallet_id'] = function ($model) {
             return $model->wallet->external_hash;
         };
+        $fields['custyDomain'] = 'custyDomain';
 
         // remove fields that contain sensitive information
         unset($fields['json_data'],
             $fields['user_id'],
             $fields['status_type_id'],
+            $fields['custy_domain_id'],
             $fields['external_hash'],
             $fields['lnurlp_successAction'],
             $fields['lnurlp_commentAllowed'],
