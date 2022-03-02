@@ -121,6 +121,7 @@ $config = [
                 'developers/webhook' => 'webhook',
                 'developers/api-log' => 'api-log',
                 'developers/events' => 'dashboard/events',
+                'developers/domain' => 'domain',
             ],
         ],
         'request' => [

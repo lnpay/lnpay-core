@@ -4,6 +4,7 @@ namespace lnpay\controllers;
 
 use lnpay\base\DashController;
 use lnpay\models\action\ActionFeed;
+use lnpay\models\CustyDomain;
 use yii\helpers\ArrayHelper;
 use yii\filters\VerbFilter;
 

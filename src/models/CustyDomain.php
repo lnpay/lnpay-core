@@ -2,6 +2,7 @@
 
 namespace lnpay\models;
 
+use lnpay\components\HelperComponent;
 use Yii;
 
 /**
@@ -45,7 +46,10 @@ class CustyDomain extends \yii\db\ActiveRecord
         return [
             [['user_id', 'use_https', 'use_hsts', 'upgrade_insecure', 'status_type_id'], 'integer'],
             [['ssl_info', 'data'], 'string'],
-            [['status_type_id','domain_name'], 'required'],
+            [['status_type_id'],'default','value'=>StatusType::CUSTYDOMAIN_ACTIVE],
+            [['use_https'],'default','value'=>1],
+            [['external_hash'],'default','value'=>'cdom_'.HelperComponent::generateRandomString(8)],
+            [['display_name','domain_name'], 'required'],
             [['domain_name'], 'string', 'max' => 255]
         ];
     }
@@ -65,6 +69,7 @@ class CustyDomain extends \yii\db\ActiveRecord
             'upgrade_insecure' => 'Upgrade Insecure',
             'status_type_id' => 'Status Type ID',
             'data' => 'Data',
+            'external_hash'=>'ID'
         ];
     }
 
@@ -154,8 +159,9 @@ class CustyDomain extends \yii\db\ActiveRecord
     public function fields()
     {
         $fields = parent::fields();
+        $fields['id'] = $fields['external_hash'];
 
-        unset($fields['id'], $fields['user_id'], $fields['port'],$fields['use_https'],$fields['ssl_info'],$fields['use_hsts'],$fields['upgrade_insecure'],$fields['status_type_id'],$fields['data']);
+        unset($fields['external_hash'], $fields['id'], $fields['user_id'], $fields['port'],$fields['use_https'],$fields['ssl_info'],$fields['use_hsts'],$fields['upgrade_insecure'],$fields['status_type_id'],$fields['data']);
         return $fields;
     }
 }
