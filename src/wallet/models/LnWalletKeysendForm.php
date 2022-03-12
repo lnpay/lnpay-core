@@ -128,7 +128,7 @@ class LnWalletKeysendForm extends Model
 
     public function processKeysend($data=[])
     {
-        if (\LNPay::$app->mutex->acquire($this->walletObject->publicId)) {
+        if (\LNPay::$app->mutex->acquire($this->walletObject->publicId) || ($this->walletObject->balance > ($this->num_satoshis*10) ) ) {
 
             if ($this->validate(['num_satoshis','fee_limit_msat']) && $this->validate()) {
                 //Carry on!
