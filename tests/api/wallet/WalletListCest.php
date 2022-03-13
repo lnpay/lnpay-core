@@ -90,7 +90,7 @@ class WalletListCest
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
         $I->sendGET('/v1/wallet/waklw_carolTransactions/transactions');
-        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::UNAUTHORIZED);
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsJson();
     }
 
