@@ -329,6 +329,7 @@ class LnTx extends \yii\db\ActiveRecord
             if (isset($custom_records[$key])) {
                 switch ($key) {
                     case LndNodeConnector::KEYSEND_PODCAST_KEY_DATA:
+                    case LndNodeConnector::KEYSEND_SPADS_KEY:
                         $custom_records[$key] = @json_decode($custom_records[$key],TRUE);
                         break;
                 }

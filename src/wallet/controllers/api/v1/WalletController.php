@@ -356,7 +356,7 @@ class WalletController extends ApiController
         return new \yii\data\ActiveDataProvider([
             'query' => WalletTransaction::find()->where(['wallet_id'=>$wallet->id]),
             'pagination' => [
-                'defaultPageSize'=>100,
+                'defaultPageSize'=>Yii::$app->request->getQueryParam('page-size')??100,
                 'pageSizeLimit'=>[1,500]
             ],
             'sort' => [

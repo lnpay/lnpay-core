@@ -46,6 +46,7 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
     const KEYSEND_TLV_KEY = 5482373484;
     const KEYSEND_LNPAY_KEY = 696969;
     const KEYSEND_PODCAST_KEY = 112111100; //ascii "pod"
+    const KEYSEND_SPADS_KEY = 55555555; //ascii "pod"
     const KEYSEND_PODCAST_FEESPLIT_KEY = 112111100102 ; //ascii "podf"
     const KEYSEND_PODCAST_KEY_DATA = 7629169; //satoshi.stream stuff
 
@@ -62,7 +63,7 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
     //these keys will be checked for data and stored with the transaction
     public static function getThirdPartyTlvDataKeys()
     {
-        return [self::KEYSEND_PODCAST_KEY_DATA];
+        return [self::KEYSEND_PODCAST_KEY_DATA,self::KEYSEND_SPADS_KEY];
     }
 
     /**
