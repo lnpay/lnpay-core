@@ -351,7 +351,7 @@ class WalletController extends ApiController
     public function actionTransactions($access_key)
     {
         $wallet = $this->findByKey($access_key);
-        $this->checkAccessKey(UserAccessKeyBehavior::ROLE_WALLET_ADMIN);
+        $this->checkAccessKey(UserAccessKeyBehavior::ROLE_WALLET_READ);
 
         return new \yii\data\ActiveDataProvider([
             'query' => WalletTransaction::find()->where(['wallet_id'=>$wallet->id]),
