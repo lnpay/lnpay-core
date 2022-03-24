@@ -67,5 +67,27 @@ class UserApiLog extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
+    public function getAmplitudeAttributeValues()
+    {
+        $arr = [
+            'api_key',
+            'external_hash',
+            'ip_address',
+            'method',
+            'sdk',
+            'base_url',
+            'status_code',
+            'request_path'
+        ];
+
+        $array = [];
+        foreach ($arr as $a) {
+            $array[$a] = $this->{$a};
+        }
+
+        return $array;
+
+    }
 }
 
