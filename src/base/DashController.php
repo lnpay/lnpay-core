@@ -27,9 +27,9 @@ class DashController extends Controller
             return $this->redirect(['/account/index']);
         }
 
-        if (!\LNPay::$app->user->identity->getLnNodeQuery()->exists()) {
-            return $this->redirect(['/node/dashboard/add']);
-        }
+//        if (!\LNPay::$app->user->identity->getLnNodeQuery()->exists()) {
+//            return $this->redirect(['/node/dashboard/add']);
+//        }
 
         return true;
     }
