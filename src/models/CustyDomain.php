@@ -107,6 +107,11 @@ class CustyDomain extends \yii\db\ActiveRecord
         return CustyDomain::find()->where(['status_type_id'=>StatusType::CUSTYDOMAIN_ACTIVE]);
     }
 
+    public static function findByHash($external_hash)
+    {
+        return static::find()->where(['external_hash'=>$external_hash])->one();
+    }
+
     public static function isDefaultDomain($id)
     {
         if (in_array($id,self::defaultDomains()))
@@ -161,7 +166,7 @@ class CustyDomain extends \yii\db\ActiveRecord
         $fields = parent::fields();
         $fields['id'] = $fields['external_hash'];
 
-        unset($fields['external_hash'], $fields['id'], $fields['user_id'], $fields['port'],$fields['use_https'],$fields['ssl_info'],$fields['use_hsts'],$fields['upgrade_insecure'],$fields['status_type_id'],$fields['data']);
+        unset($fields['external_hash'], $fields['user_id'], $fields['port'],$fields['use_https'],$fields['ssl_info'],$fields['use_hsts'],$fields['upgrade_insecure'],$fields['status_type_id'],$fields['data']);
         return $fields;
     }
 }

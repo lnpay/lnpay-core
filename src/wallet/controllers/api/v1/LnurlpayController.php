@@ -88,10 +88,17 @@ class LnurlpayController extends ApiController
         $this->checkAccessKey(UserAccessKeyBehavior::ROLE_WALLET_ADMIN);
 
         $l = new WalletLnurlpay();
+        $l->load(\LNPay::$app->request->post(),'');
+
         $l->user_id = \LNPay::$app->user->id;
         $l->wallet_id = $wallet->id;
+        if ($cdi = \LNPay::$app->request->post('custy_domain_id')) {
+            if ($cd = CustyDomain::findByHash($cdi))
+                $l->custy_domain_id = $cd->id;
+            else
+                throw new UnableToCreateLnurlpayException('Invalid custy_domain_id');
+        }
 
-        $l->load(\LNPay::$app->request->post(),'');
         if ($l->validate() && $l->save()) {
             return $l;
         } else {
