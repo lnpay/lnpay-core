@@ -64,6 +64,9 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'GET,OPTIONS v1/lnurlp/<wallet_lnurlpay_id:\w+>' => 'wallet/api/v1/lnurlpay/view',
             'POST,PUT,PATCH,OPTIONS v1/lnurlp/<wallet_lnurlpay_id:\w+>' => 'wallet/api/v1/lnurlpay/update',
 
+            //WALLET PUBLIC
+            'GET,HEAD,OPTIONS public/wallet/<access_key:\w+>' => 'wallet/pub/index/view',
+
 
 
         ], false);
@@ -84,6 +87,11 @@ class Module extends \yii\base\Module implements BootstrapInterface
                         'allow' => true,
                         'controllers' => ['wallet/api/*'],
                         'roles' => ['?','@'],
+                    ],
+                    [
+                        'allow' => true,
+                        'controllers' => ['wallet/pub/*'],
+                        'roles' => ['?'],
                     ],
                 ],
             ],

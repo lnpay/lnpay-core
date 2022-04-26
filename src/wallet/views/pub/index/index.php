@@ -1,0 +1,1 @@
+<?=$wallet->external_hash;?>

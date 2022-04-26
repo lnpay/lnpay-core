@@ -161,7 +161,7 @@ class LnurlpayCest
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->haveHttpHeader('X-Api-Key', 'pak_HgiUO4kskfneieivTI05Fm3YzTza4N');
         $I->sendPOST('/v1/wallet/waka_aliceLnurlPay/lnurlp',[
-            'custy_domain_id'=>5
+            'custy_domain_id'=>'cdom_123'
         ]);
         $I->seeResponseIsJson();
         $I->seeResponseContains('"domain_name":"lnpay.local"');

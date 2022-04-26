@@ -26,6 +26,7 @@ class m191006_214944_custy_domain extends Migration
               `domain_name` varchar(255) NOT NULL DEFAULT '',
               `port` int(11) DEFAULT NULL,
               `display_name` varchar(255) NOT NULL DEFAULT '',
+              `external_hash` varchar(255) NOT NULL DEFAULT '',
               `use_https` tinyint(1) DEFAULT '0',
               `ssl_info` text,
               `use_hsts` tinyint(1) DEFAULT '0',

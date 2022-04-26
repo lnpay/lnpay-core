@@ -73,6 +73,12 @@ class HelperComponent extends Component
             case UserAccessKeyBehavior::ROLE_WALLET_LNURL_PAY:
                 return 'waklp';
                 break;
+            case UserAccessKeyBehavior::ROLE_WALLET_EXTERNAL_WEBSITE_ADMIN:
+                return 'wakewa';
+                break;
+            case UserAccessKeyBehavior::ROLE_WALLET_EXTERNAL_WEBSITE_VIEW:
+                return 'wakewv';
+                break;
         }
 
         $words = explode(" ", $role);
@@ -91,6 +97,10 @@ class HelperComponent extends Component
             case 'sak':
             case 'pak':
                 $length = 32;
+                break;
+            case 'wakewa':
+            case 'wakewv':
+                $length = 8;
                 break;
             default:
                 $length = 24;

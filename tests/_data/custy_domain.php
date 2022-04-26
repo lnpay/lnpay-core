@@ -14,6 +14,7 @@ return
             'ssl_info'=>'',
             'use_hsts'=>'',
             'upgrade_insecure'=>'',
+            'external_hash'=>'cdom_123',
             'data'=>''
         ],
         [
