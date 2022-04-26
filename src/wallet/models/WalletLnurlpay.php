@@ -95,6 +95,7 @@ class WalletLnurlpay extends \yii\db\ActiveRecord
             [['lnurl_encoded', 'lnurl_decoded', 'lnurlp_short_desc', 'lnurlp_success_message', 'lnurlp_success_url', 'lnurlp_image_base64'], 'string'],
             [['external_hash'], 'string', 'max' => 45],
             [['lnurlp_identifier','user_label'], 'string', 'max' => 255],
+            [['lnurlp_identifier'],'match','pattern'=>'/^[a-zA-Z\s]+$/']
             ];
     }
 

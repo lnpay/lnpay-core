@@ -15,6 +15,7 @@ use lnpay\wallet\models\WalletLnurlpay;
 use lnpay\base\ApiController;
 use lnpay\wallet\models\WalletTransactionType;
 use yii\helpers\Json;
+use yii\helpers\VarDumper;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\UnauthorizedHttpException;
@@ -126,6 +127,7 @@ class LnurlpayController extends ApiController
     public function actionLightningAddress($username)
     {
         $prefix = explode("_",$username);
+        $cd = null;
         if ($prefix[0] == 'lnurlp') {
             $lnurlpModel = WalletLnurlpay::findByHash($username);
         }
@@ -134,8 +136,15 @@ class LnurlpayController extends ApiController
             $host = $referrer['host'];
         } else {
             $host = parse_url(\LNPay::$app->request->absoluteUrl)['host'];
+            $subdomain = explode('.',$host)[0];
+            $cd = CustyDomain::findByHash($subdomain);
         }
-        if ($cd = CustyDomain::find()->where(['domain_name'=>$host])->one()) {
+
+        if (!$cd) {
+            $cd = CustyDomain::find()->where(['domain_name'=>$host])->one();
+        }
+
+        if ($cd && !$lnurlpModel) {
             //This is a ln address with a domain that is in our system!
             $lnurlpModel = WalletLnurlpay::find()
                 ->where(['lnurlp_identifier'=>$username,'custy_domain_id'=>$cd->id])
@@ -144,7 +153,7 @@ class LnurlpayController extends ApiController
 
         if (@$lnurlpModel) {
             $access_key = $lnurlpModel->wallet->getFirstAccessKeyByRole(UserAccessKeyBehavior::ROLE_WALLET_LNURL_PAY);
-            return $this->actionLnurlProcess($access_key,$username);
+            return $this->actionLnurlProcess($access_key,$lnurlpModel->external_hash);
         } else {
             throw new BadRequestHttpException('Invalid username ('.$username.') for domain:'.$host);
         }
