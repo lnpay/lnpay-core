@@ -1,0 +1,15 @@
+name: lnpay-build-test-workflow
+on: [push,pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the stack
+        run: bash docker.sh build
+      - name: Build codecept
+        run: docker exec lnpay-php vendor/bin/codecept build
+      - name: Run API Tests
+        run: docker exec lnpay-php vendor/bin/codecept run -g base_api -vvv
+      - name: Run unit,functional Tests
+        run: docker exec lnpay-php vendor/bin/codecept run unit,functional

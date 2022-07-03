@@ -1,0 +1,48 @@
+version: '3.5'
+services:
+  php:
+    container_name: lnpay-php
+    image: bootstrapbandit/lnpay:7.3-apache-grpc-0.1
+    volumes:
+      - ./docker/supervisor/:/etc/supervisor/
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      - ./:/app:delegated
+    ports:
+      - 8111:80
+      - 9001:9001
+    networks:
+        lnpay-lms_public_net:
+          ipv4_address: 192.168.69.11
+  db:
+    container_name: lnpay-db
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: lnpay_db
+    ports:
+      - 8222:3306
+    networks:
+        lnpay-lms_public_net:
+          ipv4_address: 192.168.69.22
+  chrome:
+    container_name: lnpay-chrome
+    image: selenium/standalone-chrome
+    restart: always
+    ports:
+      - 4444:4444
+    depends_on:
+      - php
+    networks:
+      lnpay-lms_public_net:
+          ipv4_address: 192.168.69.33
+
+networks:
+    lnpay-lms_public_net:
+        name: lnpay-lms_public_net
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 192.168.69.0/24
