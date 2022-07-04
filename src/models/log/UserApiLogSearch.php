@@ -70,13 +70,13 @@ class UserApiLogSearch extends UserApiLog
             'user_id' => $this->user_id,
             'created_at' => $this->created_at,
             'status_code' => $this->status_code,
+            'method'=>$this->method
         ]);
 
         $query->andFilterWhere(['like', 'external_hash', $this->external_hash])
             ->andFilterWhere(['like', 'api_key', $this->api_key])
             ->andFilterWhere(['like', 'ip_address', $this->ip_address])
             ->andFilterWhere(['like', 'sdk', $this->sdk])
-            ->andFilterWhere(['like', 'method', $this->method])
             ->andFilterWhere(['like', 'base_url', $this->base_url])
             ->andFilterWhere(['like', 'request_path', $this->request_path])
             ->andFilterWhere(['like', 'request_body', $this->request_body])
