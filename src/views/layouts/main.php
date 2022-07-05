@@ -49,12 +49,12 @@ $user = \LNPay::$app->user->identity;
             ],
         ]);
     $menuItemsLeft = [
-        [
+        /*[
             'label' => '<img src="/img/icons/home.svg" style="width:15px" /> Legacy LAPPs',
             'url' => 'https://legacy.lnpay.co/',
             'linkOptions'=>['target'=>'_blank'],
             'encode'=>false,
-        ],
+        ],*/
         [
             'label' => '<img src="/img/icons/wallet.svg" style="width:15px" /> Wallets',
             'url' => (\LNPay::$app->user->isGuest?'#':['/wallet/wallet/dashboard']),
