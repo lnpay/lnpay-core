@@ -25,6 +25,10 @@ class AnalyticsComponent extends Component
 
     public static function executeLog($userId,$eventName,$params=[])
     {
+        $excludeUsers = [2476];
+        if (in_array($userId,$excludeUsers))
+            return true;
+
         if (getenv('AMPLITUDE_API_KEY')) {
             if (!YII_ENV_TEST) {
                 $amplitude = new \Zumba\Amplitude\Amplitude();
