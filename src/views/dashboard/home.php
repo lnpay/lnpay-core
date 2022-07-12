@@ -8,7 +8,7 @@ $this->title = 'Home';
         <div class="col-sm-6 col-md-4">
             <div class="thumbnail text-center">
                 <div class="caption">
-                    <img src="https://lnpay.co/frontend-resources/assets/img/icon_large_wallets.png" style="height: 100px" />
+                    <img src="https://cloud.lnpay.co/img/icon_large_wallets.png" style="height: 100px" />
                     <h3>Wallets</h3>
                     <p>Create, manage, send, receive from fully functional wallets to segment your funds across services. </p>
                     <p><a href="/wallet/wallet/dashboard" class="btn btn-primary" role="button">Go to Wallets <i class="fa fa-arrow-circle-right"></i></a></p>
@@ -18,7 +18,7 @@ $this->title = 'Home';
         <div class="col-sm-6 col-md-4">
             <div class="thumbnail text-center">
                 <div class="caption">
-                    <img src="https://lnpay.co/frontend-resources/assets/img/icon_large_nodes.png" style="height: 100px" />
+                    <img src="https://cloud.lnpay.co/img/icon_large_nodes.png" style="height: 100px" />
                     <h3>Lightning Node</h3>
                     <p>Manage the Lightning Node powering your wallets.</p>
                     <p><a href="/node/dashboard/index" class="btn btn-primary" role="button">Go to Lightning Node <i class="fa fa-arrow-circle-right"></i></a></p>
