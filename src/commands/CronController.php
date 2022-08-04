@@ -103,14 +103,14 @@ class CronController extends Controller
     public function cleanupApiLogs()
     {
         \LNPay::info('Cleaning up API logs older than 3 days');
-        $cutoffTime = time() - 259200; //5 days
+        $cutoffTime = time() - 259200; //3 days
         \LNPay::$app->db->createCommand('DELETE FROM user_api_log WHERE created_at < '.$cutoffTime)->execute();
     }
 
     public function cleanupActionFeed()
     {
         \LNPay::info('Cleaning up Action Feed older than 3 days');
-        $cutoffTime = time() - 259200; //3 days
+        $cutoffTime = time() - 432000; //5 days
         \LNPay::$app->db->createCommand('DELETE FROM action_feed WHERE created_at < '.$cutoffTime)->execute();
     }
 
