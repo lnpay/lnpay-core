@@ -148,6 +148,8 @@ class NodeListener extends \yii\db\ActiveRecord
             case static::LND_RPC_SUBSCRIBE_CHANNEL_GRAPH:
             case static::LND_RPC_SUBSCRIBE_PEER_EVENTS:
             case static::LND_RPC_SUBSCRIBE_HTLC_EVENTS:
+            case static::LND_RPC_SUBSCRIBE_TRANSACTIONS:
+            case static::LND_RPC_SUBSCRIBE_CHANNEL_EVENTS:
                 $overrides = [
                     'autostart'=>false
                 ];
