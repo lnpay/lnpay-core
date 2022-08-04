@@ -76,7 +76,7 @@ class CronController extends Controller
         }
 
         try {
-            $this->cleanupActionFeed();
+            //$this->cleanupActionFeed();
         } catch (\Throwable $t) {
             \LNPay::error($t->getMessage(),__METHOD__);
         }
@@ -111,7 +111,7 @@ class CronController extends Controller
     {
         \LNPay::info('Cleaning up Action Feed older than 3 days');
         $cutoffTime = time() - 432000; //5 days
-        \LNPay::$app->db->createCommand('DELETE FROM action_feed WHERE created_at < '.$cutoffTime)->execute();
+        \LNPay::$app->db->createCommand('DELETE FROM action_feed WHERE created_at < '.$cutoffTime.' ORDER BY id DESC LIMIT 100000')->execute();
     }
 
     public function cleanupQueueLogs()
