@@ -4,8 +4,8 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
 $this->title = "Wallet: ".$wallet->user_label;
-$this->params['breadcrumbs'][] = ['label' => 'Wallets', 'url' => ['/wallet/dashboard']];
-$this->params['breadcrumbs'][] = ['label' => $wallet->user_label, 'url' => ['/wallet/view','id'=>$wallet->external_hash]];
+$this->params['breadcrumbs'][] = ['label' => 'Wallets', 'url' => ['/wallet/wallet/dashboard']];
+$this->params['breadcrumbs'][] = ['label' => $wallet->user_label, 'url' => ['/wallet/wallet/view','id'=>$wallet->external_hash]];
 $this->params['breadcrumbs'][] = 'View';
 
 
