@@ -396,7 +396,12 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
      */
     public function getLnNodeQuery()
     {
-        return LnNode::find()->where(['user_id'=>$this->id])->orWhere(['org_id'=>$this->org_id,'is_custodian'=>1]);
+        $firstQuery = LnNode::find()->where(['user_id'=>$this->id])->orWhere(['org_id'=>$this->org_id,'is_custodian'=>1]);
+        if (!$firstQuery->exists()) {
+            return LnNode::find()->where(['org_id'=>Org::LNPAY_DEFAULT_ORG,'is_custodian'=>1]);
+        } else {
+            return $firstQuery;
+        }
     }
 
     /**
