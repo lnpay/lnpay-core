@@ -137,7 +137,9 @@ class WalletTransferForm extends Model
 
     public function executeTransfer()
     {
-        if ($this->safe || \LNPay::$app->mutex->acquire($this->sourceWalletObject->publicId)) {
+        if ($this->safe ||
+            \LNPay::$app->mutex->acquire($this->sourceWalletObject->publicId) ||
+            $this->destWalletObject->user->getJsonData(User::DATA_IGNORE_WALLET_TRANSFER_MUTEX)) {
             $json_data = [
                 'source_wallet_id' => $this->sourceWalletObject->external_hash,
                 'dest_wallet_id' => $this->destWalletObject->external_hash,
