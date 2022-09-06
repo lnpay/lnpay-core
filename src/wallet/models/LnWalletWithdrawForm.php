@@ -170,7 +170,7 @@ class LnWalletWithdrawForm extends Model
     {
         if (\LNPay::$app->mutex->acquire($this->walletObject->publicId)) {
 
-            if ($this->validate(['fee_limit_msat','maxWithdraw']) && $this->validate()) {
+            if ($this->validate(['fee_limit_msat']) && $this->validate()) {
                 //Carry on!
             } elseif (!$this->hasErrors()) {
                 throw new ServerErrorHttpException('Failed to withdraw for unknown reason');

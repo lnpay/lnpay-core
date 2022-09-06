@@ -26,6 +26,11 @@ class WalletTransferForm extends Model
     public $lnPayParams = NULL;
     public $passThru = NULL;
 
+    /**
+     * @var bool
+     */
+    public $safe = false; // if safe, no locking on wallet.
+
     protected $sourceWalletObject;
     protected $destWalletObject;
 
@@ -37,6 +42,7 @@ class WalletTransferForm extends Model
         return [
             [['num_satoshis','source_wallet_id','dest_wallet_id'], 'required'],
             [['num_satoshis'], 'compare', 'compareValue' => 0, 'operator' => '>='],
+            ['safe','boolean'],
             [['memo'],'string'],
             [['lnPayParams'],'checkLnPayParams'],
             [['passThru'],'checkPassThruParams'],
@@ -131,8 +137,7 @@ class WalletTransferForm extends Model
 
     public function executeTransfer()
     {
-        if (\LNPay::$app->mutex->acquire($this->sourceWalletObject->publicId) ||
-            $this->destWalletObject->user->getJsonData(User::DATA_IGNORE_WALLET_TRANSFER_MUTEX)) {
+        if ($this->safe || \LNPay::$app->mutex->acquire($this->sourceWalletObject->publicId)) {
             $json_data = [
                 'source_wallet_id' => $this->sourceWalletObject->external_hash,
                 'dest_wallet_id' => $this->destWalletObject->external_hash,
