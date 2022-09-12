@@ -284,7 +284,7 @@ class WalletTransaction extends \yii\db\ActiveRecord
         parent::afterSave($insert, $changedAttributes);
 
         if ($insert) {
-            if ($this->wallet->getJsonData(User::DATA_STREAMING_QUERY_TRANSACTION_BALANCE_UPDATE)) {
+            if ($this->user->getJsonData(User::DATA_STREAMING_QUERY_TRANSACTION_BALANCE_UPDATE)) {
                 $this->wallet->updateBalance($this->num_satoshis);
             } else {
                 $this->wallet->updateBalance();
