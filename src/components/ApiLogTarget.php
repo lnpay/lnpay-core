@@ -36,7 +36,7 @@ class ApiLogTarget extends Target {
                 $logMessage->request_headers = VarDumper::export(\LNPay::$app->request->getHeaders()->toArray());
                 $logMessage->save();
 
-                //AnalyticsComponent::log(Yii::$app->user->id,'api_request',$logMessage->amplitudeAttributeValues);
+                AnalyticsComponent::log(Yii::$app->user->id,'api_request',$logMessage->amplitudeAttributeValues);
             }
         }
     }
