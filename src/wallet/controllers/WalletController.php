@@ -102,7 +102,7 @@ class WalletController extends DashController
 
 
         $walletObject = $this->findModel($id);
-        $walletObject->updateBalance();
+        //$walletObject->updateBalance();
 
         $availableWalletsForTransferQuery = Wallet::find()->where(['!=','external_hash',$id])->andWhere(['user_id'=>\LNPay::$app->user->id])->orderBy('balance DESC');
 
