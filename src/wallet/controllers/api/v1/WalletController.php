@@ -66,6 +66,13 @@ class WalletController extends ApiController
         $model->load(\LNPay::$app->getRequest()->getBodyParams(), '');
         $model->user_id = \LNPay::$app->user->id;
 
+        if ($model->deterministic_identifier) {
+            $model->external_hash = 'walx_'.HelperComponent::generateDeterministicString(
+                $model->deterministic_identifier,
+                $salt = \LNPay::$app->user->identity->org->external_hash,
+                $length = 14);
+        }
+
         if ($model->save()) {
             $response = \LNPay::$app->getResponse();
             $response->setStatusCode(201);

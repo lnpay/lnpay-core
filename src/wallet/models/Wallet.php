@@ -38,6 +38,8 @@ use yii\web\ServerErrorHttpException;
  */
 class Wallet extends \yii\db\ActiveRecord
 {
+    public $deterministic_identifier = null;
+
     /**
      * {@inheritdoc}
      */
@@ -83,7 +85,8 @@ class Wallet extends \yii\db\ActiveRecord
             ['ln_node_id','checkUserNode'],
             [['user_id'],'default','value'=>function(){return \LNPay::$app->user->id;}],
             [['external_hash'],'default','value'=>function(){ return 'wal_'.HelperComponent::generateRandomString(14); }],
-            [['json_data'], 'safe'],
+            [['external_hash'],'unique'],
+            [['json_data','deterministic_identifier'], 'safe'],
             [['user_label', 'external_hash', 'ln_node_id'], 'string', 'max' => 255]
         ];
     }
@@ -105,7 +108,7 @@ class Wallet extends \yii\db\ActiveRecord
             'admin_key' => 'Admin Key',
             'invoice_key' => 'Invoice Key',
             'readonly_key' => 'Readonly Key',
-            'external_hash' => 'External Hash',
+            'external_hash' => 'External Identifier',
             'wallet_type_id'=>'Wallet Type',
             'default_lnurlpay_id'=>'Default LNURL PAY',
             'default_lnurlw_id'=>'Default LNURL WITHDRAW'

@@ -55,6 +55,10 @@ class HelperComponent extends Component
         return str_replace(['-','_'],'',\LNPay::$app->security->generateRandomString($length));
     }
 
+    public static function generateDeterministicString($deterministic_identifier,$salt,$length=32) {
+        return substr(hash('sha256',$deterministic_identifier.$salt),0,$length);
+    }
+
     public static function getRolePrefix($role)
     {
         //Manual overrides
