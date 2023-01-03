@@ -7,6 +7,6 @@ use yii\test\ActiveFixture;
 class UserFixture extends ActiveFixture
 {
     public $modelClass = 'lnpay\models\User';
-    public $depends = [];
+    public $depends = ['lnpay\fixtures\OrgFixture'];
     public $dataFile = '@root/tests/_data/user.php';
 }

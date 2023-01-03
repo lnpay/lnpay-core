@@ -3,6 +3,7 @@ return [
     'user1' => [
         'id'=>147,
         'api_parent_id'=> null,
+        'org_id'=>10,
         'username' => 'bandit',
         'auth_key' => 'K3nF70it7tzNsHddEiq0BZ0i-OU8S3xV',
         'mfa_secret_key'=>null,
