@@ -48,6 +48,22 @@ class WalletCreateCest
         $I->seeResponseContains('"default_lnurlpay_id"');
     }
 
+    public function walletCreateDeterministicSuccess(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->haveHttpHeader('X-Api-Key', 'sak_KkKkKkKkKkneieivTI05Fm3YzTza4N');
+        $I->sendPOST('/v1/wallet',[
+            'user_label'=>'My Test Deterministic Wallet',
+            'deterministic_identifier'=>'my_id'
+        ]);
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::CREATED);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"access_keys"');
+        $I->seeResponseContains('"user_label":"My Test Deterministic Wallet"');
+        $I->seeResponseContains('"default_lnurlpay_id"');
+        $I->seeResponseContains('walx_'.substr(hash('sha256',('my_id'.'org_1234567')),0,14));
+    }
+
     public function walletCreateSuccessNotCustodialNode(\ApiTester $I)
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
