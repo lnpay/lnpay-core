@@ -2,7 +2,7 @@
 
 require(__DIR__ . '/../vendor/autoload.php');
 
-(Dotenv\Dotenv::create(__DIR__ . '/../'))->load();
+(Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/../'))->safeLoad();
 
 // comment out the following two lines when deployed to production
 defined('YII_DEBUG') or define('YII_DEBUG', getenv('YII_DEBUG'));

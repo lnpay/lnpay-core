@@ -10,7 +10,7 @@ defined('YII_ENV') or define('YII_ENV', 'test');
 
 require(__DIR__ . '/../vendor/autoload.php');
 
-(Dotenv\Dotenv::create(__DIR__ . '/../'))->load();
+(Dotenv\Dotenv::createUnsafeImmutable(__DIR__ . '/../'))->safeLoad();
 
 require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
 require(__DIR__ . '/../src/LNPay.php');

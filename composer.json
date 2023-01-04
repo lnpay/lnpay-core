@@ -8,6 +8,9 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=7.3.0",
+        "ext-json": "*",
+        "ext-intl": "*",
+        "ext-curl":"*",
         "yiisoft/yii2": "^2.0.0",
         "symfony/process": "^3.3||^4.0",
         "yiisoft/yii2-redis": "~2.0.0",
@@ -15,7 +18,7 @@
         "yiisoft/yii2-queue": "^2.0@dev",
         "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0",
         "zumba/amplitude-php": "^1.0.0",
-        "vlucas/phpdotenv": "^3.4@dev",
+        "vlucas/phpdotenv": "^5.5",
         "guzzlehttp/guzzle": "^7.1@dev",
         "bitwasp/bech32": "dev-master",
         "tkijewski/php-lnurl": "dev-master",
