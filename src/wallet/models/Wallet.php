@@ -256,26 +256,17 @@ class Wallet extends \yii\db\ActiveRecord
     public function compressTransactions()
     {
         Yii::info('compressing wallet id: '.$this->id);
-        $debitsQuery = WalletTransaction::find()
-            ->where(['wallet_id'=>$this->id])
-            ->andWhere(['<','num_satoshis',0]);
+        $sumQuery = WalletTransaction::find()
+            ->where(['wallet_id'=>$this->id]);
 
-        $creditsQuery = WalletTransaction::find()
-            ->where(['wallet_id'=>$this->id])
-            ->andWhere(['>','num_satoshis',0]);
-
-        $sumOfDebits = (int)$debitsQuery->sum('num_satoshis');
-        $sumOfCredits = (int) $creditsQuery->sum('num_satoshis');
-        Yii::info("(Wallet: {$this->id}) sumOfDebits:$sumOfDebits");
-        Yii::info("(Wallet: {$this->id}) sumOfCredits:$sumOfCredits");
-
+        $sum = (int)$sumQuery->sum('num_satoshis');
 
         WalletTransaction::deleteALl(['wallet_id'=>$this->id]);
 
         $newDebitRow = new WalletTransaction();
         $newDebitRow->user_id = $this->user_id;
         $newDebitRow->wallet_id = $this->id;
-        $newDebitRow->num_satoshis = $sumOfCredits + $sumOfDebits;
+        $newDebitRow->num_satoshis = $sum;
         $newDebitRow->ln_tx_id = NULL;
         $newDebitRow->user_label = 'Balance roll up '.date('Y-m-d h:i:s');
         $newDebitRow->wtx_type_id = WalletTransactionType::LN_ROLL_UP;
@@ -284,7 +275,7 @@ class Wallet extends \yii\db\ActiveRecord
 
         $this->updateBalance();
 
-        return ['balance'=>$this->balance,'sumOfCredits'=>$sumOfCredits,'sumOfDebits'=>$sumOfDebits];
+        return ['balance'=>$this->balance,'sum'=>$sum];
 
     }
 
