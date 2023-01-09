@@ -249,6 +249,8 @@ class WalletTransaction extends \yii\db\ActiveRecord
                 case WalletTransactionType::LN_NETWORK_FEE:
                     $action_id = ActionName::NETWORK_FEE_INCURRED;
                     break;
+                default:
+                    $action_id = null;
             }
             return $action_id;
         }
