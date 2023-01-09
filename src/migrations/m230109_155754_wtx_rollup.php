@@ -18,6 +18,14 @@ class m230109_155754_wtx_rollup extends Migration
             'name'=>'balance_roll_up',
             'display_name'=>'Balance Roll Up'
         ]);
+
+        //fix this so we can delete wallets. this prevents deletion due to FK
+        $this->dropForeignKey('wallet_ibfk_5','wallet');
+        $this->addForeignKey('wallet_ibfk_5','wallet','default_lnurlpay_id','wallet_lnurlpay','id','SET NULL','SET NULL');
+
+        $this->dropForeignKey('wallet_ibfk_6','wallet');
+        $this->addForeignKey('wallet_ibfk_6','wallet','default_lnurlw_id','wallet_lnurlw','id','SET NULL','SET NULL');
+
     }
 
     /**
