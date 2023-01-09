@@ -275,7 +275,7 @@ class Wallet extends \yii\db\ActiveRecord
         $newDebitRow = new WalletTransaction();
         $newDebitRow->user_id = $this->user_id;
         $newDebitRow->wallet_id = $this->id;
-        $newDebitRow->num_satoshis = $sumOfCredits - $sumOfDebits;
+        $newDebitRow->num_satoshis = $sumOfCredits + $sumOfDebits;
         $newDebitRow->ln_tx_id = NULL;
         $newDebitRow->user_label = 'Balance roll up '.date('Y-m-d h:i:s');
         $newDebitRow->wtx_type_id = WalletTransactionType::LN_ROLL_UP;

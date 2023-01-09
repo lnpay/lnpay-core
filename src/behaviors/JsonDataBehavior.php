@@ -136,7 +136,7 @@ class JsonDataBehavior extends Behavior
 
         if ($data instanceof \yii\db\JsonExpression)
             $data = $data->jsonSerialize();
-        else if (!is_array($data))
+        else if (!is_array($data) && !empty($data))
             $data = json_decode($data,TRUE);
 
         if (!$data)

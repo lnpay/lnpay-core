@@ -462,9 +462,6 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
         } catch (\Throwable $t) {
             return $t->getMessage();
         }
-
-
-
     }
 
     /**
