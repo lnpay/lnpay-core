@@ -31,6 +31,8 @@ $config = [
             'class' => lnpay\org\Module::class
         ],
     ],
+    'layoutPath' => '@app/views/layouts/sb-admin',
+    'layout' => 'main.php',
     'components' => [
         'assetManager' => [
             'bundles' => [

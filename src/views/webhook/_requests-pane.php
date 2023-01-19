@@ -6,7 +6,7 @@ else
     $responseBadge = '<span class="label label-danger">'.$iwhr->response_status_code.'</span>';
 
 
-echo \yii\bootstrap\Tabs::widget([
+echo \yii\bootstrap4\Tabs::widget([
     'items' => [
         [
             'label' => 'Request',

@@ -38,7 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'ln_tx_id',
             'user_label',
             'external_hash',
-            'json_data',
         ],
     ]) ?>
 

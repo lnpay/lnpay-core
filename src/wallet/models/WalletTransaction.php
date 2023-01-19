@@ -21,6 +21,7 @@ use yii\helpers\ArrayHelper;
  * @property int $wallet_id
  * @property int $num_satoshis
  * @property int|null $ln_tx_id
+ * @property int|null $wtx_type_id
  * @property string|null $user_label
  * @property string $external_hash
  * @property string|null $json_data

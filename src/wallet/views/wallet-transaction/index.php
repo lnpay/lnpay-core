@@ -12,33 +12,24 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="wallet-transaction-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Wallet Transaction', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pager' => [
+            'class' => 'yii\bootstrap4\LinkPager'
+        ],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+            'external_hash',
+            'created_at:datetime',
+            'wallet.external_hash',
+            'num_satoshis',
+            'lnTx.external_hash',
+            'user_label',
 
-            'id',
-            'created_at',
-            'updated_at',
-            'user_id',
-            'wallet_id',
-            //'num_satoshis',
-            //'ln_tx_id',
-            //'user_label',
-            //'external_hash',
             //'json_data',
-
-            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
 

@@ -14,7 +14,7 @@ $cmd = 'lncli sendpayment -d '.$wallet->lnNode->default_pubkey.' -a [NUM_SATOSHI
 
 switch ($wallet->wallet_type_id) {
     case \lnpay\wallet\models\WalletType::GENERIC_WALLET:
-        echo \yii\bootstrap\Alert::widget([
+        echo \yii\bootstrap4\Alert::widget([
             'body' => 'To KEYSEND to via LND to THIS WALLET run the command below: <br/><br/>'.$cmd,
             'options' => [
                 'id' => 'id-keysend-yay',

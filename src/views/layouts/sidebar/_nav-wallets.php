@@ -1,4 +1,4 @@
-<?=$this->render('__base_sidebar'); ?>
+<?php /*
 
 <div class="sidebar-layout">
     <div class="sidebar">
@@ -10,7 +10,7 @@
         <?=\yii\helpers\Html::a('<img src="/img/icons/rpc-forwarder.svg" style="height: 25px" />Keysend',['wallet/keysend','id'=>$wallet->external_hash],['class'=>'sidebar-item']);?>
         <?=\yii\helpers\Html::a('<img src="/img/icons/keys-auth.svg" style="height: 25px" />Access Keys',['wallet/access-keys','id'=>$wallet->external_hash],['class'=>'sidebar-item']);?>
         <?=\yii\helpers\Html::a('<img src="/img/icons/events.svg" style="height: 25px" /> Transactions',['wallet/transactions','id'=>$wallet->external_hash],['class'=>'sidebar-item']);?>
-        <?=\yii\helpers\Html::a('<img src="/img/icons/nodes.svg" style="height: 25px" />LN Node: '.$wallet->lnNode->alias,['wallet/ln-node','id'=>$wallet->external_hash],['class'=>'sidebar-item']);?>
+        <?=\yii\helpers\Html::a('<img src="/img/icons/nodes.svg" style="height: 25px" />LN Node: '.@$wallet->lnNode->alias,['wallet/ln-node','id'=>$wallet->external_hash],['class'=>'sidebar-item']);?>
 
     </div>
     <div>
@@ -18,4 +18,25 @@
     </div>
 </div>
 
+ <? */ ?>
+
+
+<?php
+echo \yii\bootstrap4\Tabs::widget([
+    'items' => [
+        [
+            'label' => 'Send/Receive/Transfer',
+            'content'=> $content,
+            'url' => $this->context->action->id == 'view' ? NULL : ['wallet/view','id'=>$wallet->external_hash],
+            'active' => $this->context->action->id == 'view'
+        ],
+        [
+            'label' => 'Access Keys',
+            'content' => $content,
+            'url' => $this->context->action->id == 'access-keys' ? NULL : ['wallet/access-keys','id'=>$wallet->external_hash],
+            'active'=> $this->context->action->id == 'access-keys'
+        ],
+    ],
+]);
+?>
 

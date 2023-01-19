@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 $this->title = 'API Logs';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<?php $this->beginContent('@app/views/layouts/sidebar/_nav-developers.php');?>
+
 <div class="user-api-log-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -21,6 +21,9 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'pager' => [
+            'class' => 'yii\bootstrap4\LinkPager'
+        ],
         'columns' => [
             [
                 'class' => 'yii\grid\ActionColumn',
@@ -51,4 +54,3 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::end(); ?>
 
 </div>
-<?php $this->endContent();?>

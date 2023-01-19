@@ -3,18 +3,12 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
 
-$this->title = 'My Wallets';
+$this->title = 'Wallets';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
     <div class="paywalls-header">
-        <h2 style="margin-top: 0px;">Advanced Wallets <?=Html::a('API Docs <i class="fa fa-external-link-alt"></i>','https://docs.lnpay.co',[
-                'class'=>'btn btn-primary',
-                'target'=>'_blank',
-                'title'=>'Use the API for basic functionality using the permissioned keys below.',
-                'data-toggle' => 'tooltip',
-                'data-placement' => 'right']);?></h2>
-        <a href="create"><button class="styled-button-success">Create Wallet <i class="fa fa-plus-circle"></i></button></a>
+        <a href="create"><button class="btn btn-primary">Create Wallet <i class="fa fa-plus-circle"></i></button></a>
     </div>
 
 <?php Pjax::begin(); ?>
@@ -23,22 +17,28 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
+    'pager' => [
+        'class' => 'yii\bootstrap4\LinkPager'
+    ],
     'columns' => [
-        //'id',
+        [
+            'attribute'=>'external_hash',
+            'header'=>'ID'
+        ],
         'created_at:datetime',
         'user_label',
         'balance',
-        [
+        /*[
             'attribute'=>'walletType.display_name',
             'header'=>'Wallet Type',
             'filter' => Html::activeDropDownList($searchModel, 'wallet_type_id', \yii\helpers\ArrayHelper::map([null=>'All']+\lnpay\wallet\models\WalletType::getAvailableWalletTypes(),'id','display_name'))
-        ],
+        ],*/
 
-        [
+        /*[
             'attribute'=>'lnNode.alias',
             'header'=>'LN Node',
             'filter' => Html::activeDropDownList($searchModel, 'ln_node_id', \yii\helpers\ArrayHelper::map([null=>'All']+\LNPay::$app->user->identity->lnNodes,'id','alias'))
-        ],
+        ],*/
         //'external_hash',
         //'json_data',
 

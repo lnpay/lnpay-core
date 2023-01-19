@@ -3,12 +3,10 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $dqDp yii\data\ActiveDataProvider */
+/* @var $model \lnpay\models\CustyDomain */
 
-$this->title = 'Domains';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
-    <h3 style="margin-top: 2em; border-bottom: solid 1px #dddddd; padding-bottom: 10px;">Add Domain</h3>
+    <h3>Add Domain</h3>
 <?php
 $form = \yii\widgets\ActiveForm::begin([
     'options' => ['class' => 'form-horizontal'],
