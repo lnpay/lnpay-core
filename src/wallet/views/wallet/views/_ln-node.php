@@ -10,7 +10,7 @@ $lnNode = $wallet->lnNode;
 $user = \LNPay::$app->user->identity;
 ?>
 
-<?php $this->beginContent('@app/views/layouts/sidebar/_nav-wallets.php',compact('wallet')); ?>
+<?php $this->beginContent('@app/wallet/views/layouts/_nav-wallets.php',compact('wallet')); ?>
 <div class="jumbotron well">
     <h1><?=$lnNode->alias;?> (<?=$lnNode->org->display_name;?>)</h1>
     <p>

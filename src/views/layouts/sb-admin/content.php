@@ -20,18 +20,6 @@ use yii\bootstrap4\Alert;
                 ]);
 
             ?>
-
-            <h1 class="h3 mb-0 text-gray-800">
-                <?php
-                if ($this->title !== null) {
-
-                } else {
-                    echo \yii\helpers\Inflector::camel2words(
-                        \yii\helpers\Inflector::id2camel($this->context->module->id)
-                    );
-                    echo ($this->context->module->id !== \Yii::$app->id) ? '<small>Module</small>' : '';
-                } ?>
-            </h1>
         <?php } ?>
 
     </div>

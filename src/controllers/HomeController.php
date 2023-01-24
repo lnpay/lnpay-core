@@ -19,6 +19,7 @@ use lnpay\models\SignupForm;
 class HomeController extends Controller
 {
     const TIM_USER_ID = 147;
+    public $layout = '@app/views/layouts/sb-admin/guest/main-guest.php';
 
     /**
      * @inheritdoc
@@ -79,7 +80,7 @@ class HomeController extends Controller
     public function actionIndex()
     {
         if (\LNPay::$app->user->isGuest)
-            return $this->render('index');
+            return $this->redirect(['/home/login']);
         else
             return $this->redirect(['/dashboard/home']);
     }
@@ -148,14 +149,12 @@ class HomeController extends Controller
      */
     public function actionSignup()
     {
-        $sessionData = \LNPay::$app->session;
-
         $model = new SignupForm();
-        if ($model->load(\LNPay::$app->request->post())) {
+        if ($model->load(\LNPay::$app->request->post()) && $model->validate()) {
             if ($user = $model->signup()) {
                 if (\LNPay::$app->getUser()->login($user)) {
                     \LNPay::$app->session->setFlash('new_user',1);
-                    return $this->redirect(['/dashboard/home']);
+                    return $this->redirect(['/funnel/plans']);
                 }
             }
         }

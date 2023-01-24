@@ -1,15 +1,31 @@
-<?php
+<?php /** @noinspection ALL */
 
 /* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\SignupForm */
+/* @var $model SignupForm */
 
+use lnpay\models\SignupForm;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Modal;
+use Dusterio\LinkPreview\Client;
+use \lnpay\models\link\Rule;
+use \yii\helpers\HtmlPurifier;
+
+$this->title = \LNPay::$app->name;
+
 ?>
-<div class="site-login">
-    <div class="site-login-container">
-        <h2 class="pricing-title">Create your ⚡LNPAY Account</h2>
-        <?=$this->render('_signup-form',compact('model'));?>
+
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="/img/LN-Pay-Full-600.png"
+                     class="img-fluid" alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <h1>Create an Account</h1>
+                <?=$this->render('_signup-form',['model'=>$model]);?>
+            </div>
+        </div>
     </div>
-</div>
+</section>

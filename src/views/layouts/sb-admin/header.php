@@ -174,6 +174,10 @@ use yii\helpers\Html;
                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                         Account Info
                     </a>
+                    <a class="dropdown-item" href="/funnel/plans">
+                        <i class="fas fa-file-invoice fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Billing
+                    </a>
                     <div class="dropdown-divider"></div>
                     <?= Html::a(
                         'Logout',
@@ -182,7 +186,7 @@ use yii\helpers\Html;
                     ) ?>
                 </div>
             <?php else: ?>
-                <?= Html::a('Login', ['/site/login'], ['class' => 'nav-link']) ?>
+                <?= Html::a('Login', ['/home/login'], ['class' => 'nav-link']) ?>
             <?php endif; ?>
         </li>
 

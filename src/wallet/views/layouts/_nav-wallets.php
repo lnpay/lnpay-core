@@ -36,6 +36,12 @@ echo \yii\bootstrap4\Tabs::widget([
             'url' => $this->context->action->id == 'access-keys' ? NULL : ['wallet/access-keys','id'=>$wallet->external_hash],
             'active'=> $this->context->action->id == 'access-keys'
         ],
+        [
+            'label' => 'Transactions',
+            'content' => $content,
+            'url' => $this->context->action->id == 'transactions' ? NULL : ['wallet/transactions','id'=>$wallet->external_hash],
+            'active'=> $this->context->action->id == 'transactions'
+        ],
     ],
 ]);
 ?>

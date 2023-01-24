@@ -8,6 +8,7 @@ use lnpay\models\action\ActionName;
 use lnpay\behaviors\JsonDataBehavior;
 use lnpay\org\models\Org;
 use lnpay\org\models\OrgUserType;
+use lnpay\wallet\models\WalletTransaction;
 use lnpay\wallet\models\WalletTransactionType;
 use lnpay\wallet\models\WalletType;
 use lnpay\node\models\LnNode;
@@ -594,37 +595,32 @@ class User extends ActiveRecord implements IdentityInterface,\vxm\mfa\IdentityIn
      * - LN Send Volume
      * @throws \yii\db\Exception
      */
-    public function getWalletAPIUsageByPeriod($periodStart,$periodEnd)
+    public function getWalletAPIUsageByPeriod($periodStart,$periodEnd=null)
     {
+        if (!$periodEnd)
+            $periodEnd = time();
+
         $a = [];
         $a['ln_inbound_volume'] = 0;
         $a['ln_outbound_volume'] = 0;
 
-        $a['ln_inbound_volume'] = (\LNPay::$app->db->createCommand('
-            SELECT SUM(ABS(num_satoshis)) 
-            FROM wallet_transaction 
-            WHERE wallet_transaction.created_at > :startTime 
-              AND wallet_transaction.created_at < :endTime
-            AND wallet_transaction.wtx_type_id IN (:wtx_type_ids)
-            AND user_id = :user_id')
-            ->bindValue(':wtx_type_ids',WalletTransactionType::LN_DEPOSIT)
-            ->bindValue(':startTime',$periodStart)
-            ->bindValue(':endTime',$periodEnd)
-            ->bindValue(':user_id',\LNPay::$app->user->id)
-            ->queryScalar()?:0);
+        $a['ln_inbound_volume'] = ((new \yii\db\Query())
+            ->select('SUM(ABS(num_satoshis))')
+            ->from('wallet_transaction')
+            ->where(['>','created_at',$periodStart])
+            ->andWhere(['<','created_at',$periodEnd])
+            ->andWhere(['user_id'=>\LNPay::$app->user->id])
+            ->andWhere(['wtx_type_id'=>[WalletTransactionType::LN_DEPOSIT,WalletTransactionType::LN_LNURL_PAY_INBOUND]])
+            ->scalar()) ?? 0;
 
-        $a['ln_outbound_volume'] = (\LNPay::$app->db->createCommand('
-            SELECT SUM(ABS(num_satoshis)) 
-            FROM wallet_transaction 
-            WHERE wallet_transaction.created_at > :startTime 
-              AND wallet_transaction.created_at < :endTime
-            AND wallet_transaction.wtx_type_id IN (:wtx_type_ids)
-            AND user_id = :user_id')
-            ->bindValue(':wtx_type_ids',WalletTransactionType::LN_WITHDRAWAL)
-            ->bindValue(':startTime',$periodStart)
-            ->bindValue(':endTime',$periodEnd)
-            ->bindValue(':user_id',\LNPay::$app->user->id)
-            ->queryScalar()?:0);
+        $a['ln_outbound_volume'] = ((new \yii\db\Query())
+                ->select('SUM(ABS(num_satoshis))')
+                ->from('wallet_transaction')
+                ->where(['>','created_at',$periodStart])
+                ->andWhere(['<','created_at',$periodEnd])
+                ->andWhere(['user_id'=>\LNPay::$app->user->id])
+                ->andWhere(['wtx_type_id'=>[WalletTransactionType::LN_WITHDRAWAL,WalletTransactionType::LN_LNURL_PAY_OUTBOUND]])
+                ->scalar()) ?? 0;
 
         return $a;
     }

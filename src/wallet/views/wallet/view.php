@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = 'View';
 
 
 ?>
-<?php $this->beginContent('@app/views/layouts/sidebar/_nav-wallets.php',compact('wallet')); ?>
+<?php $this->beginContent('@app/wallet/views/layouts/_nav-wallets.php',compact('wallet')); ?>
 
 <h1 class="pt-3">Send / Receive / Transfer</h1>
 <div class="container">
