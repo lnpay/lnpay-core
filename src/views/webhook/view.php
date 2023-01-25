@@ -14,7 +14,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="integration-webhook-view">
 
-
-    <?= $this->render('_requests',compact('model')) ?>
+    <?php
+    if ($model->getWebhookRequests()->orderBy('created_at DESC')->exists()) {
+        echo $this->render('_requests', compact('model'));
+    }
+    else
+        echo 'No webhooks processed yet!';
+        ?>
 
 </div>

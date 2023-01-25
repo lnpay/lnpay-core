@@ -72,7 +72,24 @@ $this->title = 'Home';
             <a id="features"></a>
             <hr>
             <div class="row my-4">
-                <div class="col-lg-6 col-md-6">
+                <div class="col-lg-12 col-md-12">
+                    <h3>Successful Transactions</h3>
+                    <div class="table-responsive">
+                        <?= \yii\grid\GridView::widget([
+                            'dataProvider' => $afDpSuccess,
+                            'columns' => [
+                                'created_at:datetime',
+                                [
+                                    'header'=>'Type',
+                                    'value'=>'walletTransactionType.display_name',
+                                ],
+
+                                'num_satoshis',
+                            ]
+                        ]); ?>
+                    </div>
+                </div>
+                <?php /* ?><div class="col-lg-6 col-md-6">
                     <h3>Failed Payments</h3>
                     <div class="table-responsive">
                         <?= \yii\grid\GridView::widget([
@@ -85,20 +102,7 @@ $this->title = 'Home';
                             ]
                         ]); ?>
                     </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <h3>Successful Transactions</h3>
-                    <div class="table-responsive">
-                        <?= \yii\grid\GridView::widget([
-                            'dataProvider' => $afDpSuccess,
-                            'columns' => [
-                                'created_at:datetime',
-                                'walletTransactionType.display_name',
-                                'num_satoshis',
-                            ]
-                        ]); ?>
-                    </div>
-                </div>
+                </div><?php */?>
             </div>
             <hr>
             <div class="row my-4">
@@ -120,7 +124,7 @@ $this->title = 'Home';
                     </div>
                 </div>
                 <div class="col-lg-9 col-md-8">
-                    <h3>Recent Activity</h3>
+                    <h3>Recent Activity (3 days)</h3>
                     <div class="table-responsive">
                         <?= \yii\grid\GridView::widget([
                             'dataProvider' => $afDp,

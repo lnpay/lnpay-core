@@ -4,6 +4,15 @@ use hoaaah\sbadmin2\widgets\Menu;
 
 $items = [
     [
+        'label' => 'Home',
+        'url' => ['/dashboard/home'], //  Array format of Url to, will be not used if have an items
+        'icon' => 'fas fa-home', // optional, default to "fa fa-circle-o
+        'visible' => true, // optional, default to true
+    ],
+    [
+        'type' => 'divider', // divider or sidebar, if not set then link menu
+    ],
+    [
         'label' => 'Wallets',
         'url' => ['/wallet/wallet/dashboard'], //  Array format of Url to, will be not used if have an items
         'icon' => 'fas fa-wallet', // optional, default to "fa fa-circle-o
@@ -21,7 +30,7 @@ $items = [
         //     'liClass' => 'nav-item',
         // ] // optional
     ],
-    [
+    /*[
         'label' => 'Lightning Address',
         'url' => ['/menu1'], //  Array format of Url to, will be not used if have an items
         'icon' => 'fas fa-fw fa-envelope', // optional, default to "fa fa-circle-o
@@ -54,27 +63,18 @@ $items = [
         // 'options' => [
         //     'liClass' => 'nav-item',
         // ] // optional
-    ],
+    ],*/
     [
         'label' => 'Lightning Node',
         'url' => ['/node/dashboard/index'], //  Array format of Url to, will be not used if have an items
         'icon' => 'fas fa-fw fa-bolt', // optional, default to "fa fa-circle-o
-        'visible' => Yii::$app->user->identity->lnNode ?? false,
+        'visible' => true,
         'items' => [
             [
                 'label' => 'Invoices (LnTx)',
                 'url' => ['/menu21'], //  Array format of Url to, will be not used if have an items
             ],
         ]
-        // 'options' => [
-        //     'liClass' => 'nav-item',
-        // ] // optional
-    ],
-    [
-        'label' => 'Connect Lightning Node',
-        'url' => ['/node/dashboard/index'], //  Array format of Url to, will be not used if have an items
-        'icon' => 'fas fa-fw fa-bolt', // optional, default to "fa fa-circle-o
-        'visible' => Yii::$app->user->identity->lnNode ?? true,
         // 'options' => [
         //     'liClass' => 'nav-item',
         // ] // optional
@@ -103,7 +103,7 @@ $items = [
         // ] // optional
     ],
     [
-        'label' => 'Logs',
+        'label' => 'API Logs',
         'url' => ['/api-log/index'], //  Array format of Url to, will be not used if have an items
         'icon' => 'fas fa-fw fa-history', // optional, default to "fa fa-circle-o
         'visible' => true, // optional, default to true

@@ -7,7 +7,7 @@ $this->title = 'Wallets';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
-
+<?php /* ?>
     <div class="row mb-3">
         <div class="col-xl-3 col-sm-6 py-2">
             <div class="card bg-success text-white h-100">
@@ -54,6 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
     </div>
+ <?php */ ?>
     <div class="paywalls-header">
         <a href="create"><button class="btn btn-primary">Create Wallet <i class="fa fa-plus-circle"></i></button></a>
     </div>

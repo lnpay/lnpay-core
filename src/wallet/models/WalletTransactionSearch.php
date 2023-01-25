@@ -17,7 +17,7 @@ class WalletTransactionSearch extends WalletTransaction
     public function rules()
     {
         return [
-            [['id', 'created_at', 'updated_at', 'wallet_id', 'num_satoshis', 'ln_tx_id'], 'integer'],
+            [['id', 'created_at', 'updated_at', 'wallet_id', 'num_satoshis', 'ln_tx_id','wtx_type_id'], 'integer'],
             [['user_label', 'external_hash', 'json_data'], 'safe'],
         ];
     }
@@ -41,6 +41,7 @@ class WalletTransactionSearch extends WalletTransaction
     public function search($params)
     {
         $query = WalletTransaction::find();
+        $query->with('walletTransactionType','wallet','lnTx');
 
         // add conditions that should always apply here
 
@@ -76,8 +77,6 @@ class WalletTransactionSearch extends WalletTransaction
         $query->andFilterWhere(['like', 'user_label', $this->user_label])
             ->andFilterWhere(['like', 'external_hash', $this->external_hash])
             ->andFilterWhere(['like', 'json_data', $this->json_data]);
-
-        $query->joinWith('walletTransactionType');
 
         return $dataProvider;
     }

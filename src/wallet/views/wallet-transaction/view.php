@@ -6,39 +6,29 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model lnpay\wallet\models\WalletTransaction */
 
-$this->title = $model->id;
+$this->title = $model->external_hash;
 $this->params['breadcrumbs'][] = ['label' => 'Wallet Transactions', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="wallet-transaction-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="jumbotron">
+                <h1>Wallet Transaction</h1>
+                <pre><?=json_encode($model->toArray(),JSON_PRETTY_PRINT);?></pre>
+            </div>
+        </div>
+        <?php if ($model->ln_tx_id) {?>
+        <div class="col-md-6">
+            <div class="jumbotron">
+                <h1>LnTx Transaction</h1>
+                <pre><?=json_encode($model->lnTx->toArray(),JSON_PRETTY_PRINT);?></pre>
+            </div>
+        </div>
+        <?php } ?>
+    </div>
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'created_at',
-            'updated_at',
-            'user_id',
-            'wallet_id',
-            'num_satoshis',
-            'ln_tx_id',
-            'user_label',
-            'external_hash',
-        ],
-    ]) ?>
 
 </div>
