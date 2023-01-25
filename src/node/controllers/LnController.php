@@ -58,6 +58,7 @@ class LnController extends BaseNodeController
         $gi = $this->nodeObject->healthCheck('REST');
         $details = \LNPay::$app->session->getFlash('new_node_details',false);
         $node = $this->nodeObject;
+
         return $this->render('node', [
             'node' => $node,
             'details'=>$details,

@@ -1,6 +1,50 @@
 <?php
 use hoaaah\sbadmin2\widgets\Menu;
 
+if ($node = \LNPay::$app->user->identity->lnNode) {
+    $lightningNodeMenu = [
+        'label' => 'Lightning Node',
+        //'url' => ['/node/dashboard/index'], //  Array format of Url to, will be not used if have an items
+        'icon' => 'fas fa-fw fa-bolt', // optional, default to "fa fa-circle-o
+        'visible' => true,
+        'items' => [
+            [
+                'label' => 'Node Dashboard',
+                'url' => ['/node/ln/index/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
+            ],
+            [
+                'label' => 'On Chain',
+                'url' => ['/node/ln/onchain/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
+            ],
+            [
+                'label' => 'Event Subscriptions',
+                'url' => ['/node/rpc/listeners/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
+            ],
+            [
+                'label' => 'Invoices (LnTx)',
+                'url' => ['/node/ln/index/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
+            ],
+        ]
+    ];
+} else {
+    $lightningNodeMenu = [
+        'label' => 'Lightning Node',
+        'url' => ['/node/dashboard/index'], //  Array format of Url to, will be not used if have an items
+        'icon' => 'fas fa-fw fa-bolt', // optional, default to "fa fa-circle-o
+        'visible' => true,
+        'items' => [
+            [
+                'label' => 'Connect Node',
+                'url' => ['/node/dashboard/add'], //  Array format of Url to, will be not used if have an items
+            ],
+            [
+                'label' => 'Invoices (LnTx)',
+                'url' => ['/menu21'], //  Array format of Url to, will be not used if have an items
+            ],
+        ]
+    ];
+}
+
 
 $items = [
     [
@@ -64,21 +108,7 @@ $items = [
         //     'liClass' => 'nav-item',
         // ] // optional
     ],*/
-    [
-        'label' => 'Lightning Node',
-        'url' => ['/node/dashboard/index'], //  Array format of Url to, will be not used if have an items
-        'icon' => 'fas fa-fw fa-bolt', // optional, default to "fa fa-circle-o
-        'visible' => true,
-        'items' => [
-            [
-                'label' => 'Invoices (LnTx)',
-                'url' => ['/menu21'], //  Array format of Url to, will be not used if have an items
-            ],
-        ]
-        // 'options' => [
-        //     'liClass' => 'nav-item',
-        // ] // optional
-    ],
+    $lightningNodeMenu,
     [
         'type' => 'divider', // divider or sidebar, if not set then link menu
         // 'label' => '', // if sidebar we will set this, if divider then no
@@ -144,3 +174,5 @@ HTML
     'items' => $items
 ]);
 
+$this->registerJs("$('.sidebar a[href^=\"' + location.pathname + '\"').addClass('active');");
+$this->registerJs("$('.sidebar a[href^=\"' + location.pathname + '\"').parent().parent().addClass('show');");

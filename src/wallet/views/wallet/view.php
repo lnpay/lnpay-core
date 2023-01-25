@@ -7,12 +7,9 @@ $this->title = "Wallet: ".$wallet->user_label;
 $this->params['breadcrumbs'][] = ['label' => 'Wallets', 'url' => ['/wallet/wallet/dashboard']];
 $this->params['breadcrumbs'][] = ['label' => $wallet->user_label, 'url' => ['/wallet/wallet/view','id'=>$wallet->external_hash]];
 $this->params['breadcrumbs'][] = 'View';
-
-
-
-
-
 ?>
+    <h1><?=$wallet->user_label;?></h1>
+
 <?php $this->beginContent('@app/wallet/views/layouts/_nav-wallets.php',compact('wallet')); ?>
 
 <h1 class="pt-3">Send / Receive / Transfer</h1>
