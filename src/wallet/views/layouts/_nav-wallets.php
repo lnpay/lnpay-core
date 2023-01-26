@@ -19,17 +19,35 @@
 </div>
 
  <? */ ?>
-
-
+<h1><?=$wallet->user_label;?></h1>
+<section id="model_6" >
 <?php
 echo \yii\bootstrap4\Tabs::widget([
     'items' => [
         [
-            'label' => 'Send/Receive/Transfer',
+            'label' => 'Info',
             'content'=> $content,
             'url' => $this->context->action->id == 'view' ? NULL : ['wallet/view','id'=>$wallet->external_hash],
             'active' => $this->context->action->id == 'view'
         ],
+        /*[
+            'label' => 'Send',
+            'content'=> $content,
+            'url' => $this->context->action->id == 'send' ? NULL : ['wallet/send','id'=>$wallet->external_hash],
+            'active' => $this->context->action->id == 'send'
+        ],
+        [
+            'label' => 'Receive',
+            'content'=> $content,
+            'url' => $this->context->action->id == 'receive' ? NULL : ['wallet/receive','id'=>$wallet->external_hash],
+            'active' => $this->context->action->id == 'receive'
+        ],
+        [
+            'label' => 'Transfer',
+            'content'=> $content,
+            'url' => $this->context->action->id == 'transfer' ? NULL : ['wallet/transfer','id'=>$wallet->external_hash],
+            'active' => $this->context->action->id == 'transfer'
+        ],*/
         [
             'label' => 'Access Keys',
             'content' => $content,
@@ -44,5 +62,5 @@ echo \yii\bootstrap4\Tabs::widget([
         ],
     ],
 ]);
-?>
+?></section>
 

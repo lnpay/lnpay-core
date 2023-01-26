@@ -8,12 +8,10 @@ $this->params['breadcrumbs'][] = ['label' => 'Wallets', 'url' => ['/wallet/walle
 $this->params['breadcrumbs'][] = ['label' => $wallet->user_label, 'url' => ['/wallet/wallet/view','id'=>$wallet->external_hash]];
 $this->params['breadcrumbs'][] = 'View';
 ?>
-    <h1><?=$wallet->user_label;?></h1>
 
 <?php $this->beginContent('@app/wallet/views/layouts/_nav-wallets.php',compact('wallet')); ?>
 
-<h1 class="pt-3">Send / Receive / Transfer</h1>
-<div class="container">
+<div class="card p-5">
     <div class="row">
         <div class="col-md-3">
             <div class="balance-area">
@@ -63,7 +61,7 @@ $this->params['breadcrumbs'][] = 'View';
                         <?php
                         $wallets = \yii\helpers\ArrayHelper::map($availableWalletsForTransferQuery->asArray()->all(),'external_hash',function($row) { return $row['user_label'].' (Balance: '.$row['balance'].')'; });
                         echo $tForm->field($tModel, 'dest_wallet_id')->dropDownList($wallets,['prompt'=>'Choose Destination Wallet']); ?>
-                        <?= Html::submitButton('Transfer', ['class' => 'styled-button-success','style'=>'white-space:unset;']) ?>
+                        <?= Html::submitButton('Transfer', ['class' => 'btn btn-success','style'=>'white-space:unset;']) ?>
                         <?php ActiveForm::end(); ?>
                     </div>
                 </div>
@@ -87,7 +85,7 @@ $this->params['breadcrumbs'][] = 'View';
                         <?php //$form->errorSummary($model); ?>
 
                         <?= $wForm->field($wModel, 'payment_request')->textArea(['placeholder'=>'e.g. lnbc10u1pwcxqfkpp5e9nu85e6fypp89ql0hnz7yj784jatyytugewmpwe9yqhla7zvg3sdqdfdshjsn92djk2cqzpgjuk3ljzzrqhwsfr36h0nnyzy3gx3sna3fdnj9pkcqakjnkly0cdhk0lagf763mtegeld78qdpwf7t52mvgxl3f8neuty8y0pvvvffjcp96x09n', 'rows'=>4]); ?>
-                        <?= Html::submitButton('Send ⚡', ['class' => 'styled-button-success','style'=>'white-space:unset;']) ?>
+                        <?= Html::submitButton('Send ⚡', ['class' => 'btn btn-success','style'=>'white-space:unset;']) ?>
                         <?php ActiveForm::end(); ?>
                     </div>
                     <div class="col-md-6">
@@ -155,7 +153,7 @@ $this->params['breadcrumbs'][] = 'View';
                }
                    ",\yii\web\View::POS_END); ?>
 
-                        <?= Html::a('Generate Invoice ⚡', '#',['class' => 'styled-button-success','style'=>'white-space:unset;','onClick'=>'createInvoice();return false;']) ?>
+                        <?= Html::a('Generate Invoice ⚡', '#',['class' => 'btn btn-success','style'=>'white-space:unset;','onClick'=>'createInvoice();return false;']) ?>
                         <?php ActiveForm::end(); ?>
                     </div>
                     <div class="col-md-6" id="showInvoice" style="overflow-wrap: break-word;">
