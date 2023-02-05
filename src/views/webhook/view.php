@@ -9,14 +9,17 @@ use yii\widgets\DetailView;
 $this->title = 'Webhooks - '.$model->external_hash;
 $this->params['breadcrumbs'][] = ['label' => 'Webhooks', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+
 ?>
-<?php $this->beginContent('@app/views/layouts/sidebar/_nav-developers.php');?>
+
 <div class="integration-webhook-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_requests',compact('model')) ?>
+    <?php
+    if ($model->getWebhookRequests()->orderBy('created_at DESC')->exists()) {
+        echo $this->render('_requests', compact('model'));
+    }
+    else
+        echo 'No webhooks processed yet!';
+        ?>
 
 </div>
-<?php $this->endContent();?>

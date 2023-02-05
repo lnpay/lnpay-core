@@ -7,7 +7,7 @@ $this->params['breadcrumbs'][] = ['label' => $wallet->user_label, 'url' => ['/wa
 $this->params['breadcrumbs'][] = 'Loop In/Out';
 ?>
 
-<?php $this->beginContent('@app/views/layouts/sidebar/_nav-wallets.php',compact('wallet')); ?>
+<?php $this->beginContent('@app/wallet/views/layouts/_nav-wallets.php',compact('wallet')); ?>
 <h1>Loop Out</h1>
 <div class="wallet-content-item">
     <div class="wallet-loop-container collapse">

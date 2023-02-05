@@ -1,0 +1,229 @@
+
+
+.bg-gradient-primary {
+    background-color: #6749f1 !important;
+    background-image: linear-gradient(180deg,#6749f1 10%,#224abe 100%) !important;
+}
+
+.btn-primary {
+    background-color: #6749f1 !important;
+    border-color: #6749f1 !important;
+}
+
+a {
+
+}
+
+.nav-flowchart-ico {
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='iso-8859-1'%3F%3E%3C!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) --%3E%3Csvg version='1.1' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 475 475' style='enable-background:new 0 0 475 475;' xml:space='preserve'%3E%3Cg transform='translate(0 -540.36)'%3E%3Cg%3E%3Cg%3E%3Cpath d='M351.9,812.16H279c-4.1,0-7.5,3.4-7.5,7.5s3.4,7.5,7.5,7.5h72.9c4.2,0,7.5-3.4,7.5-7.5S356,812.16,351.9,812.16z'/%3E%3Cpath d='M467.5,580.16L467.5,580.16l-382.4-2.3c-2,0-4,0.8-5.4,2.3l-77.6,80.4c-1.3,1.4-2.1,3.3-2.1,5.2v304.6 c0,4.1,3.4,7.5,7.5,7.5H393c2.1,0,4-0.8,5.4-2.3l74.5-78.1c1.3-1.4,2.1-3.2,2.1-5.2v-304.6C475,583.56,471.7,580.26,467.5,580.16 z M382.4,962.86H15v-291.9h367.4v102.1H240.2c-4.1,0-7.5,3.4-7.5,7.5v78.1c0,4.1,3.4,7.5,7.5,7.5h142.2V962.86z M421.2,929.96 l-23.8,24.9v-93l23.8-23.2V929.96z M460,889.26l-23.8,24.9v-90.2l23.8-23.2V889.26z M460,779.76l-73.1,71.4H247.7v-63.1h142.2 c2,0,4-0.8,5.4-2.3l64.7-67.1V779.76z M460,697.16l-23.8,24.7v-97.4c0-4.1-3.4-7.5-7.5-7.5H116.1c-4.1,0-7.5,3.4-7.5,7.5 s3.4,7.5,7.5,7.5h305.1v104.2c0,0.4,0,0.8,0.1,1.2l-23.9,24.8v-98.6c0-4.1-3.4-7.5-7.5-7.5H27.4l60.8-63.2l371.8,2.3V697.16z'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3Cg%3E%3C/g%3E%3C/svg%3E%0A");
+    background-repeat: no-repeat no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+body, html {
+    height:100%;
+}
+
+/*
+ * Off Canvas sidebar at medium breakpoint
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 992px) {
+
+    .row-offcanvas {
+        position: relative;
+        -webkit-transition: all 0.25s ease-out;
+        -moz-transition: all 0.25s ease-out;
+        transition: all 0.25s ease-out;
+    }
+
+    .row-offcanvas-left
+    .sidebar-offcanvas {
+        left: -33%;
+    }
+
+    .row-offcanvas-left.active {
+        left: 33%;
+        margin-left: -6px;
+    }
+
+    .sidebar-offcanvas {
+        position: absolute;
+        top: 0;
+        width: 33%;
+        height: 100%;
+    }
+}
+
+/*
+ * Off Canvas wider at sm breakpoint
+ * --------------------------------------------------
+ */
+@media screen and (max-width: 34em) {
+    .row-offcanvas-left
+    .sidebar-offcanvas {
+        left: -45%;
+    }
+
+    .row-offcanvas-left.active {
+        left: 45%;
+        margin-left: -6px;
+    }
+
+    .sidebar-offcanvas {
+        width: 45%;
+    }
+}
+
+.card {
+    overflow:hidden;
+}
+
+.card-body .rotate {
+    z-index: 8;
+    float: right;
+    height: 100%;
+}
+
+.card-body .rotate i {
+    color: rgba(20, 20, 20, 0.15);
+    position: absolute;
+    left: 0;
+    left: auto;
+    right: -10px;
+    bottom: 0;
+    display: block;
+    -webkit-transform: rotate(-44deg);
+    -moz-transform: rotate(-44deg);
+    -o-transform: rotate(-44deg);
+    -ms-transform: rotate(-44deg);
+    transform: rotate(-44deg);
+}
+
+
+
+:root {
+    --m6-tabs-bg: transparent;
+    --m6-tab-text: #888;
+    --m6-tab-bg: transparent;
+    --m6-tab-hover-text: #6749f1;
+    --m6-tab-hover-bg: transparent;
+}
+
+section {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+
+
+#model_6 .tabs-container {
+    background: var(--m6-tabs-bg);
+    text-align: center;
+}
+#model_6 .nav-tabs {
+    border: 0;
+    position: relative;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: flex;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    -ms-box-orient: horizontal;
+    -ms-box-pack: center;
+    -webkit-flex-flow: row wrap;
+    -moz-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+    -webkit-justify-content: center;
+    -moz-justify-content: center;
+    -ms-justify-content: center;
+    justify-content: center;
+}
+#model_6 .nav .nav-item {
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin: 0;
+    text-align: center;
+    -webkit-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+#model_6 .nav .nav-link::before {
+    position: absolute;
+    bottom: 1em;
+    left: 50%;
+    margin-left: -20px;
+    width: 40px;
+    height: 4px;
+    background: var(--m6-tab-hover-text);
+    content: '';
+    opacity: 0;
+    -webkit-transition: -webkit-transform 0.2s ease-in;
+    transition: transform 0.2s ease-in;
+    -webkit-transform: scale3d(0,1,1);
+    transform: scale3d(0,1,1);
+}
+#model_6 .nav .nav-link {
+    border: 0;
+    outline: unset;
+    display: inline-block;
+    overflow: visible;
+    padding: 1em 0 2em;
+    color: var(--m6-tab-text);
+    line-height: 1;
+    -webkit-transition: color 0.3s cubic-bezier(0.7,0,0.3,1);
+    transition: color 0.3s cubic-bezier(0.7,0,0.3,1);
+}
+#model_6 .nav .nav-link:hover {
+    color: var(--m6-tab-hover-text);
+}
+#model_6 .nav .nav-link.active::before {
+    position: absolute;
+    bottom: 1em;
+    left: 50%;
+    margin-left: -60px;
+    width: 120px;
+    height: 4px;
+    background: var(--m6-tab-hover-text);
+    content: '';
+    opacity: 0;
+    -webkit-transition: -webkit-transform 0.2s ease-in;
+    transition: transform 0.2s ease-in;
+    -webkit-transform: scale3d(0,1,1);
+    transform: scale3d(0,1,1);
+    opacity: 1;
+    -webkit-transform: scale3d(1,1,1);
+    transform: scale3d(1,1,1);
+}
+#model_6 .nav .nav-link.active,
+#model_6 .nav .nav-link.active:hover {
+    background-color: var(--m6-tab-hover-bg);
+    color: var(--m6-tab-hover-text);
+}
+#model_6 .nav i {
+    speak: none;
+    -webkit-backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 1.3em;
+    display: block;
+    margin: 0 0 0.35em;
+    opacity: 0;
+    -webkit-transition: -webkit-transform 0.2s, opacity 0.2s;
+    transition: transform 0.2s, opacity 0.2s;
+    -webkit-transform: translate3d(0,-100px,0);
+    transform: translate3d(0,-100px,0);
+    pointer-events: none;
+}
+#model_6 .nav .nav-link.active i {
+    opacity: 1;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+}

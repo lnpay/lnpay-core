@@ -11,10 +11,9 @@ use yii\bootstrap\ActiveForm;
 <section class="login" id="login-form-view">
     <br/>
     <div class="pricing-inner text-left">
-        <?php $form = ActiveForm::begin(['id' => 'login-form']);
-        ?>
+        <?php $form = ActiveForm::begin(); ?>
 
-        <?= $form->field($model, 'username')->textInput()->label('Email or Username') ?>
+        <?= $form->field($model, 'username')->textInput()->label('Email') ?>
 
         <?= $form->field($model, 'password')->passwordInput() ?>
 

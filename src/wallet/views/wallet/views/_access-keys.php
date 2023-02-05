@@ -5,7 +5,7 @@ $this->params['breadcrumbs'][] = ['label' => $wallet->user_label, 'url' => ['/wa
 $this->params['breadcrumbs'][] = 'Access Keys';
 ?>
 
-<?php $this->beginContent('@app/views/layouts/sidebar/_nav-wallets.php',compact('wallet')); ?>
+<?php $this->beginContent('@app/wallet/views/layouts/_nav-wallets.php',compact('wallet')); ?>
 
 <h1>Wallet Access Keys <?=\yii\helpers\Html::a('API Docs <i class="fa fa-external-link-alt"></i>','https://docs.lnpay.co',[
         'class'=>'btn btn-primary',

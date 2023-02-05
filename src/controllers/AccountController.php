@@ -29,7 +29,7 @@ class AccountController extends Controller
         ]);
     }
 
-    public function actionIndex()
+    public function actionChangePassword()
     {
         $model = new ChangePasswordForm();
         $userModel = \lnpay\models\User::findOne(\LNPay::$app->user->id);
@@ -51,20 +51,23 @@ class AccountController extends Controller
                     );
                     return $this->redirect(['index']);
                 }
-            } catch (Exception $e) {
+            } catch (\Throwable $e) {
                 \LNPay::$app->getSession()->setFlash(
                     'error',
                     (string)($e->getMessage())
                 );
-                return $this->render('account-index', [
-                    'model' => $model,
-                    'userModel' => $userModel
-                ]);
             }
         }
 
+        return $this->render('_change-password', [
+            'model'=>$model,
+            'userModel' => $userModel
+        ]);
+    }
+    public function actionIndex()
+    {
+        $userModel = \lnpay\models\User::findOne(\LNPay::$app->user->id);
         return $this->render('account-index', [
-            'model' => $model,
             'userModel' => $userModel
         ]);
     }

@@ -7,14 +7,14 @@ $this->params['breadcrumbs'][] = 'Keysend';
 
 ?>
 
-<?php $this->beginContent('@app/views/layouts/sidebar/_nav-wallets.php',compact('wallet')); ?>
+<?php $this->beginContent('@app/wallet/views/layouts/_nav-wallets.php',compact('wallet')); ?>
 <h1>Keysend Logs</h1>
 <?php
 $cmd = 'lncli sendpayment -d '.$wallet->lnNode->default_pubkey.' -a [NUM_SATOSHIS] --keysend --data 696969='.bin2hex($wallet->external_hash);
 
 switch ($wallet->wallet_type_id) {
     case \lnpay\wallet\models\WalletType::GENERIC_WALLET:
-        echo \yii\bootstrap\Alert::widget([
+        echo \yii\bootstrap4\Alert::widget([
             'body' => 'To KEYSEND to via LND to THIS WALLET run the command below: <br/><br/>'.$cmd,
             'options' => [
                 'id' => 'id-keysend-yay',

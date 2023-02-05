@@ -522,6 +522,30 @@ class LnNode extends \yii\db\ActiveRecord
                 $r = $this->getLndConnector()->newAddress();
                 $this->onchain_nextaddr = $r['address'];
             }
+
+            try {
+                $gi['balances'] = $this->getLndConnector()->channelBalance();
+                $gi['channels'] = $this->getLndConnector()->listChannels()['channels'];
+            } catch (\Throwable $t) {
+                \LNPay::error($t->getMessage(),__METHOD__);
+            }
+
+
+            $gi['max_send'] = 0;
+            $gi['max_receive'] = 0;
+            if (isset($gi['channels'])) {
+                foreach ($gi['channels'] as $channel) {
+                    if (isset($channel['active'])) { //channel is active
+                        if ( ($channel['localBalance'] ?? 0) > $gi['max_send']) {
+                            $gi['max_send'] = $channel['localBalance'];
+                        }
+                        if ( ($channel['remoteBalance'] ?? 0) > $gi['max_receive']) {
+                            $gi['max_receive'] = $channel['remoteBalance'];
+                        }
+                    }
+                }
+            }
+
         }
 
         switch ($this->ln_node_implementation_id) {

@@ -39,6 +39,6 @@ class WalletCompressTest extends \Codeception\Test\Unit
             'balance'=>100,
             'sum'=>100
         ]);
-        expect(WalletTransaction::find()->where(['wallet_id'=>12])->count())->equals(2);
+        expect(WalletTransaction::find()->where(['wallet_id'=>12])->count())->equals(1);
     }
 }

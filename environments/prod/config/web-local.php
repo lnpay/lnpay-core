@@ -10,13 +10,13 @@ $config = [
             'targets' => [
                     [
                         'class' => Rekurzia\Log\PapertrailTarget::class,
-                        'enabled'=>(bool) (getenv('PAPERTRAIL_HOST') && getenv('PAPERTRAIL_HOST')),
+                        'enabled'=>(bool) (getenv('PAPERTRAIL_HOST') && getenv('PAPERTRAIL_PORT')),
                         'host' => getenv('PAPERTRAIL_HOST'),
                         'port' => getenv('PAPERTRAIL_PORT'),
                         'additionalPrefix' => function() {
                             return getenv('INSTANCE_ID');
                         },
-                        'levels' => ['error','warning','info'],
+                        'levels' => ['error','warning'],
                         'except' => [
                             'yii\web\HttpException:404',
                             'yii\rbac\DbManager:*',

@@ -6,7 +6,9 @@ use lnpay\models\action\ActionName;
 use lnpay\node\exceptions\UnableToBakeMacaroonException;
 use lnpay\node\exceptions\UnableToCreateInvoiceException;
 use lnpay\node\exceptions\UnableToDecodeInvoiceException;
+use lnpay\node\exceptions\UnableToGetChannelBalanceException;
 use lnpay\node\exceptions\UnableToGetWalletBalanceException;
+use lnpay\node\exceptions\UnableToListChannelsException;
 use lnpay\node\exceptions\UnableToLookupInvoiceException;
 use lnpay\node\exceptions\UnableToPayInvoiceException;
 use lnpay\node\exceptions\UnableToQueryRoutesException;
@@ -14,6 +16,7 @@ use lnpay\node\exceptions\UnableToSendKeysendException;
 use lnpay\node\models\LnNode;
 use Lnrpc\BakeMacaroonRequest;
 use Lnrpc\ChanInfoRequest;
+use Lnrpc\ChannelBalanceRequest;
 use Lnrpc\DeleteAllPaymentsRequest;
 use Lnrpc\GenSeedRequest;
 use Lnrpc\GetInfoRequest;
@@ -211,6 +214,17 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
         return $arr;
     }
 
+    public function channelBalance($bodyArray=[])
+    {
+        $r = $this->lnd_rpc_request('ChannelBalance',$bodyArray);
+        $arr = @json_decode($r,TRUE);
+
+        if (!$arr)
+            throw new UnableToGetChannelBalanceException($r);
+
+        return $arr;
+    }
+
     public function newAddress($bodyArray=[])
     {
         $r = $this->lnd_rpc_request('NewAddress',$bodyArray);
@@ -316,13 +330,14 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
         return true;
     }
 
-
     public function listChannels() {
-        try {
-            return $this->lnd_rpc_request('ListChannels');
-        } catch (\Throwable $t) {
-            \LNPay::error($t->getMessage(),__METHOD__);
-        }
+        $r = $this->lnd_rpc_request('ListChannels');
+        $arr = @json_decode($r,TRUE);
+
+        if (!$arr)
+            throw new UnableToListChannelsException($r);
+
+        return $arr;
     }
 
     public function nodeInfo($data) {
@@ -439,6 +454,11 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
                     $rpcConnector = static::initConnectorRpc($this->_nodeObject, self::SERVICE_LIGHTNING);
                     $r = new WalletBalanceRequest($bodyArray);
                     $resp = $rpcConnector->WalletBalance($r)->wait();
+                    break;
+                case 'ChannelBalance':
+                    $rpcConnector = static::initConnectorRpc($this->_nodeObject, self::SERVICE_LIGHTNING);
+                    $r = new ChannelBalanceRequest($bodyArray);
+                    $resp = $rpcConnector->ChannelBalance($r)->wait();
                     break;
                 case 'NewAddress':
                     $rpcConnector = static::initConnectorRpc($this->_nodeObject, self::SERVICE_LIGHTNING);

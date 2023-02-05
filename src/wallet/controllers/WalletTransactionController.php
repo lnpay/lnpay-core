@@ -52,8 +52,10 @@ class WalletTransactionController extends DashController
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
@@ -110,7 +112,7 @@ class WalletTransactionController extends DashController
     }
 
     /**
-     * Finds the WalletTransaction model based on its primary key value.
+     * Finds the Wallet model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
      * @return WalletTransaction the loaded model
@@ -118,7 +120,7 @@ class WalletTransactionController extends DashController
      */
     protected function findModel($id)
     {
-        if (($model = WalletTransaction::findOne($id)) !== null) {
+        if (($model = WalletTransaction::find()->where(['user_id'=>\LNPay::$app->user->id,'id'=>$id])->orWhere(['external_hash'=>$id,'user_id'=>\LNPay::$app->user->id])->one()) !== null) {
             return $model;
         }
 

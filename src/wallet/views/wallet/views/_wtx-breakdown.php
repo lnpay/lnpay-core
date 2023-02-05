@@ -6,8 +6,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Wallets', 'url' => ['/wallet/dashb
 $this->params['breadcrumbs'][] = ['label' => $wallet->user_label, 'url' => ['/wallet/view','id'=>$wallet->external_hash]];
 $this->params['breadcrumbs'][] = 'Transactions';
 ?>
-<?php $this->beginContent('@app/views/layouts/sidebar/_nav-wallets.php',compact('wallet')); ?>
-    <h1>Transactions</h1>
+<?php $this->beginContent('@app/wallet/views/layouts/_nav-wallets.php',compact('wallet')); ?>
 <?php
 echo \yii\grid\GridView::widget([
     'dataProvider' => $wtxDataProvider,
@@ -15,6 +14,9 @@ echo \yii\grid\GridView::widget([
     'summary' => '',
     'tableOptions' => ['class' => 'table'],
     'headerRowOptions' => ['class' => 'table-header'],
+    'pager' => [
+        'class' => 'yii\bootstrap4\LinkPager'
+    ],
     'columns' => [
         [
             'header'=>'Time',

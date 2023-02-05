@@ -1,5 +1,4 @@
-<?php $this->beginContent('@app/views/layouts/sidebar/_nav-developers.php');
-
+<?php
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -7,12 +6,13 @@ use yii\helpers\Html;
 
 $this->title = 'Domains';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
     <div class="paywalls-header">
-        <h2 style="margin-top: 0px;">Domains</h2>
+        <h2>Domains</h2>
     </div>
     <div class="col-md-3">
-        <a href="/domain/create"><button class="styled-button-success">Add Domain <i class="fa fa-plus-circle"></i></button></a>
+        <a href="/domain/create"><button class="btn btn-primary">Add Domain <i class="fa fa-plus-circle"></i></button></a>
     </div>
 
     <div class="col-md-12 container">
@@ -32,5 +32,3 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-
-<?php $this->endContent();?>

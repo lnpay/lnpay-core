@@ -12,39 +12,26 @@ use \yii\helpers\HtmlPurifier;
 
 $this->title = \LNPay::$app->name;
 
-$this->registerJs('
-$("#withdraw-loader").hide();
-$(\'#withdrawForm\').on(\'ajaxBeforeSend\', function (event, jqXHR, settings) {
-    // Activate waiting label
-    $("#withdraw-loader").show();
-}).on(\'ajaxComplete\', function (event, jqXHR, textStatus) {
-    // Deactivate waiting label
-    $("#withdraw-loader").hide();
-});
-');
-
-
-
 ?>
-<div class="site-index">
-    <div class="body-content">
-        <div class="container">
-            <div class="front-page-content">
-                <div class="main-message">
-                    <h1>LNPay</h1>
-                    <h4>
-                        <ul>
-                            <li>Enterprise Lighting Network Toolkit</li>
-                        </ul>
 
-                    </h4>
-                </div>
-                <div class="main-cta-box">
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="/img/LN-Pay-Full-600.png"
+                     class="img-fluid" alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <form>
                     <?php if (\LNPay::$app->user->isGuest) { ?>
                         <?=$this->render('signup',['model'=>new SignupForm()]);?>
                     <?php } else { ?>
                         You are logged in!
                     <?php } ?>
-                </div>
+
+
+                </form>
             </div>
         </div>
+    </div>
+</section>
