@@ -112,16 +112,16 @@ $this->title = 'Home';
                         <div class="card-body">
                             <h4 class="card-title">Lightning Node</h4>
                             <p class="card-text">Connect a Lightning Node to harness the full power of LNPay</p>
-                            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal" >Connect Node</a>
+                            <a href="/node/dashboard/add" class="btn btn-primary" >Connect Node</a>
                         </div>
                     </div>
-                    <div class="card card-inverse bg-inverse mt-3">
+                    <?php /* ?><div class="card card-inverse bg-inverse mt-3">
                         <div class="card-body">
                             <h3 class="card-title">Flexbox</h3>
                             <p class="card-text">Flexbox is now the default, and Bootstrap 4 supports SASS out of the box.</p>
                             <a href="#" class="btn btn-outline-secondary">Outline</a>
                         </div>
-                    </div>
+                    </div><?php */ ?>
                 </div>
                 <div class="col-lg-9 col-md-8">
                     <h3>Recent Activity (3 days)</h3>
@@ -140,7 +140,7 @@ $this->title = 'Home';
                 </div>
             </div>
             <!--/row-->
-
+    <?php /* ?>
             <a id="more"></a>
             <hr>
             <h2 class="sub-header mt-5">Account Limits</h2>
@@ -184,7 +184,7 @@ $this->title = 'Home';
 
             <a id="flexbox"></a>
             <hr>
-
+<?php */ ?>
         <!--/main col-->
     </div>
 

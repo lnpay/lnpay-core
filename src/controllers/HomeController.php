@@ -153,8 +153,8 @@ class HomeController extends Controller
         if ($model->load(\LNPay::$app->request->post()) && $model->validate()) {
             if ($user = $model->signup()) {
                 if (\LNPay::$app->getUser()->login($user)) {
-                    \LNPay::$app->session->setFlash('new_user',1);
-                    return $this->redirect(['/funnel/plans']);
+                    //\LNPay::$app->session->setFlash('new_user',1);
+                    return $this->redirect(['/dashboard/home']);
                 }
             }
         }
