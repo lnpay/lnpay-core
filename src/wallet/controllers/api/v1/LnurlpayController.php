@@ -124,10 +124,12 @@ class LnurlpayController extends ApiController
             ]);
         }
     */
-    public function actionLightningAddress($username)
+    public function actionLightningAddress($username,$custy_domain_id=NULL)
     {
         $prefix = explode("_",$username);
+        $lnurlpModel = null;
         $cd = null;
+
         if ($prefix[0] == 'lnurlp') {
             $lnurlpModel = WalletLnurlpay::findByHash($username);
         }
@@ -142,6 +144,12 @@ class LnurlpayController extends ApiController
 
         if (!$cd) {
             $cd = CustyDomain::find()->where(['domain_name'=>$host])->one();
+        }
+
+        if (!$cd) {
+            if ($custy_domain_id) {
+                $cd = CustyDomain::findByHash($custy_domain_id);
+            }
         }
 
         if ($cd && !$lnurlpModel) {

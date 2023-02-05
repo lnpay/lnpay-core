@@ -20,10 +20,10 @@ if ($node = \LNPay::$app->user->identity->lnNode) {
                 'label' => 'Event Subscriptions',
                 'url' => ['/node/rpc/listeners/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
             ],
-            [
+            /*[
                 'label' => 'Invoices (LnTx)',
                 'url' => ['/node/ln/index/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
-            ],
+            ],*/
         ]
     ];
 } else {
