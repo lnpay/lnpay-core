@@ -34,7 +34,6 @@ class ApiLogController extends DashController
      */
     public function actionIndex()
     {
-        return false;
         $searchModel = new UserApiLogSearch();
         $searchModel->method = 'POST';
         $dataProvider = $searchModel->search(\LNPay::$app->request->queryParams);

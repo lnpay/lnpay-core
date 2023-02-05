@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <?php
-echo \yii\bootstrap\Alert::widget([
+echo \yii\bootstrap4\Alert::widget([
     'body' => 'Please see '.Html::a('Webhooks: Getting Started','https://docs.lnpay.co/webhooks/getting-started',['target'=>'_blank']).' for more info',
     'options' => [
         'class' => 'alert-info',

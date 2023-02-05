@@ -20,6 +20,7 @@ class WalletTransactionType extends \yii\db\ActiveRecord
     const LN_WITHDRAWAL = 20;
     const LN_TRANSFER_IN = 30;
     const LN_TRANSFER_OUT = 40;
+    const LN_ROLL_UP = 45;
 
     const LN_LOOP_OUT = 50;
     const LN_LOOP_IN = 55;

@@ -4,7 +4,12 @@ namespace lnpay\controllers;
 
 use lnpay\base\DashController;
 use lnpay\models\action\ActionFeed;
+use lnpay\models\action\ActionName;
 use lnpay\models\CustyDomain;
+use lnpay\models\log\UserApiLog;
+use lnpay\wallet\models\Wallet;
+use lnpay\wallet\models\WalletTransaction;
+use lnpay\wallet\models\WalletTransactionType;
 use yii\helpers\ArrayHelper;
 use yii\filters\VerbFilter;
 
@@ -118,7 +123,74 @@ class DashboardController extends DashController
 
     public function actionHome()
     {
-        return $this->render('home');
+        $user_id = \LNPay::$app->user->id;
+        $actionFeedQuery = ActionFeed::find()
+            ->where(['user_id'=>$user_id])
+            ->joinWith('actionName');
+
+        $afDp = new \yii\data\ActiveDataProvider([
+            'query' => $actionFeedQuery,
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ]
+            ],
+        ]);
+
+        $actionFeedQuery = ActionFeed::find()
+            ->where(['user_id'=>$user_id])
+            ->joinWith('actionName')
+            ->andWhere(['action_name_id'=>ActionName::WALLET_SEND_FAILURE]);
+
+        $afDpFailed = new \yii\data\ActiveDataProvider([
+            'query' => $actionFeedQuery,
+            'pagination' => [
+                'pageSize' => 20,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ]
+            ],
+        ]);
+
+        $actionFeedQuery = WalletTransaction::find()
+            ->where(['user_id'=>$user_id])
+            ->andWhere(['wtx_type_id'=>[
+                WalletTransactionType::LN_WITHDRAWAL,
+                WalletTransactionType::LN_DEPOSIT,
+                WalletTransactionType::LN_LNURL_PAY_INBOUND,
+                WalletTransactionType::LN_LNURL_PAY_OUTBOUND
+            ]])
+            ->limit(10);
+
+        $afDpSuccess = new \yii\data\ActiveDataProvider([
+            'query' => $actionFeedQuery,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            'sort' => [
+                'defaultOrder' => [
+                    'created_at' => SORT_DESC,
+                ]
+            ],
+        ]);
+        $afDpSuccess->setTotalCount(10);
+
+        $walletCount = Wallet::find()->where(['user_id'=>$user_id])->count();
+        $walletTransactionCount = WalletTransaction::find()->where(['user_id'=>$user_id])->andWhere(['>','created_at',time()-86400*30])->count();
+        $apiCallCount = UserApiLog::find()->where(['user_id'=>$user_id])->count();
+        $volumeCount = \LNPay::$app->user->identity->getWalletAPIUsageByPeriod(strtotime('-30 days'),time());
+
+        return $this->render('home',compact('afDp','afDpFailed','afDpSuccess','walletCount','walletTransactionCount','apiCallCount','volumeCount'));
+    }
+
+    public function actionSearch()
+    {
+
     }
 
 }

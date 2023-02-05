@@ -2,24 +2,18 @@
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \frontend\models\SignupForm */
+/* @var $model \lnpay\models\SignupForm */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 ?>
 
-<!--<div class="signin-header signup-header">-->
-<!--    <div>Create your account to get started!</div>-->
-<!--</div>-->
 <section class="login" id="signup-form-view">
     <br/>
     <div class="pricing-inner text-left">
-        <?php $form = ActiveForm::begin(['id' => 'form-signup','action'=>'/home/signup']);
-        ?>
+        <?php $form = ActiveForm::begin(); ?>
 
-        <?php //$form->errorSummary($model); ?>
-
-        <?php //$form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+        <?php //echo $form->errorSummary($model); ?>
 
         <?= $form->field($model, 'email')->label('Email'); ?>
 

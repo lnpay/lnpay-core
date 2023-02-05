@@ -31,7 +31,7 @@ class LncliController extends NodeApiController
     public function actionListchannels($chan_id=null)
     {
         try {
-            $array = json_decode($this->nodeObject->getLndConnector()->listChannels(),TRUE);
+            $array = $this->nodeObject->getLndConnector()->listChannels();
             $arr = [];
             foreach ($array['channels'] as $channel) {
                 $channel['nodeInfo'] = json_decode($this->nodeObject->getLndConnector()->nodeInfo(['pub_key'=>$channel['remotePubkey']]),TRUE);

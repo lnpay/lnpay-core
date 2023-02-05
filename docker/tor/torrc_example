@@ -1,0 +1,8 @@
+RunAsDaemon 1
+ControlPort 9051
+CookieAuthentication 1
+CookieAuthFileGroupReadable 1
+
+# sudo chown ubuntu:ubuntu /run/tor/control.authcookie
+
+# /etc/tor/torrc

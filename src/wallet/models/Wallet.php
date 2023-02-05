@@ -256,45 +256,26 @@ class Wallet extends \yii\db\ActiveRecord
     public function compressTransactions()
     {
         Yii::info('compressing wallet id: '.$this->id);
-        $debitsQuery = WalletTransaction::find()
-            ->where(['wallet_id'=>$this->id])
-            ->andWhere(['<','num_satoshis',0]);
+        $sumQuery = WalletTransaction::find()
+            ->where(['wallet_id'=>$this->id]);
 
-        $creditsQuery = WalletTransaction::find()
-            ->where(['wallet_id'=>$this->id])
-            ->andWhere(['>','num_satoshis',0]);
-
-        $sumOfDebits = $debitsQuery->sum('num_satoshis');
-        $sumOfCredits = $creditsQuery->sum('num_satoshis');
-        Yii::info("(Wallet: {$this->id}) sumOfDebits:$sumOfDebits");
-        Yii::info("(Wallet: {$this->id}) sumOfCredits:$sumOfCredits");
-
+        $sum = (int)$sumQuery->sum('num_satoshis');
 
         WalletTransaction::deleteALl(['wallet_id'=>$this->id]);
 
         $newDebitRow = new WalletTransaction();
         $newDebitRow->user_id = $this->user_id;
         $newDebitRow->wallet_id = $this->id;
-        $newDebitRow->num_satoshis = $sumOfDebits;
+        $newDebitRow->num_satoshis = $sum;
         $newDebitRow->ln_tx_id = NULL;
-        $newDebitRow->user_label = 'Debit roll up '.date('Y-m-d h:i:s');
-        $newDebitRow->wtx_type_id = WalletTransactionType::LN_TRANSFER_OUT;
+        $newDebitRow->user_label = 'Balance roll up '.date('Y-m-d h:i:s');
+        $newDebitRow->wtx_type_id = WalletTransactionType::LN_ROLL_UP;
         $newDebitRow->save();
-        Yii::info("(Wallet: {$this->id}) compress debit row ID:{$newDebitRow->id}");
-
-        $newCreditRow = new WalletTransaction();
-        $newCreditRow->user_id = $this->user_id;
-        $newCreditRow->wallet_id = $this->id;
-        $newCreditRow->num_satoshis = $sumOfCredits;
-        $newCreditRow->ln_tx_id = NULL;
-        $newCreditRow->user_label = 'Credit roll up '.date('Y-m-d h:i:s');
-        $newCreditRow->wtx_type_id = WalletTransactionType::LN_TRANSFER_IN;
-        $newCreditRow->save();
-        Yii::info("(Wallet: {$this->id}) compress credit ID:{$newCreditRow->id}");
+        Yii::info("(Wallet: {$this->id}) compress debit/credit row ID:{$newDebitRow->id}");
 
         $this->updateBalance();
 
-        return ['balance'=>$this->balance,'sumOfCredits'=>(int)$sumOfCredits,'sumOfDebits'=>(int)$sumOfDebits];
+        return ['balance'=>$this->balance,'sum'=>$sum];
 
     }
 

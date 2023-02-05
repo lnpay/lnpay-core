@@ -71,5 +71,29 @@ return
         'lnurlp_success_url'=>NULL,
         'lnurlp_image_base64'=>NULL,
         'lnurlp_metadata'=>'[[\"text\\/plain\",\"LNURL PAY (via LNPay.co)\"]]'
+    ],
+    [
+        'id'=>10,
+        'created_at'=>1576066208,
+        'updated_at'=>1576150264,
+        'user_id'=>147,
+        'wallet_id'=>11,
+        'user_label'=>'base lnurl-pay link',
+        'status_type_id' => 450,
+        'external_hash'=>'lnurlp_thisiscustomdomain',
+        'json_data'=>"",
+        'custy_domain_id'=>5,
+        'lnurl_encoded'=>"LNURL1DP68GUP69UHKCMNSV9UJUMR0VDSKCW3CXYCNZTMKXYHHWCTVD3JHGTMHV94KCUZLFDVYUUJJWANRS3TDD3E4WS2TF9TKU7NXDG6XUTMVDE6HYMRS9AKXUATJD3C97VZEF5CNSNN5XDCX7WZN24K5JN6TG5AUYHWT",
+        'lnurl_decoded'=>"http://192.168.69.11/index-test.php/v1/wallet/waklp_KXNrRwf8EmlsWAKIWnzfj4n/lnurlp/lnurlp_0YM18Nt3po8SUmIOKE",
+        'lnurlp_minSendable_msat'=>69000,
+        'lnurlp_maxSendable_msat'=>10000000,
+        'lnurlp_short_desc'=>'LNURL PAY (via LNPay.co)',
+        'lnurlp_successAction'=>NULL,
+        'lnurlp_identifier'=>'testerUser',
+        'lnurlp_commentAllowed'=>null,
+        'lnurlp_success_message'=>NULL,
+        'lnurlp_success_url'=>NULL,
+        'lnurlp_image_base64'=>NULL,
+        'lnurlp_metadata'=>'[[\"text\\/plain\",\"LNURL PAY (via LNPay.co)\"]]'
     ]
 ];

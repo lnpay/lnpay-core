@@ -5,7 +5,7 @@ $this->params['breadcrumbs'][] = ['label' => $wallet->user_label, 'url' => ['/wa
 $this->params['breadcrumbs'][] = 'LNURL Pay';
 ?>
 
-<?php $this->beginContent('@app/views/layouts/sidebar/_nav-wallets.php',compact('wallet')); ?>
+<?php $this->beginContent('@app/wallet/views/layouts/_nav-wallets.php',compact('wallet')); ?>
 
 <div class="jumbotron well">
     <h2>Scan to send</h2>

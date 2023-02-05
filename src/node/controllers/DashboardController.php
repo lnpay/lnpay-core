@@ -191,6 +191,11 @@ class DashboardController extends Controller
         return $this->redirect(['/node/dashboard']);
     }
 
+    public function actionProvisioning()
+    {
+        return $this->render('provisioning');
+    }
+
 
 
 

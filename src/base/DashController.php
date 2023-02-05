@@ -20,12 +20,9 @@ class DashController extends Controller
     public function beforeAction($event)
     {
         parent::beforeAction($event);
+
         if (!\LNPay::$app->user->isGuest)
             LNPayComponent::processTz(\LNPay::$app->user->identity);
-
-        if (!\LNPay::$app->user->identity->isActivated) {
-            return $this->redirect(['/account/index']);
-        }
 
         return true;
     }

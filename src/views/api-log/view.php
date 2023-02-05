@@ -11,7 +11,7 @@ $this->params['breadcrumbs'][] = ['label' => 'User Api Logs', 'url' => ['index']
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<?php $this->beginContent('@app/views/layouts/sidebar/_nav-developers.php');?>
+
 <div class="user-api-log-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
@@ -42,4 +42,3 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 </div>
-<?php $this->endContent();?>

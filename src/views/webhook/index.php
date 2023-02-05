@@ -13,10 +13,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 ?>
-<?php $this->beginContent('@app/views/layouts/sidebar/_nav-developers.php');?>
+
 
 <?php
-echo \yii\bootstrap\Alert::widget([
+echo \yii\bootstrap4\Alert::widget([
     'body' => 'Please see '.Html::a('Webhooks: Getting Started','https://docs.lnpay.co/webhooks/getting-started',['target'=>'_blank']).' for more info',
     'options' => [
         'class' => 'alert-info',
@@ -29,7 +29,7 @@ echo \yii\bootstrap\Alert::widget([
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Webhook', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Webhook', ['create'], ['class' => 'btn btn-primary']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -43,13 +43,13 @@ echo \yii\bootstrap\Alert::widget([
                 'template' => '{view}{update}{delete}',
                 'buttons' => [
                     'view' => function ($url, $model, $key) {
-                        return Html::a('<span class="btn btn-primary glyphicon glyphicon-eye-open"></span>', ['view','id'=>$model->external_hash], ['title' => 'Edit']);
+                        return Html::a('<i class="btn btn-primary fa fa-eye"></i>', ['view','id'=>$model->external_hash], ['title' => 'Edit']);
                     },
                     'update' => function ($url, $model, $key) {
-                        return Html::a('<span class="btn btn-info glyphicon glyphicon-pencil"></span>', ['update','id'=>$model->external_hash], ['title' => 'Edit']);
+                        return Html::a('<i class="btn btn-info fa fa-edit"></i>', ['update','id'=>$model->external_hash], ['title' => 'Edit']);
                     },
                     'delete' => function ($url, $model, $key) {
-                        return Html::a('<span class="btn btn-danger glyphicon glyphicon-trash"></span>', ['delete','id'=>$model->external_hash], [
+                        return Html::a('<i class="btn btn-danger fa fa-trash-alt"></i>', ['delete','id'=>$model->external_hash], [
                             'title' => 'Delete',
                             'data-confirm' => \LNPay::t('yii', 'Are you sure you want to delete this item?'),
                             'data-method' => 'post'
@@ -80,4 +80,3 @@ echo \yii\bootstrap\Alert::widget([
 
 
 </div>
-<?php $this->endContent();?>

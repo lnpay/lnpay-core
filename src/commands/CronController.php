@@ -129,7 +129,7 @@ class CronController extends Controller
     public function compressLargeWallets()
     {
         \LNPay::info('Compressing wallets with large amount of transactions');
-        $walletsToCompress = [50018,28655];
+        $walletsToCompress = [50018,28655,36202];
 
         foreach ($walletsToCompress as $wId) {
             $wallet = Wallet::findOne($wId);

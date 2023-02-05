@@ -202,5 +202,13 @@ class LnurlpayCest
         $I->seeResponseCodeIs(400);
     }
 
+    public function LnurlpayCustyDomainNameRedirect(\ApiTester $I)
+    {
+        $I->haveHttpHeader('Content-Type', 'application/json');
+        $I->sendGET('/.well-known/cdom_123/lnurlp/testerUser');
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"minSendable":69000');
+    }
+
 
 }

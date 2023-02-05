@@ -3,18 +3,60 @@ use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
 
-$this->title = 'My Wallets';
+$this->title = 'Wallets';
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
+<?php /* ?>
+    <div class="row mb-3">
+        <div class="col-xl-3 col-sm-6 py-2">
+            <div class="card bg-success text-white h-100">
+                <div class="card-body bg-success">
+                    <div class="rotate">
+                        <i class="fa fa-wallet fa-4x"></i>
+                    </div>
+                    <h6 class="text-uppercase">Total Wallets</h6>
+                    <h1 class="display-4"></h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 py-2">
+            <div class="card text-white bg-danger h-100">
+                <div class="card-body bg-danger">
+                    <div class="rotate">
+                        <i class="fa fa-list fa-4x"></i>
+                    </div>
+                    <h6 class="text-uppercase">Transactions (30 days)</h6>
+                    <h1 class="display-4"></h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 py-2">
+            <div class="card text-white bg-info h-100">
+                <div class="card-body bg-info">
+                    <div class="rotate">
+                        <i class="fa fa-twitter fa-4x"></i>
+                    </div>
+                    <h6 class="text-uppercase">Inbound Volume (30 days)</h6>
+                    <h1 class="display-6"> Sats</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 py-2">
+            <div class="card text-white bg-warning h-100">
+                <div class="card-body">
+                    <div class="rotate">
+                        <i class="fa fa-share fa-4x"></i>
+                    </div>
+                    <h6 class="text-uppercase">Outbound Volume (30 days)</h6>
+                    <h1 class="display-6"> Sats</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+ <?php */ ?>
     <div class="paywalls-header">
-        <h2 style="margin-top: 0px;">Advanced Wallets <?=Html::a('API Docs <i class="fa fa-external-link-alt"></i>','https://docs.lnpay.co',[
-                'class'=>'btn btn-primary',
-                'target'=>'_blank',
-                'title'=>'Use the API for basic functionality using the permissioned keys below.',
-                'data-toggle' => 'tooltip',
-                'data-placement' => 'right']);?></h2>
-        <a href="create"><button class="styled-button-success">Create Wallet <i class="fa fa-plus-circle"></i></button></a>
+        <a href="create"><button class="btn btn-primary">Create Wallet <i class="fa fa-plus-circle"></i></button></a>
     </div>
 
 <?php Pjax::begin(); ?>
@@ -23,16 +65,22 @@ $this->params['breadcrumbs'][] = $this->title;
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
+    'pager' => [
+        'class' => 'yii\bootstrap4\LinkPager'
+    ],
     'columns' => [
-        //'id',
+        [
+            'attribute'=>'external_hash',
+            'header'=>'ID'
+        ],
         'created_at:datetime',
         'user_label',
         'balance',
-        [
+        /*[
             'attribute'=>'walletType.display_name',
             'header'=>'Wallet Type',
             'filter' => Html::activeDropDownList($searchModel, 'wallet_type_id', \yii\helpers\ArrayHelper::map([null=>'All']+\lnpay\wallet\models\WalletType::getAvailableWalletTypes(),'id','display_name'))
-        ],
+        ],*/
 
         [
             'attribute'=>'lnNode.alias',
