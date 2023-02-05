@@ -20,7 +20,7 @@
 
  <? */ ?>
 <h1><?=$wallet->user_label;?></h1>
-<section id="model_6" >
+<section id="model_6">
 <?php
 echo \yii\bootstrap4\Tabs::widget([
     'items' => [

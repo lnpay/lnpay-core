@@ -188,8 +188,8 @@ section {
     position: absolute;
     bottom: 1em;
     left: 50%;
-    margin-left: -20px;
-    width: 40px;
+    margin-left: -60px;
+    width: 120px;
     height: 4px;
     background: var(--m6-tab-hover-text);
     content: '';

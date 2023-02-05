@@ -82,11 +82,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'filter' => Html::activeDropDownList($searchModel, 'wallet_type_id', \yii\helpers\ArrayHelper::map([null=>'All']+\lnpay\wallet\models\WalletType::getAvailableWalletTypes(),'id','display_name'))
         ],*/
 
-        /*[
+        [
             'attribute'=>'lnNode.alias',
             'header'=>'LN Node',
             'filter' => Html::activeDropDownList($searchModel, 'ln_node_id', \yii\helpers\ArrayHelper::map([null=>'All']+\LNPay::$app->user->identity->lnNodes,'id','alias'))
-        ],*/
+        ],
         //'external_hash',
         //'json_data',
 

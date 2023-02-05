@@ -12,7 +12,7 @@
 </div>
 <?php */ ?>
 
-
+<section id="model_6">
 <?php
 echo \yii\bootstrap4\Tabs::widget([
     'items' => [
@@ -38,5 +38,5 @@ echo \yii\bootstrap4\Tabs::widget([
 ]);
 ?>
 
-
+</section>
 
