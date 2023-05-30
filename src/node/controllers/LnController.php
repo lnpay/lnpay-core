@@ -150,7 +150,7 @@ class LnController extends BaseNodeController
      */
     public function actionDelete($id)
     {
-        $node = $this->nodeObject;
+        $node = LnNode::findOne(['id'=>$id,'user_id'=>Yii::$app->user->id]);
         $node->delete();
 
         Yii::$app->session->setFlash('success','Node Removed');
