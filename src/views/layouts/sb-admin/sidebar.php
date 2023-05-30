@@ -35,19 +35,21 @@ if ($nodes = \LNPay::$app->user->identity->lnNodes) {
         ];
 } else {
     $lightningNodeMenu = [
-        'label' => 'Lightning Node',
-        'url' => ['/node/dashboard/index'], //  Array format of Url to, will be not used if have an items
-        'icon' => 'fas fa-fw fa-bolt', // optional, default to "fa fa-circle-o
-        'visible' => true,
-        'items' => [
-            [
-                'label' => 'Connect Node',
-                'url' => ['/node/dashboard/add'], //  Array format of Url to, will be not used if have an items
-            ],
-            /*[
-                'label' => 'Invoices (LnTx)',
-                'url' => ['/menu21'], //  Array format of Url to, will be not used if have an items
-            ],*/
+        [
+            'label' => 'Lightning Node',
+            'url' => ['/node/dashboard/index'], //  Array format of Url to, will be not used if have an items
+            'icon' => 'fas fa-fw fa-bolt', // optional, default to "fa fa-circle-o
+            'visible' => true,
+            'items' => [
+                [
+                    'label' => 'Connect Node',
+                    'url' => ['/node/dashboard/add'], //  Array format of Url to, will be not used if have an items
+                ],
+                /*[
+                    'label' => 'Invoices (LnTx)',
+                    'url' => ['/menu21'], //  Array format of Url to, will be not used if have an items
+                ],*/
+            ]
         ]
     ];
 }
