@@ -89,7 +89,7 @@ class DashboardController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('node', [
+        return $this->render('view', [
             'node' => $this->findModel($id),
         ]);
     }

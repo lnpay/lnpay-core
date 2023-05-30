@@ -1,31 +1,38 @@
 <?php
 use hoaaah\sbadmin2\widgets\Menu;
 
-if ($node = \LNPay::$app->user->identity->lnNode) {
-    $lightningNodeMenu = [
-        'label' => 'Lightning Node',
-        //'url' => ['/node/dashboard/index'], //  Array format of Url to, will be not used if have an items
-        'icon' => 'fas fa-fw fa-bolt', // optional, default to "fa fa-circle-o
-        'visible' => true,
-        'items' => [
-            [
-                'label' => 'Node Dashboard',
-                'url' => ['/node/ln/index/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
-            ],
-            [
-                'label' => 'On Chain',
-                'url' => ['/node/ln/onchain/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
-            ],
-            [
-                'label' => 'Event Subscriptions',
-                'url' => ['/node/rpc/listeners/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
-            ],
-            /*[
-                'label' => 'Invoices (LnTx)',
-                'url' => ['/node/ln/index/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
-            ],*/
-        ]
-    ];
+if ($nodes = \LNPay::$app->user->identity->lnNodes) {
+    $lightningNodeMenu = [];
+    foreach ($nodes as $node)
+         $lightningNodeMenu[] = [
+            'label' => $node->alias,
+            //'url' => ['/node/dashboard/index'], //  Array format of Url to, will be not used if have an items
+            'icon' => 'fas fa-fw fa-bolt', // optional, default to "fa fa-circle-o
+            'visible' => true,
+            'items' => [
+                [
+                    'label' => 'Node Dashboard',
+                    'url' => ['/node/ln/index/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
+                ],
+                [
+                    'label' => 'On Chain',
+                    'url' => ['/node/ln/onchain/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
+                ],
+                [12q
+                    'label' => 'Event Subscriptions',
+                    'url' => ['/node/rpc/listeners/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
+                ],
+                [
+                    'label' => 'Settings',
+                    'icon' => 'fas fa-cog', // optional, default to "fa fa-circle-o
+                    'url' => ['/node/ln/settings/lnod_123'], //  Array format of Url to, will be not used if have an items
+                ],
+                /*[
+                    'label' => 'Invoices (LnTx)',
+                    'url' => ['/node/ln/index/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
+                ],*/
+            ]
+        ];
 } else {
     $lightningNodeMenu = [
         'label' => 'Lightning Node',
@@ -47,33 +54,34 @@ if ($node = \LNPay::$app->user->identity->lnNode) {
 
 
 $items = [
-    [
-        'label' => 'Home',
-        'url' => ['/dashboard/home'], //  Array format of Url to, will be not used if have an items
-        'icon' => 'fas fa-home', // optional, default to "fa fa-circle-o
-        'visible' => true, // optional, default to true
-    ],
-    [
-        'type' => 'divider', // divider or sidebar, if not set then link menu
-    ],
-    [
-        'label' => 'Wallets',
-        'url' => ['/wallet/wallet/dashboard'], //  Array format of Url to, will be not used if have an items
-        'icon' => 'fas fa-wallet', // optional, default to "fa fa-circle-o
-        'visible' => true, // optional, default to true
-        // 'options' => [
-        //     'liClass' => 'nav-item',
-        // ] // optional
-    ],
-    [
-        'label' => 'Transactions',
-        'url' => ['/wallet/wallet-transaction'], //  Array format of Url to, will be not used if have an items
-        'icon' => 'fas fa-fw fa-exchange-alt', // optional, default to "fa fa-circle-o
-        'visible' => true, // optional, default to true
-        // 'options' => [
-        //     'liClass' => 'nav-item',
-        // ] // optional
-    ],
+        [
+            'label' => 'Home',
+            'url' => ['/dashboard/home'], //  Array format of Url to, will be not used if have an items
+            'icon' => 'fas fa-home', // optional, default to "fa fa-circle-o
+            'visible' => true, // optional, default to true
+        ],
+        [
+            'type' => 'divider', // divider or sidebar, if not set then link menu
+        ],
+        [
+            'label' => 'Wallets',
+            'url' => ['/wallet/wallet/dashboard'], //  Array format of Url to, will be not used if have an items
+            'icon' => 'fas fa-wallet', // optional, default to "fa fa-circle-o
+            'visible' => true, // optional, default to true
+            // 'options' => [
+            //     'liClass' => 'nav-item',
+            // ] // optional
+        ],
+        [
+            'label' => 'Transactions',
+            'url' => ['/wallet/wallet-transaction'], //  Array format of Url to, will be not used if have an items
+            'icon' => 'fas fa-fw fa-exchange-alt', // optional, default to "fa fa-circle-o
+            'visible' => true, // optional, default to true
+            // 'options' => [
+            //     'liClass' => 'nav-item',
+            // ] // optional
+        ]
+    ];
     /*[
         'label' => 'Lightning Address',
         'url' => ['/menu1'], //  Array format of Url to, will be not used if have an items
@@ -108,49 +116,55 @@ $items = [
         //     'liClass' => 'nav-item',
         // ] // optional
     ],*/
-    $lightningNodeMenu,
-    [
-        'type' => 'divider', // divider or sidebar, if not set then link menu
-        // 'label' => '', // if sidebar we will set this, if divider then no
 
-    ],
-    [
-        'label' => 'Webhooks',
-        'url' => ['/webhook/index'], //  Array format of Url to, will be not used if have an items
-        'icon' => 'fas fa-fw fa-tachometer-alt', // optional, default to "fa fa-circle-o
-        'visible' => true, // optional, default to true
-        // 'options' => [
-        //     'liClass' => 'nav-item',
-        // ] // optional
-    ],
-    [
-        'label' => 'Domains',
-        'url' => ['/domain/index'], //  Array format of Url to, will be not used if have an items
-        'icon' => 'fas fa-fw fa-server', // optional, default to "fa fa-circle-o
-        'visible' => true, // optional, default to true
-        // 'options' => [
-        //     'liClass' => 'nav-item',
-        // ] // optional
-    ],
-    [
-        'label' => 'API Logs',
-        'url' => ['/api-log/index'], //  Array format of Url to, will be not used if have an items
-        'icon' => 'fas fa-fw fa-history', // optional, default to "fa fa-circle-o
-        'visible' => true, // optional, default to true
-        // 'options' => [
-        //     'liClass' => 'nav-item',
-        // ] // optional
-    ],
-    [
-        'label' => 'API Keys',
-        'url' => ['/developers/dashboard'], //  Array format of Url to, will be not used if have an items
-        'icon' => 'fas fa-fw fa-key', // optional, default to "fa fa-circle-o
-        'visible' => true, // optional, default to true
-        // 'options' => [
-        //     'liClass' => 'nav-item',
-        // ] // optional
-    ],
-];
+    $items = \yii\helpers\ArrayHelper::merge(
+        $items,
+        $lightningNodeMenu,
+        [
+            [
+                'type' => 'divider', // divider or sidebar, if not set then link menu
+                // 'label' => '', // if sidebar we will set this, if divider then no
+
+            ],
+            [
+                'label' => 'Webhooks',
+                'url' => ['/webhook/index'], //  Array format of Url to, will be not used if have an items
+                'icon' => 'fas fa-fw fa-tachometer-alt', // optional, default to "fa fa-circle-o
+                'visible' => true, // optional, default to true
+                // 'options' => [
+                //     'liClass' => 'nav-item',
+                // ] // optional
+            ],
+            [
+                'label' => 'Domains',
+                'url' => ['/domain/index'], //  Array format of Url to, will be not used if have an items
+                'icon' => 'fas fa-fw fa-server', // optional, default to "fa fa-circle-o
+                'visible' => true, // optional, default to true
+                // 'options' => [
+                //     'liClass' => 'nav-item',
+                // ] // optional
+            ],
+            [
+                'label' => 'API Logs',
+                'url' => ['/api-log/index'], //  Array format of Url to, will be not used if have an items
+                'icon' => 'fas fa-fw fa-history', // optional, default to "fa fa-circle-o
+                'visible' => true, // optional, default to true
+                // 'options' => [
+                //     'liClass' => 'nav-item',
+                // ] // optional
+            ],
+            [
+                'label' => 'API Keys',
+                'url' => ['/developers/dashboard'], //  Array format of Url to, will be not used if have an items
+                'icon' => 'fas fa-fw fa-key', // optional, default to "fa fa-circle-o
+                'visible' => true, // optional, default to true
+                // 'options' => [
+                //     'liClass' => 'nav-item',
+                // ] // optional
+            ]
+        ]
+    );
+
 
 
 

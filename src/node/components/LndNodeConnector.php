@@ -505,7 +505,8 @@ class LndNodeConnector extends LnBaseNodeClass implements LnBaseNodeInterface
             ],
             'http_errors'=>true,
             'headers' => $headers,
-            'debug'=>false
+            'debug'=>false,
+            'connect_timeout'=>2
         ]);
         $r = null;
         if (empty($bodyArray)) {

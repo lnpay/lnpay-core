@@ -66,6 +66,14 @@ class LnController extends BaseNodeController
         ]);
     }
 
+    public function actionSettings()
+    {
+        $node = $this->nodeObject;
+        return $this->render('settings', [
+            'node' => $node,
+        ]);
+    }
+
     /**
      * Displays a single LnNode model.
      * @param string $id
@@ -145,7 +153,8 @@ class LnController extends BaseNodeController
         $node = $this->nodeObject;
         $node->delete();
 
-        return $this->redirect(['/node/dashboard/index']);
+        Yii::$app->session->setFlash('success','Node Removed');
+        return $this->redirect(['/dashboard/home']);
     }
 
 
