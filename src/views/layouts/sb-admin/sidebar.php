@@ -25,7 +25,7 @@ if ($nodes = \LNPay::$app->user->identity->lnNodes) {
                 [
                     'label' => 'Settings',
                     'icon' => 'fas fa-cog', // optional, default to "fa fa-circle-o
-                    'url' => ['/node/ln/settings/lnod_123'], //  Array format of Url to, will be not used if have an items
+                    'url' => ['/node/ln/settings/'.$node->id], //  Array format of Url to, will be not used if have an items
                 ],
                 /*[
                     'label' => 'Invoices (LnTx)',
