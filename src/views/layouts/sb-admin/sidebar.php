@@ -18,7 +18,7 @@ if ($nodes = \LNPay::$app->user->identity->lnNodes) {
                     'label' => 'On Chain',
                     'url' => ['/node/ln/onchain/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
                 ],
-                [12q
+                [
                     'label' => 'Event Subscriptions',
                     'url' => ['/node/rpc/listeners/','id'=>$node->id], //  Array format of Url to, will be not used if have an items
                 ],
