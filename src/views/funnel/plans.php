@@ -1,13 +1,18 @@
 <?php
 
 $this->title = 'LNPay Plans';
+
+$plusActive = Yii::$app->request->getQueryParam('plan')=='plus';
+$growthActive = Yii::$app->request->getQueryParam('plan')=='growth';
+$proActive = Yii::$app->request->getQueryParam('plan')=='pro';
+
 ?>
 <section class="pricing py-5">
     <div class="container">
         <div class="row">
             <!-- Pro Tier -->
             <div class="col-lg-4">
-                <div class="card mb-5 mb-lg-0">
+                <div class="card mb-5 mb-lg-0 <?=$proActive?'bg-success':'';?>">
                     <div class="card-body">
                         <h5 class="card-title text-muted text-uppercase text-center">Pro</h5>
                         <h6 class="card-price text-center">$450<span class="period">/month</span></h6>
@@ -29,25 +34,31 @@ $this->title = 'LNPay Plans';
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Managed Channels</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Managed Backups</li>
                         </ul>
-                        <div class="d-grid text-center">
-                            <a href="#" class="btn btn-primary text-uppercase">Launch Your Node</a>
-                        </div>
+                        <?php if ($proActive) { ?>
+                            <div class="d-grid text-center">
+                                <a href="mailto:admin@lnpay.co?subject=cancel+plan" class="btn btn-danger text-uppercase">Cancel</a>
+                            </div>
+                        <?php } else { ?>
+                            <div class="d-grid text-center">
+                                <a href="https://buy.stripe.com/7sI6pB3UD5U4a9GeV6" class="btn btn-primary text-uppercase">Upgrade to Pro</a>
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
             <!-- Plus Tier -->
             <div class="col-lg-4">
-                <div class="card mb-5 mb-lg-0">
+                <div class="card mb-5 mb-lg-0 <?=$growthActive?'bg-success':'';?>">
                     <div class="card-body">
-                        <h5 class="card-title text-muted text-uppercase text-center">Plus</h5>
+                        <h5 class="card-title text-muted text-uppercase text-center">Growth</h5>
                         <h6 class="card-price text-center">$150<span class="period">/month</span></h6>
                         <hr>
                         <ul class="fa-ul">
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>LNPay Cloud API</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Generate / Pay LN Invoices</li>
-                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>10</b> Wallets</li>
-                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>1,000</b> Sat Invoice Limit</li>
-                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>1,000</b> Transactions/mo</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>500</b> Wallets</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>1,000,000</b> Sat Invoice Limit</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>10,000</b> Transactions/mo</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>LNURL</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Lightning Address</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Outbound Keysend</li>
@@ -59,30 +70,36 @@ $this->title = 'LNPay Plans';
                             <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Managed Channels</li>
                             <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Managed Backups</li>
                         </ul>
-                        <div class="d-grid text-center">
-                            <a href="https://buy.stripe.com/test_00gbLUfkt1Ai2li144" class="btn btn-primary text-uppercase">Launch Your Node</a>
-                        </div>
+                        <?php if ($growthActive) { ?>
+                            <div class="d-grid text-center">
+                                <a href="mailto:admin@lnpay.co?subject=cancel+plan" class="btn btn-danger text-uppercase">Cancel</a>
+                            </div>
+                        <?php } else { ?>
+                            <div class="d-grid text-center">
+                                <a href="https://buy.stripe.com/bIY5lxbn52HS2He8wF" class="btn btn-primary text-uppercase">Upgrade to Growth</a>
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
 
             <!-- Free Tier -->
             <div class="col-lg-4">
-                <div class="card mb-5 mb-lg-0">
+                <div class="card mb-5 mb-lg-0 <?=$plusActive?'bg-success':'';?>">
                     <div class="card-body">
-                        <h5 class="card-title text-muted text-uppercase text-center">Free Sandbox</h5>
-                        <h6 class="card-price text-center">$0<span class="period">/month</span></h6>
+                        <h5 class="card-title text-muted text-uppercase text-center">Plus</h5>
+                        <h6 class="card-price text-center">$50<span class="period">/month</span></h6>
                         <hr>
                         <ul class="fa-ul">
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>LNPay Cloud API</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Generate / Pay LN Invoices</li>
-                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>10</b> Wallets</li>
-                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>1,000</b> Sat Invoice Limit</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>100</b> Wallets</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>500,000</b> Sat Invoice Limit</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span><b>1,000</b> Transactions/mo</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>LNURL</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Lightning Address</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Outbound Keysend</li>
-                            <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Connect External LND Node</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span>Bring Your Own LND Node</li>
                             <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Inbound Keysend</li>
                             <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Email/Telegram Support</li>
                             <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Dedicated LND Node</li>
@@ -90,9 +107,15 @@ $this->title = 'LNPay Plans';
                             <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Managed Channels</li>
                             <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Managed Backups</li>
                         </ul>
+                        <?php if ($plusActive) { ?>
                         <div class="d-grid text-center">
-                            <a href="/dashboard/home" class="btn btn-primary text-uppercase">Continue with Free</a>
+                            <a href="mailto:admin@lnpay.co?subject=cancel+plan" class="btn btn-danger text-uppercase">Cancel</a>
                         </div>
+                        <?php } else { ?>
+                        <div class="d-grid text-center">
+                            <a href="https://buy.stripe.com/aEU4htcr91DO2He4gr" class="btn btn-primary text-uppercase">Upgrade to Plus</a>
+                        </div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
