@@ -15,7 +15,7 @@ $proActive = Yii::$app->request->getQueryParam('plan')=='pro';
                 <div class="card mb-5 mb-lg-0 <?=$proActive?'bg-success':'';?>">
                     <div class="card-body">
                         <h5 class="card-title text-muted text-uppercase text-center">Pro</h5>
-                        <h6 class="card-price text-center">$450<span class="period">/month</span></h6>
+                        <h6 class="card-price text-center">$150+<span class="period">/month</span></h6>
                         <hr>
                         <ul class="fa-ul">
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>LNPay Cloud API</li>
@@ -26,7 +26,6 @@ $proActive = Yii::$app->request->getQueryParam('plan')=='pro';
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>LNURL</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Lightning Address</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Outbound Keysend</li>
-                            <li><span class="fa-li"><i class="fas fa-check"></i></span>Connect (5+) External LND Nodes</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Inbound Keysend</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Email/Telegram Support</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Dedicated LND Node</li>
@@ -40,7 +39,7 @@ $proActive = Yii::$app->request->getQueryParam('plan')=='pro';
                             </div>
                         <?php } else { ?>
                             <div class="d-grid text-center">
-                                <a href="https://buy.stripe.com/7sI6pB3UD5U4a9GeV6" class="btn btn-primary text-uppercase">Upgrade to Pro</a>
+                                <a href="<?php if (YII_ENV_DEV) echo 'https://buy.stripe.com/test_00gbLUfkt1Ai2li144'; else echo 'https://buy.stripe.com/aEU4htcr91DO2He4gr';?>" class="btn btn-primary text-uppercase">Upgrade to Plus</a>
                             </div>
                         <?php } ?>
                     </div>
@@ -51,18 +50,17 @@ $proActive = Yii::$app->request->getQueryParam('plan')=='pro';
                 <div class="card mb-5 mb-lg-0 <?=$growthActive?'bg-success':'';?>">
                     <div class="card-body">
                         <h5 class="card-title text-muted text-uppercase text-center">Growth</h5>
-                        <h6 class="card-price text-center">$150<span class="period">/month</span></h6>
+                        <h6 class="card-price text-center">$100<span class="period">/month</span></h6>
                         <hr>
                         <ul class="fa-ul">
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>LNPay Cloud API</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Generate / Pay LN Invoices</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span><b>500</b> Wallets</li>
-                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>1,000,000</b> Sat Invoice Limit</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>500,000</b> Sat Invoice Limit</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span><b>10,000</b> Transactions/mo</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>LNURL</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Lightning Address</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Outbound Keysend</li>
-                            <li><span class="fa-li"><i class="fas fa-check"></i></span>Connect (1) External LND Node</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Inbound Keysend</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Email/Telegram Support</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Dedicated LND Node</li>
@@ -76,7 +74,7 @@ $proActive = Yii::$app->request->getQueryParam('plan')=='pro';
                             </div>
                         <?php } else { ?>
                             <div class="d-grid text-center">
-                                <a href="https://buy.stripe.com/bIY5lxbn52HS2He8wF" class="btn btn-primary text-uppercase">Upgrade to Growth</a>
+                                <a href="<?php if (YII_ENV_DEV) echo 'https://buy.stripe.com/test_00gbLUfkt1Ai2li144'; else echo 'https://buy.stripe.com/aEU4htcr91DO2He4gr';?>" class="btn btn-primary text-uppercase">Upgrade to Plus</a>
                             </div>
                         <?php } ?>
                     </div>
@@ -94,12 +92,11 @@ $proActive = Yii::$app->request->getQueryParam('plan')=='pro';
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>LNPay Cloud API</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Generate / Pay LN Invoices</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span><b>100</b> Wallets</li>
-                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>500,000</b> Sat Invoice Limit</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>250,000</b> Sat Invoice Limit</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span><b>1,000</b> Transactions/mo</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>LNURL</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Lightning Address</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Outbound Keysend</li>
-                            <li><span class="fa-li"><i class="fas fa-check"></i></span>Bring Your Own LND Node</li>
                             <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Inbound Keysend</li>
                             <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Email/Telegram Support</li>
                             <li class="text-muted"><span class="fa-li"><i class="fas fa-times"></i></span>Dedicated LND Node</li>
@@ -113,7 +110,7 @@ $proActive = Yii::$app->request->getQueryParam('plan')=='pro';
                         </div>
                         <?php } else { ?>
                         <div class="d-grid text-center">
-                            <a href="https://buy.stripe.com/aEU4htcr91DO2He4gr" class="btn btn-primary text-uppercase">Upgrade to Plus</a>
+                            <a href="<?php if (YII_ENV_DEV) echo 'https://buy.stripe.com/test_00gbLUfkt1Ai2li144'; else echo 'https://buy.stripe.com/aEU4htcr91DO2He4gr';?>" class="btn btn-primary text-uppercase">Upgrade to Plus</a>
                         </div>
                         <?php } ?>
                     </div>

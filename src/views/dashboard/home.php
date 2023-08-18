@@ -111,8 +111,8 @@ $this->title = 'Home';
 <!--                        <img class="card-img-top img-fluid" src="//via.placeholder.com/740x180/bbb/fff?text=..." alt="Card image cap">-->
                         <div class="card-body">
                             <h4 class="card-title">Lightning Node</h4>
-                            <p class="card-text">Connect a Lightning Node to harness the full power of LNPay</p>
-                            <a href="/node/dashboard/add" class="btn btn-primary" >Connect Node</a>
+                            <p class="card-text">Launch a Lightning Node to harness the full power of LNPay</p>
+                            <a href="/node/dashboard/add" class="btn btn-primary" >Launch Node</a>
                         </div>
                     </div>
                     <?php /* ?><div class="card card-inverse bg-inverse mt-3">

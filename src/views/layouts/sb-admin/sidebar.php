@@ -45,6 +45,10 @@ if ($nodes = \LNPay::$app->user->identity->lnNodes) {
                     'label' => 'Connect Node',
                     'url' => ['/node/dashboard/add'], //  Array format of Url to, will be not used if have an items
                 ],
+                [
+                    'label' => 'Launch Node',
+                    'url' => ['/funnel/plans'], //  Array format of Url to, will be not used if have an items
+                ],
                 /*[
                     'label' => 'Invoices (LnTx)',
                     'url' => ['/menu21'], //  Array format of Url to, will be not used if have an items

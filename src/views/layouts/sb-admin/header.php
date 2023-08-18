@@ -174,10 +174,12 @@ use yii\helpers\Html;
                         <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                         Account Info
                     </a>
+                    <?php if (LNPAY_FLAVOR_CLOUD) { ?>
                     <a class="dropdown-item" href="/funnel/plans">
                         <i class="fas fa-file-invoice fa-sm fa-fw mr-2 text-gray-400"></i>
                         Billing
                     </a>
+                    <?php } ?>
                     <div class="dropdown-divider"></div>
                     <?= Html::a(
                         'Logout',
