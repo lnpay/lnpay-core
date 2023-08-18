@@ -55,9 +55,9 @@ $proActive = Yii::$app->request->getQueryParam('plan')=='pro';
                         <ul class="fa-ul">
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>LNPay Cloud API</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Generate / Pay LN Invoices</li>
-                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>500</b> Wallets</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>10,000</b> Wallets</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span><b>500,000</b> Sat Invoice Limit</li>
-                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>10,000</b> Transactions/mo</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>100,000</b> Transactions/mo</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>LNURL</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Lightning Address</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Outbound Keysend</li>
@@ -91,9 +91,9 @@ $proActive = Yii::$app->request->getQueryParam('plan')=='pro';
                         <ul class="fa-ul">
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>LNPay Cloud API</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Generate / Pay LN Invoices</li>
-                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>100</b> Wallets</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>1,000</b> Wallets</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span><b>250,000</b> Sat Invoice Limit</li>
-                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>1,000</b> Transactions/mo</li>
+                            <li><span class="fa-li"><i class="fas fa-check"></i></span><b>10,000</b> Transactions/mo</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>LNURL</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Lightning Address</li>
                             <li><span class="fa-li"><i class="fas fa-check"></i></span>Outbound Keysend</li>
