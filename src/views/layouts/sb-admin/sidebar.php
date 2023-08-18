@@ -86,7 +86,11 @@ $items = [
             // 'options' => [
             //     'liClass' => 'nav-item',
             // ] // optional
-        ]
+        ],
+        [
+            'type' => 'divider', // divider or sidebar, if not set then link menu
+            // 'label' => '', // if sidebar we will set this, if divider then no
+        ],
     ];
     /*[
         'label' => 'Lightning Address',

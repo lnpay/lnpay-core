@@ -39,7 +39,7 @@ $proActive = Yii::$app->request->getQueryParam('plan')=='pro';
                             </div>
                         <?php } else { ?>
                             <div class="d-grid text-center">
-                                <a href="<?php if (YII_ENV_DEV) echo 'https://buy.stripe.com/test_00gbLUfkt1Ai2li144'; else echo 'https://buy.stripe.com/aEU4htcr91DO2He4gr';?>" class="btn btn-primary text-uppercase">Upgrade to Plus</a>
+                                <a href="<?php if (YII_ENV_DEV) echo 'https://buy.stripe.com/test_00gbLUfkt1Ai2li144'; else echo 'https://buy.stripe.com/aEU4htcr91DO2He4gr';?>" class="btn btn-primary text-uppercase">Upgrade to Pro</a>
                             </div>
                         <?php } ?>
                     </div>
@@ -74,7 +74,7 @@ $proActive = Yii::$app->request->getQueryParam('plan')=='pro';
                             </div>
                         <?php } else { ?>
                             <div class="d-grid text-center">
-                                <a href="<?php if (YII_ENV_DEV) echo 'https://buy.stripe.com/test_00gbLUfkt1Ai2li144'; else echo 'https://buy.stripe.com/aEU4htcr91DO2He4gr';?>" class="btn btn-primary text-uppercase">Upgrade to Plus</a>
+                                <a href="<?php if (YII_ENV_DEV) echo 'https://buy.stripe.com/test_00gbLUfkt1Ai2li144'; else echo 'https://buy.stripe.com/aEU4htcr91DO2He4gr';?>" class="btn btn-primary text-uppercase">Upgrade to Growth</a>
                             </div>
                         <?php } ?>
                     </div>
