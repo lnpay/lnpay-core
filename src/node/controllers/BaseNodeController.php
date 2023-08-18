@@ -19,7 +19,7 @@ class BaseNodeController extends Controller
     public function beforeAction($event)
     {
         if (parent::beforeAction($event)) {
-            if ( (in_array($this->id,['ln','onchain','listeners'])) && ($model = LnNode::findOne(\LNPay::$app->request->getQueryParam('id'))) !== null) {
+            if ( (in_array($this->id,['rpc','authprofile','ln'])) && ($model = LnNode::findOne(\LNPay::$app->request->getQueryParam('id'))) !== null) {
                 \LNPay::$app->session->set('ln_node_id',$model->id);
                 $this->nodeObject = $model;
             } else if ($node_id = \LNPay::$app->session->get('ln_node_id')) {
