@@ -279,7 +279,7 @@ class WalletController extends ApiController
             $json['k1'] = 'k1';
             $json['maxWithdrawable'] = ($wallet->getIsEligibleToWithdraw($num_satoshis)?$num_satoshis:$wallet->balance)*1000;
             $json['defaultDescription'] = $memo;
-            $json['minWithdrawable'] = 0;
+            $json['minWithdrawable'] = $json['maxWithdrawable'];
             $json['tag'] = \tkijewski\lnurl\TAG_WITHDRAW;
 
             if (!$ott) { //only return balanceCheck if this is NOT a disposable LNURL
