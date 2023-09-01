@@ -45,6 +45,10 @@ if ($nodes = \LNPay::$app->user->identity->lnNodes) {
                     'label' => 'Connect Node',
                     'url' => ['/node/dashboard/add'], //  Array format of Url to, will be not used if have an items
                 ],
+                [
+                    'label' => 'Launch Node',
+                    'url' => ['/funnel/plans'], //  Array format of Url to, will be not used if have an items
+                ],
                 /*[
                     'label' => 'Invoices (LnTx)',
                     'url' => ['/menu21'], //  Array format of Url to, will be not used if have an items
@@ -82,7 +86,11 @@ $items = [
             // 'options' => [
             //     'liClass' => 'nav-item',
             // ] // optional
-        ]
+        ],
+        [
+            'type' => 'divider', // divider or sidebar, if not set then link menu
+            // 'label' => '', // if sidebar we will set this, if divider then no
+        ],
     ];
     /*[
         'label' => 'Lightning Address',
