@@ -28,7 +28,7 @@ class LnWalletLnurlPayFormJob extends \yii\base\BaseObject implements \yii\queue
 
 
         $array = [];
-        $bp = \LNPay::$app->getRequest()->getBodyParams();
+        $bp = $this->bodyParams;
         if ($passThru = @$bp['passThru']) {
             if (is_array($passThru)) {
                 $array = $passThru;
