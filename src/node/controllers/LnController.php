@@ -4,8 +4,10 @@ namespace lnpay\node\controllers;
 
 use lnpay\behaviors\UserAccessKeyBehavior;
 use lnpay\models\StatusType;
+use lnpay\node\models\LnNodeProfile;
 use lnpay\node\models\NodeAddForm;
 use lnpay\node\models\NodeListener;
+use lnpay\wallet\models\Wallet;
 use Yii;
 use lnpay\node\models\LnNode;
 use lnpay\models\LnNodeSearch;
@@ -151,6 +153,11 @@ class LnController extends BaseNodeController
     public function actionDelete($id)
     {
         $node = LnNode::findOne(['id'=>$id,'user_id'=>Yii::$app->user->id]);
+
+        NodeListener::deleteAll(['ln_node_id'=>$node->id]);
+        Wallet::updateAll(['ln_node_id'=>NULL],['ln_node_id'=>$node->id]);
+        LnNodeProfile::deleteAll(['ln_node_id'=>$node->id]);
+
         $node->delete();
 
         Yii::$app->session->setFlash('success','Node Removed');
