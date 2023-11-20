@@ -612,13 +612,13 @@ class LnNode extends \yii\db\ActiveRecord
         \LNPay::$app->db->createCommand()->update('ln_node', ['fee_wallet_id' => NULL], ['id'=>$this->id])->execute();
         \LNPay::$app->db->createCommand()->update('ln_node', ['keysend_wallet_id' => NULL], ['id'=>$this->id])->execute();
 
-        foreach (LnTx::find()->where(['ln_node_id'=>$this->id])->all() as $lntx) {
-            $lntx->delete();
-        }
+        LnTx::updateAll(['ln_node_id'=>NULL],['ln_node_id'=>$this->id]);
 
-        foreach (Wallet::find()->where(['ln_node_id'=>$this->id])->all() as $w) {
-            $w->delete();
-        }
+        Wallet::updateAll(['ln_node_id'=>NULL],['ln_node_id'=>$this->id]);
+
+        NodeListener::deleteAll(['ln_node_id'=>$this->id]);
+
+        LnNodeProfile::deleteAll(['ln_node_id'=>$this->id]);
 
 
         //This is here instead of ActionComponent::ActionName::LN_NODE_USER_REMOVE

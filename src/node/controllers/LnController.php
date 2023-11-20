@@ -154,10 +154,6 @@ class LnController extends BaseNodeController
     {
         $node = LnNode::findOne(['id'=>$id,'user_id'=>Yii::$app->user->id]);
 
-        NodeListener::deleteAll(['ln_node_id'=>$node->id]);
-        Wallet::updateAll(['ln_node_id'=>NULL],['ln_node_id'=>$node->id]);
-        LnNodeProfile::deleteAll(['ln_node_id'=>$node->id]);
-
         $node->delete();
 
         Yii::$app->session->setFlash('success','Node Removed');
