@@ -4,6 +4,7 @@ namespace lnpay\wallet\controllers\api\v1;
 
 use lnpay\behaviors\UserAccessKeyBehavior;
 use lnpay\components\HelperComponent;
+use lnpay\jobs\LnWalletLnurlPayFormJob;
 use lnpay\models\CustyDomain;
 use lnpay\wallet\exceptions\InvalidLnurlpayLinkException;
 use lnpay\wallet\exceptions\UnableToCreateLnurlpayException;
@@ -13,6 +14,7 @@ use lnpay\wallet\models\LnWalletLnurlpayPayForm;
 use lnpay\wallet\models\LnWalletWithdrawForm;
 use lnpay\wallet\models\WalletLnurlpay;
 use lnpay\base\ApiController;
+use lnpay\wallet\models\WalletTransaction;
 use lnpay\wallet\models\WalletTransactionType;
 use yii\helpers\Json;
 use yii\helpers\VarDumper;
@@ -225,104 +227,34 @@ class LnurlpayController extends ApiController
         }
     }
 
-    public function actionProbe($lnurlpayEncodedOrLnAddress)
-    {
-        try {
-            if (stripos($lnurlpayEncodedOrLnAddress,'@')!==FALSE) {
-                $url = static::getUrlFromLnAddress($lnurlpayEncodedOrLnAddress);
-            } else if ($lnurlp = \tkijewski\lnurl\decodeUrl($lnurlpayEncodedOrLnAddress)) {
-                if (@$lnurlp['url']) {
-                    $url = $lnurlp['url'];
-                } else {
-                    throw new InvalidLnurlpayLinkException('invalid lnurlpay link');
-                }
-            } else {
-                throw new \Exception('lnurlpay_encoded or ln_address must be specified');
-            }
-
-            $client = new \GuzzleHttp\Client([
-                'curl'=> [],
-                'http_errors'=>true,
-                'headers' => ['SERVICE'=>'LNPAY-PROBE'],
-                'debug'=>false
-            ]);
-
-            $r = null;
-            $response = $client->request('GET', $url);
-            $r = $response->getBody()->getContents();
-
-        } catch (\Throwable $t) {
-            throw new InvalidLnurlpayLinkException($t->getMessage());
-        }
-
-        $json = json_decode($r,TRUE);
-        if (@$json['metadata'])
-            $json['metadata'] = json_decode($json['metadata'],TRUE);
-
-        return $json;
-
-    }
-
     public function actionPay($access_key)
     {
         $wallet = $this->findByKey($access_key);
         $this->checkAccessKey(UserAccessKeyBehavior::PERM_WALLET_WITHDRAW);
+        $bodyParams = \LNPay::$app->getRequest()->getBodyParams();
 
-        $form = new LnWalletLnurlpayPayForm();
-        $form->load(\LNPay::$app->getRequest()->getBodyParams(),'');
-        $form->probe_json = $this->actionProbe($form->lnurlpay_encoded??$form->ln_address);
-
-
-        $array = [];
-        $bp = \LNPay::$app->getRequest()->getBodyParams();
-        if ($passThru = @$bp['passThru']) {
-            if (is_array($passThru)) {
-                $array = $passThru;
-            } else {
-                try {
-                    $array = Json::decode($passThru);
-                } catch (\Throwable $t) {
-                    throw new BadRequestHttpException('passThru data must be valid json');
-                }
-            }
-        }
-        if ($form->ln_address) {
-            $array['target_ln_address'] = $form->ln_address;
-        }
-        if ($form->lnurlpay_encoded) {
-            $array['target_lnurlp_encoded'] = $form->lnurlpay_encoded;
-        }
-        $form->passThru = $array;
-
-        if ($form->validate()) {
-            $invoice = $form->requestRemoteInvoice();
-
-            $model = new LnWalletWithdrawForm();
-            $model->payment_request = $invoice;
-            $model->wallet_id = $wallet->id;
-            $model->passThru = $form->passThru;
-            $model->target_msat = $form->amt_msat;
-            $model->wtx_type_id = WalletTransactionType::LN_LNURL_PAY_OUTBOUND;
-
-            return $model->processWithdrawal(['method'=>'lnurlpay','lnurlp_comment'=>$form->comment]);
-
+        if ($this->isAsync) {
+            $id = \LNPay::$app->queue->push(new LnWalletLnurlPayFormJob([
+                'access_key' => $access_key,
+                'wallet_id' => $wallet->id,
+                'bodyParams'=>$bodyParams
+            ]));
+            return ['success'=>1,'id'=>$id];
         } else {
-            throw new UnableToPayLnurlpayException(HelperComponent::getFirstErrorFromFailedValidation($form));
+            $job = new LnWalletLnurlPayFormJob([
+                'access_key' => $access_key,
+                'wallet_id' => $wallet->id,
+                'bodyParams'=>$bodyParams
+            ]);
+            $wtx_id = $job->execute(\LNPay::$app->queue);
+            \LNPay::$app->response->statusCode = 201;
+            return WalletTransaction::findOne($wtx_id);
         }
-
-
     }
 
-    public static function getUrlFromLnAddress($lnAddress)
+    public function actionProbe($lnurlpayEncodedOrLnAddress)
     {
-        $username = explode('@',$lnAddress)[0];
-        $domain = explode('@',$lnAddress)[1];
-        if (YII_ENV_TEST)
-            $url = 'http://localhost/index-test.php/.well-known/lnurlp/'.$username;
-        else
-            $url = 'https://'.$domain.'/.well-known/lnurlp/'.$username;
-
-        return $url;
+        return LnWalletLnurlpayPayForm::probe($lnurlpayEncodedOrLnAddress);
     }
 
 
